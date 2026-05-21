@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Tracker Pro - Mock-up</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Basic Reset & Root Variables for Theming */
+    :root {
+      --primary-bg: #e3f2fd; /* Light Blue - Default */
+      --secondary-bg: #ffffff;
+      --primary-text: #0d47a1; /* Dark Blue */
+      --secondary-text: #1565c0;
+      --accent-color: #1976d2; /* Medium Blue */
+      --border-color: #90caf9;
+      --header-bg: #64b5f6;
+      --header-text: #ffffff;
+      --button-bg: #1976d2;
+      --button-text: #ffffff;
+      --button-hover-bg: #1565c0;
+      --font-main: 'Roboto', sans-serif;
+      --font-heading: 'Nunito', sans-serif;
+    }
+
+    /* --- ALL THEME DEFINITIONS --- */
+    .theme-default { /* Explicit default theme class */
+      --primary-bg: #e3f2fd; --secondary-bg: #ffffff; --primary-text: #0d47a1; --secondary-text: #1565c0;
+      --accent-color: #1976d2; --border-color: #90caf9; --header-bg: #64b5f6; --header-text: #ffffff;
+      --button-bg: #1976d2; --button-text: #ffffff; --button-hover-bg: #1565c0;
+    }
+    .theme-pastel {
+      --primary-bg: #fdf6f0; --secondary-bg: #ffffff; --primary-text: #8c6d52; --secondary-text: #a8866b;
+      --accent-color: #f2c8a1; --border-color: #f5dcc0; --header-bg: #e7dac7; --header-text: #5a4e43;
+      --button-bg: #f2c8a1; --button-text: #5a4e43; --button-hover-bg: #eabfa0;
+    }
+    .theme-muted {
+      --primary-bg: #e8f0e8; --secondary-bg: #f9fcf9; --primary-text: #3e5246; --secondary-text: #5a7060;
+      --accent-color: #8aabb0; --border-color: #c5d8c5; --header-bg: #a3b9a3; --header-text: #ffffff;
+      --button-bg: #8aabb0; --button-text: #ffffff; --button-hover-bg: #7a9fa7;
+    }
+    .theme-classic-gray {
+      --primary-bg: #f4f4f4; --secondary-bg: #ffffff; --primary-text: #333333; --secondary-text: #555555;
+      --accent-color: #007bff; --border-color: #dddddd; --header-bg: #6c757d; --header-text: #ffffff;
+      --button-bg: #007bff; --button-text: #ffffff; --button-hover-bg: #0056b3;
+    }
+    .theme-ocean-breeze {
+      --primary-bg: #e0f7fa; --secondary-bg: #ffffff; --primary-text: #004d40; --secondary-text: #00796b;
+      --accent-color: #00bcd4; --border-color: #b2ebf2; --header-bg: #0097a7; --header-text: #ffffff;
+      --button-bg: #00bcd4; --button-text: #ffffff; --button-hover-bg: #00acc1;
+    }
+    .theme-sunset-glow {
+      --primary-bg: #fff3e0; --secondary-bg: #ffffff; --primary-text: #e65100; --secondary-text: #f57c00;
+      --accent-color: #ff9800; --border-color: #ffe0b2; --header-bg: #fb8c00; --header-text: #ffffff;
+      --button-bg: #ff9800; --button-text: #ffffff; --button-hover-bg: #f57c00;
+    }
+    .theme-lavender-fields {
+      --primary-bg: #f3e5f5; --secondary-bg: #ffffff; --primary-text: #4a148c; --secondary-text: #7b1fa2;
+      --accent-color: #ab47bc; --border-color: #e1bee7; --header-bg: #8e24aa; --header-text: #ffffff;
+      --button-bg: #ab47bc; --button-text: #ffffff; --button-hover-bg: #9c27b0;
+    }
+    .theme-forest-canopy {
+      --primary-bg: #e8f5e9; --secondary-bg: #ffffff; --primary-text: #1b5e20; --secondary-text: #388e3c;
+      --accent-color: #4caf50; --border-color: #c8e6c9; --header-bg: #2e7d32; --header-text: #ffffff;
+      --button-bg: #4caf50; --button-text: #ffffff; --button-hover-bg: #43a047;
+    }
+    .theme-rose-gold {
+      --primary-bg: #fff0f0; --secondary-bg: #ffffff; --primary-text: #b76e79; --secondary-text: #c27f8a;
+      --accent-color: #d9a0a0; --border-color: #f8e0e0; --header-bg: #c27f8a; --header-text: #ffffff;
+      --button-bg: #d9a0a0; --button-text: #ffffff; --button-hover-bg: #cc8f8f;
+    }
+    .theme-midnight-blue {
+      --primary-bg: #2c3e50; --secondary-bg: #34495e; --primary-text: #ecf0f1; --secondary-text: #bdc3c7;
+      --accent-color: #3498db; --border-color: #4a627a; --header-bg: #2980b9; --header-text: #ffffff;
+      --button-bg: #3498db; --button-text: #ffffff; --button-hover-bg: #2980b9;
+    }
+    .theme-mint-chocolate {
+      --primary-bg: #e0f2f1; --secondary-bg: #ffffff; --primary-text: #3e2723; --secondary-text: #5d4037;
+      --accent-color: #009688; --border-color: #b2dfdb; --header-bg: #00796b; --header-text: #ffffff;
+      --button-bg: #009688; --button-text: #ffffff; --button-hover-bg: #00796b;
+    }
+    .theme-coral-reef {
+      --primary-bg: #fff0e6; --secondary-bg: #ffffff; --primary-text: #ff4500; --secondary-text: #ff6347;
+      --accent-color: #ff7f50; --border-color: #ffdab9; --header-bg: #ff6347; --header-text: #ffffff;
+      --button-bg: #ff7f50; --button-text: #ffffff; --button-hover-bg: #ff6347;
+    }
+    .theme-sandy-beach {
+      --primary-bg: #fdf5e6; --secondary-bg: #fffaf0; --primary-text: #8b4513; --secondary-text: #a0522d;
+      --accent-color: #d2b48c; --border-color: #f5deb3; --header-bg: #cd853f; --header-text: #ffffff;
+      --button-bg: #d2b48c; --button-text: #4a3b28; --button-hover-bg: #c1a37c;
+    }
+    .theme-steel-gray {
+      --primary-bg: #e9ecef; --secondary-bg: #f8f9fa; --primary-text: #212529; --secondary-text: #495057;
+      --accent-color: #007bff; --border-color: #ced4da; --header-bg: #343a40; --header-text: #ffffff;
+      --button-bg: #007bff; --button-text: #ffffff; --button-hover-bg: #0069d9;
+    }
+    .theme-cherry-blossom {
+      --primary-bg: #fff0f5; --secondary-bg: #ffffff; --primary-text: #c71585; --secondary-text: #db7093;
+      --accent-color: #ff69b4; --border-color: #ffb6c1; --header-bg: #c71585; --header-text: #ffffff;
+      --button-bg: #ff69b4; --button-text: #ffffff; --button-hover-bg: #ff1493;
+    }
+    .theme-autumn-woods {
+      --primary-bg: #f5f5dc; --secondary-bg: #fff8dc; --primary-text: #800000; --secondary-text: #b8860b;
+      --accent-color: #d2691e; --border-color: #f4a460; --header-bg: #a0522d; --header-text: #ffffff;
+      --button-bg: #d2691e; --button-text: #ffffff; --button-hover-bg: #a0522d;
+    }
+    .theme-cool-slate {
+      --primary-bg: #e9e9f0; --secondary-bg: #f4f4f8; --primary-text: #2f4f4f; --secondary-text: #536872;
+      --accent-color: #778899; --border-color: #d1d9e0; --header-bg: #536872; --header-text: #ffffff;
+      --button-bg: #778899; --button-text: #ffffff; --button-hover-bg: #667788;
+    }
+    .theme-spring-meadow {
+      --primary-bg: #f0fff0; --secondary-bg: #ffffff; --primary-text: #228b22; --secondary-text: #3cb371;
+      --accent-color: #90ee90; --border-color: #98fb98; --header-bg: #3cb371; --header-text: #ffffff;
+      --button-bg: #90ee90; --button-text: #205020; --button-hover-bg: #7fdd7f;
+    }
+    .theme-royal-purple {
+      --primary-bg: #ede7f6; --secondary-bg: #f5f2fb; --primary-text: #311b92; --secondary-text: #512da8;
+      --accent-color: #673ab7; --border-color: #d1c4e9; --header-bg: #5e35b1; --header-text: #ffffff;
+      --button-bg: #673ab7; --button-text: #ffffff; --button-hover-bg: #512da8;
+    }
+    .theme-terracotta {
+      --primary-bg: #ffebe0; --secondary-bg: #fff7f2; --primary-text: #bf360c; --secondary-text: #dd6735;
+      --accent-color: #ff5722; --border-color: #ffccbc; --header-bg: #e64a19; --header-text: #ffffff;
+      --button-bg: #ff5722; --button-text: #ffffff; --button-hover-bg: #f4511e;
+    }
+    .theme-charcoal-crimson {
+      --primary-bg: #36454F; --secondary-bg: #4A4A4A; --primary-text: #EAEAEA; --secondary-text: #D1D1D1;
+      --accent-color: #DC143C; --border-color: #5A5A5A; --header-bg: #2C3E50; --header-text: #FFFFFF;
+      --button-bg: #DC143C; --button-text: #FFFFFF; --button-hover-bg: #b01030;
+    }
+    .theme-espresso-tan {
+      --primary-bg: #4b3832; --secondary-bg: #6a554a; --primary-text: #f5f5dc; --secondary-text: #e0dcd3;
+      --accent-color: #d2b48c; --border-color: #8b7765; --header-bg: #3c2f2a; --header-text: #f5f5dc;
+      --button-bg: #d2b48c; --button-text: #4b3832; --button-hover-bg: #c1a37c;
+    }
+    .theme-navy-steel {
+      --primary-bg: #2c3e50; --secondary-bg: #34495e; --primary-text: #ecf0f1; --secondary-text: #bdc3c7;
+      --accent-color: #7f8c8d; --border-color: #465666; --header-bg: #1f2b38; --header-text: #ecf0f1;
+      --button-bg: #7f8c8d; --button-text: #2c3e50; --button-hover-bg: #6c7a7b;
+    }
+    .theme-olive-khaki {
+      --primary-bg: #556B2F; --secondary-bg: #6B8E23; --primary-text: #F0E68C; --secondary-text: #FFFACD;
+      --accent-color: #BDB76B; --border-color: #8FBC8F; --header-bg: #3B4A23; --header-text: #F0E68C;
+      --button-bg: #BDB76B; --button-text: #3B4A23; --button-hover-bg: #ada75b;
+    }
+    .theme-hunter-amber {
+      --primary-bg: #2F4F2F; --secondary-bg: #3E5E3E; --primary-text: #E8E4D1; --secondary-text: #D8D0B9;
+      --accent-color: #FFBF00; --border-color: #4A6A4A; --header-bg: #1E3C1E; --header-text: #E8E4D1;
+      --button-bg: #FFBF00; --button-text: #2F4F2F; --button-hover-bg: #e6ac00;
+    }
+    .theme-slate-orange {
+      --primary-bg: #414A4C; --secondary-bg: #52595D; --primary-text: #D3D3D3; --secondary-text: #BCC6CC;
+      --accent-color: #CC5500; --border-color: #62696D; --header-bg: #2E3436; --header-text: #D3D3D3;
+      --button-bg: #CC5500; --button-text: #FFFFFF; --button-hover-bg: #b34700;
+    }
+    .theme-mono-industrial {
+      --primary-bg: #DADBDF; --secondary-bg: #EAEBED; --primary-text: #2A2C2E; --secondary-text: #45474A;
+      --accent-color: #007ACC; --border-color: #C5C6C9; --header-bg: #45474A; --header-text: #FFFFFF;
+      --button-bg: #007ACC; --button-text: #FFFFFF; --button-hover-bg: #005C9E;
+    }
+    /* === END OF ALL THEMES === */
+
+    html { font-size: 100%; }
+    body {
+      font-family: var(--font-main); background-color: var(--primary-bg); color: var(--primary-text);
+      font-size: 1rem; line-height: 1.5; margin: 0; padding: 10px;
+      display: flex; flex-direction: column; align-items: center;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .container {
+      background-color: var(--secondary-bg); padding: 25px; border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); width: 90%; max-width: 950px;
+    }
+    #top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; width: 100%; }
+    #license-info { font-size: 0.8em; color: var(--secondary-text); }
+    #header { display: flex; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid var(--border-color); }
+    #greetingContainer h1, #header h1 { font-family: var(--font-heading); color: var(--secondary-text); margin: 0; font-size: 2.0em; }
+    label { font-weight: bold; margin-right: 8px; color: var(--accent-color); }
+    select, input[type="text"], button {
+      padding: 10px 14px; margin: 8px 5px 8px 0; border-radius: 6px; font-size: 1em;
+      border: 1px solid var(--border-color);
+    }
+    select, input[type="text"] { background-color: var(--secondary-bg); color: var(--primary-text); }
+    #theme-selector { padding: 6px 10px; font-size: 0.9em; }
+    button {
+      background-color: var(--button-bg); color: var(--button-text); cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.1s ease; border: none;
+    }
+    button:hover { background-color: var(--button-hover-bg); }
+    button:active { transform: translateY(1px); }
+
+    #mainControls {
+        display: flex;
+        flex-wrap: wrap; 
+        align-items: center; 
+        gap: 10px; 
+    }
+    #mainControls > div { 
+        display: flex;
+        align-items: center;
+    }
+    #mainControls label { margin-right: 5px; } 
+    #mainControls select { margin-right: 15px; } 
+
+
+    #controlsSection, #objectiveSection, #studentTableContainer {
+      margin-top: 20px; padding: 20px; background-color: var(--primary-bg);
+      opacity: 0.95; border: 1px solid var(--border-color); border-radius: 8px;
+    }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid var(--border-color); padding: 10px 12px; text-align: left; }
+    th { background-color: var(--header-bg); color: var(--header-text); font-weight: bold; }
+    .participation-cell button {
+      margin: 2px; padding: 6px 9px; min-width: 35px; font-size: 0.9em;
+      background-color: var(--secondary-bg); color: var(--accent-color);
+      border: 1px solid var(--accent-color);
+    }
+    .participation-cell button.checkmark-style {
+        font-size: 1.1em; 
+        min-width: 40px;
+    }
+    .participation-cell button.selected {
+      background-color: var(--accent-color); color: var(--button-text); font-weight: bold;
+    }
+    .participation-cell button.absent { 
+      background-color: #fff3e0; color: #e65100; border-color: #ffcc80;
+    }
+    .participation-cell button.absent.selected {
+      background-color: #ff9800; color: white; border-color: #fb8c00;
+    }
+    .comment-select, .comment-input { width: calc(100% - 10px); padding: 8px; margin-top: 3px; box-sizing: border-box; }
+    .comment-input { display: none; }
+
+    .message-area { padding: 10px; margin-top: 15px; border-radius: 5px; text-align: center; }
+    .message-area.info { background-color: #e3f2fd; color: #0d47a1; }
+    footer {
+      margin-top: 30px; padding-top: 15px; border-top: 1px solid var(--border-color);
+      font-size: 0.85em; color: var(--secondary-text); text-align: center; width: 100%;
+    }
+    footer a { color: var(--accent-color); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      .container { width: 95%; padding: 15px; }
+      h1, #greetingContainer h1, #header h1 { font-size: 1.8em; }
+      select, input[type="text"], button { font-size: 0.95em; padding: 8px 12px; }
+      #theme-selector { font-size: 0.85em; padding: 5px 8px; }
+      #studentTableContainer { overflow-x: auto; }
+      #mainControls { flex-direction: column; align-items: flex-start; gap: 5px; }
+      #mainControls > div { width: 100%; margin-bottom: 5px; }
+      #mainControls select { width: calc(100% - 100px); }
+    }
+    
+    /***** START: MOBILE VIEW EDITS *****/
+    @media (max-width: 480px) {
+      body { padding: 5px; font-size: 0.95rem; }
+      .container { width: 100%; padding: 10px; border-radius: 0; box-shadow: none; }
+      h1, #greetingContainer h1, #header h1 { font-size: 1.5em; }
+      #top-bar { flex-direction: column; align-items: flex-start; }
+      #top-bar > div { margin-bottom: 5px; width: 100%; }
+      #top-bar > div:last-child { margin-bottom: 0; }
+      #theme-selector { width: auto; max-width: 200px; }
+      #mainControls label, #mainControls select, #mainControls span {
+          display: block; width: 95%; margin-left: auto; margin-right: auto; margin-bottom: 8px;
+      }
+      #mainControls select { width: 95%; } 
+      #mainControls div#currentDateDisplayContainer {
+           width: auto; text-align: left; margin-left: 5px; display: block;
+      }
+      select, input[type="text"], button {
+        font-size: 1em; padding: 10px 12px; width: 100%; box-sizing: border-box;
+      }
+      .fill-all-container { display: flex; flex-direction: column; align-items: flex-start; }
+      .fill-all-container select, .fill-all-container button { width: auto; }
+      .fill-all-container button { margin-top: 5px; }
+      
+      .participation-cell {
+          padding: 5px; /* Give a little space */
+      }
+      /* This is the new container for the buttons */
+      .participation-button-group {
+          display: flex;
+          flex-wrap: wrap; /* This is the key: allows buttons to wrap to the next line */
+          justify-content: flex-start;
+          gap: 4px; /* Creates space between buttons */
+      }
+      
+      /* Adjust the buttons themselves for the new layout */
+      .participation-cell button { 
+          flex-grow: 1; /* Allow buttons to grow and fill space */
+          flex-basis: 25px; /* Suggest a starting width for each button */
+          padding: 6px 4px; 
+          font-size: 0.85em; 
+          min-width: 28px; 
+          margin: 0; /* Remove margin as gap is used now */
+      }
+      .participation-cell button.checkmark-style { 
+          font-size: 1em; 
+          min-width: 35px; 
+          flex-basis: 35px;
+      }
+      
+      footer { font-size: 0.8em; }
+    }
+    /***** END: MOBILE VIEW EDITS *****/
+  </style>
+</head>
+<body class="theme-default">
+  <div class="container">
+    <div id="top-bar">
+        <div id="license-info">
+            License active. 365 days remaining.
+        </div>
+        <div>
+            <label for="theme-selector" style="font-size:0.9em; margin-right: 5px;">Theme:</label>
+            <select id="theme-selector">
+                <option value="default">Default Blue</option>
+                <option value="autumn-woods">Autumn Woods</option>
+                <option value="charcoal-crimson">Charcoal & Crimson</option>
+                <option value="cherry-blossom">Cherry Blossom</option>
+                <option value="classic-gray">Classic Gray</option>
+                <option value="cool-slate">Cool Slate</option>
+                <option value="coral-reef">Coral Reef</option>
+                <option value="espresso-tan">Espresso & Tan</option>
+                <option value="forest-canopy">Forest Canopy</option>
+                <option value="hunter-amber">Hunter & Amber</option>
+                <option value="lavender-fields">Lavender Fields</option>
+                <option value="midnight-blue">Midnight Blue</option>
+                <option value="mint-chocolate">Mint Chocolate</option>
+                <option value="mono-industrial">Mono Industrial</option>
+                <option value="muted">Muted Forest</option>
+                <option value="navy-steel">Navy & Steel</option>
+                <option value="ocean-breeze">Ocean Breeze</option>
+                <option value="olive-khaki">Olive & Khaki</option>
+                <option value="pastel">Pastel Dreams</option>
+                <option value="rose-gold">Rose Gold</option>
+                <option value="royal-purple">Royal Purple</option>
+                <option value="sandy-beach">Sandy Beach</option>
+                <option value="slate-orange">Slate & Burnt Orange</option>
+                <option value="spring-meadow">Spring Meadow</option>
+                <option value="steel-gray">Steel Gray</option>
+                <option value="sunset-glow">Sunset Glow</option>
+                <option value="terracotta">Terracotta</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="header">
+      <h1>Hello, Mr/Mrs. [Teacher Name]!</h1>
+    </div>
+
+    <div id="controlsSection">
+        <div id="mainControls">
+            <div>
+                <label for="classSelect">Class:</label>
+                <select id="classSelect">
+                    <option value="">--Select Class--</option>
+                    <option value="1" selected>Period 1: Biology</option>
+                    <option value="2">Period 2: World History</option>
+                    <option value="3">Period 3: Algebra II</option>
+                    <option value="4">Period 4: English Lit</option>
+                </select>
+            </div>
+            <div>
+                <label for="scaleSelect">Grading Scale:</label>
+                <select id="scaleSelect" disabled>
+                    <option value="numerical">Numerical (0-10)</option>
+                    <option value="checkmark">Checkmark (O, ✗, ✓, ✓+)</option>
+                </select>
+            </div>
+            <div id="currentDateDisplayContainer">
+                 <strong>Date:</strong>&nbsp;<span id="currentDateDisplay"></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="objectiveSection" style="display:none;">
+      <div id="objectivePrompt">
+        <label for="dailyObjective">Objective for <span id="objectiveDate"></span>:</label>
+        <input type="text" id="dailyObjective" size="40" placeholder="Enter today's learning objective">
+        <button id="saveObjectiveBtn">Save Objective</button>
+      </div>
+      <div id="objectiveDisplay" style="display:none;">
+        <strong>Today's Objective:</strong> <span id="objectiveText"></span>
+        <button id="editObjectiveBtn" style="margin-left:10px; font-size:0.8em; padding: 5px 8px;">Edit</button>
+      </div>
+    </div>
+     <div id="messageArea" class="message-area" style="display:none;"></div>
+
+    <div id="studentTableContainer" style="display:none;">
+      <div class="fill-all-container">
+          <label for="fillAllValue">Set All To:</label>
+          <select id="fillAllValue"></select>
+          <button id="fillAllBtn">Apply to Visible</button>
+      </div>
+      <table id="studentTable">
+        <thead>
+          <tr>
+            <th>Student Name</th>
+            <th>Participation</th>
+            <th>Comments</th>
+          </tr>
+        </thead>
+        <tbody id="studentTableBody"></tbody>
+      </table>
+    </div>
+  </div> 
+  <footer>
+    Licensed to: [Teacher Name] <br>
+    GC Education Analytics Student Tracker. For support visit <a href="https://www.gceducationanalytics.com" target="_blank">www.gceducationanalytics.com</a>. <br>
+    <span><a href="https://www.teacherspayteachers.com/store/gc-education-analytics" target="_blank" rel="noopener noreferrer">Visit our TpT Store</a></span>
+  </footer>
+
+  <script>
+    // --- Mock Data ---
+    const MOCK_STUDENTS = {
+        '1': [
+            'Anderson, Ava', 'Brown, Benjamin', 'Davis, Charlotte', 'Garcia, Elijah', 'Hernandez, Emma',
+            'Jackson, Evelyn', 'Johnson, Harper', 'Jones, Isabella', 'Lopez, James', 'Martin, Liam',
+            'Martinez, Logan', 'Miller, Lucas', 'Moore, Mason', 'Rodriguez, Mia', 'Smith, Noah',
+            'Taylor, Olivia', 'Thomas, Oliver', 'Williams, Sophia', 'Wilson, William', 'Gonzalez, Amelia'
+        ],
+        '2': [
+            'Allen, Chloe', 'Baker, Daniel', 'Carter, Emily', 'Clark, Ethan', 'Davis, Grace',
+            'Edwards, Henry', 'Evans, Lily', 'Green, Madison', 'Hall, Michael', 'Harris, Natalie',
+            'King, Owen', 'Lewis, Penelope', 'Lee, Samuel', 'Mitchell, Scarlett', 'Nelson, Sophia',
+            'Parker, Victoria', 'Roberts, Wyatt', 'Scott, Zoe', 'Turner, Abigail', 'Walker, Jack'
+        ],
+        '3': [
+            'Adams, Aria', 'Brooks, Caleb', 'Campbell, David', 'Collins, Ella', 'Cook, Gabriel',
+            'Cooper, Hannah', 'Cox, Isaac', 'Diaz, Jackson', 'Fisher, Leah', 'Flores, Levi',
+            'Foster, Luna', 'Gomez, Matthew', 'Gray, Mila', 'Hayes, Nora', 'Hill, Oscar',
+            'Howard, Riley', 'Hughes, Savannah', 'Jenkins, Sebastian', 'Kelly, Stella', 'Long, Thomas'
+        ],
+        '4': [
+            'Bailey, Audrey', 'Barnes, Carter', 'Bell, Claire', 'Bennett, Dylan', 'Coleman, Eleanor',
+            'Cruz, Eli', 'Diaz, Genesis', 'Fisher, Grayson', 'Ford, Hazel', 'Gibson, Isaiah',
+            'Graham, Ivy', 'Griffin, Julian', 'Henderson, Leo', 'James, Lucy', 'Jordan, Maya',
+            'Lane, Miles', 'Marshall, Naomi', 'Morgan, Paisley', 'Murphy, Piper', 'Murray, Roman'
+        ]
+    };
+
+    const PREDEFINED_COMMENTS = ["Excellent participation!", "Good effort today.", "Needs to focus more.", "Came to class prepared.", "Contributed well to group discussion."];
+
+    // --- Constants ---
+    const PARTICIPATION_SCALES = {
+        NUMERICAL: 'numerical',
+        CHECKMARK: 'checkmark'
+    };
+    const CHECKMARK_BUTTON_MAP = [ 
+      { value: 'A',   display: 'A', isAbsentStyle: true }, 
+      { value: 'O',   display: 'O', isAbsentStyle: false}, 
+      { value: 'CM-', display: '✗', isAbsentStyle: false}, 
+      { value: 'CM',  display: '✓', isAbsentStyle: false}, 
+      { value: 'CM+', display: '✓+',isAbsentStyle: false} 
+    ];
+    const NUMERICAL_BUTTON_VALUES = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Element References ---
+        const classSelect = document.getElementById('classSelect');
+        const scaleSelect = document.getElementById('scaleSelect');
+        const themeSelector = document.getElementById('theme-selector');
+        const objectiveSection = document.getElementById('objectiveSection');
+        const objectivePrompt = document.getElementById('objectivePrompt');
+        const objectiveDisplay = document.getElementById('objectiveDisplay');
+        const studentTableContainer = document.getElementById('studentTableContainer');
+        const saveObjectiveBtn = document.getElementById('saveObjectiveBtn');
+        const editObjectiveBtn = document.getElementById('editObjectiveBtn');
+        const fillAllBtn = document.getElementById('fillAllBtn');
+
+        // --- Initial State ---
+        let currentClassId = null;
+        let currentScale = PARTICIPATION_SCALES.NUMERICAL;
+
+        const getFormattedDate = (date) => {
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
+        document.getElementById('currentDateDisplay').textContent = getFormattedDate(new Date());
+        document.getElementById('objectiveDate').textContent = getFormattedDate(new Date());
+
+
+        function handleClassChange() {
+            currentClassId = classSelect.value; // Read the value directly from the dropdown
+            if (currentClassId) {
+                scaleSelect.disabled = false;
+                objectiveSection.style.display = 'block';
+                studentTableContainer.style.display = 'block';
+                populateStudentTable();
+            } else {
+                scaleSelect.disabled = true;
+                objectiveSection.style.display = 'none';
+                studentTableContainer.style.display = 'none';
+            }
+        }
+
+        // --- Event Listeners ---
+        themeSelector.addEventListener('change', (e) => {
+            document.body.className = `theme-${e.target.value}`;
+        });
+
+        classSelect.addEventListener('change', handleClassChange);
+
+        scaleSelect.addEventListener('change', (e) => {
+            currentScale = e.target.value;
+            populateStudentTable();
+            populateFillAllDropdown();
+        });
+        
+        saveObjectiveBtn.addEventListener('click', () => {
+            const objectiveText = document.getElementById('dailyObjective').value.trim();
+            if(objectiveText){
+                document.getElementById('objectiveText').textContent = objectiveText;
+                objectivePrompt.style.display = 'none';
+                objectiveDisplay.style.display = 'block';
+            }
+        });
+
+        editObjectiveBtn.addEventListener('click', () => {
+            objectivePrompt.style.display = 'block';
+            objectiveDisplay.style.display = 'none';
+            document.getElementById('dailyObjective').focus();
+        });
+        
+        fillAllBtn.addEventListener('click', () => {
+            alert("This would apply the selected value to all students.");
+        });
+
+        // --- Core Functions ---
+        function populateStudentTable() {
+            if (!currentClassId) return;
+
+            const tableBody = document.getElementById('studentTableBody');
+            tableBody.innerHTML = '';
+            const students = MOCK_STUDENTS[currentClassId] || [];
+
+            students.forEach(studentName => {
+                const row = tableBody.insertRow();
+                
+                const nameCell = row.insertCell();
+                nameCell.textContent = studentName;
+                
+                const participationCell = row.insertCell();
+                participationCell.classList.add('participation-cell');
+                
+                /***** JS EDIT: Add a class to the button container *****/
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'participation-button-group';
+                
+                if(currentScale === PARTICIPATION_SCALES.NUMERICAL){
+                    const absentBtn = createParticipationButton('A', 'A', true, false);
+                    buttonContainer.appendChild(absentBtn);
+                    NUMERICAL_BUTTON_VALUES.forEach(val => {
+                        const gradeBtn = createParticipationButton(val, val, false, false);
+                        buttonContainer.appendChild(gradeBtn);
+                    });
+                } else { // Checkmark
+                    CHECKMARK_BUTTON_MAP.forEach(item => {
+                         const btn = createParticipationButton(item.display, item.value, item.isAbsentStyle, true);
+                         buttonContainer.appendChild(btn);
+                    });
+                }
+                participationCell.appendChild(buttonContainer);
+                
+                const commentCell = row.insertCell();
+                commentCell.appendChild(createCommentElements());
+            });
+            populateFillAllDropdown();
+        }
+
+        function createParticipationButton(text, value, isAbsent, isCheckmark) {
+            const btn = document.createElement('button');
+            btn.innerHTML = text;
+            btn.dataset.value = value;
+            if (isAbsent) btn.classList.add('absent');
+            if (isCheckmark) btn.classList.add('checkmark-style');
+            btn.type = 'button';
+            
+            btn.addEventListener('click', (e) => {
+                const parent = e.target.closest('.participation-button-group');
+                Array.from(parent.children).forEach(child => child.classList.remove('selected'));
+                e.target.classList.add('selected');
+            });
+
+            return btn;
+        }
+
+        function createCommentElements(){
+            const container = document.createElement('div');
+            const select = document.createElement('select');
+            select.className = 'comment-select';
+            
+            select.innerHTML = `<option value="">--Select/Custom--</option>`;
+            PREDEFINED_COMMENTS.forEach(c => {
+                select.innerHTML += `<option value="${c}">${c}</option>`;
+            });
+            select.innerHTML += `<option value="custom">--Type Custom Comment--</option>`;
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'comment-input';
+            input.placeholder = 'Custom comment...';
+            
+            select.addEventListener('change', (e) => {
+                input.style.display = e.target.value === 'custom' ? 'block' : 'none';
+                if(e.target.value === 'custom') input.focus();
+            });
+            
+            container.appendChild(select);
+            container.appendChild(input);
+            return container;
+        }
+        
+        function populateFillAllDropdown() {
+            const select = document.getElementById('fillAllValue');
+            select.innerHTML = '<option value="">--</option>'; 
+    
+            if (currentScale === PARTICIPATION_SCALES.NUMERICAL) {
+                select.appendChild(new Option('A (Absent)', 'A'));
+                NUMERICAL_BUTTON_VALUES.forEach(val => {
+                    select.appendChild(new Option(val, val));
+                });
+            } else { // Checkmark
+                CHECKMARK_BUTTON_MAP.forEach(item => {
+                    select.appendChild(new Option(item.display, item.value));
+                });
+            }
+        }
+        handleClassChange();
+    });
+  </script>
+</body>
+</html>

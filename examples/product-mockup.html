@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>MailFlow Manager</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Variables for consistent theming - Defaulting to a sleek dark mode */
+    :root {
+      --primary-color: #3b3b3b; /* Darker grey */
+      --primary-dark: #2a2a2a; /* Even darker grey for accents */
+      --secondary-color: #555555; /* Muted mid-grey */
+      --accent-color: #444444; /* Another dark grey accent */
+      --success-color: #28a745; /* Standard green */
+      --warning-color: #ffc107; /* Standard orange */
+      --danger-color: #dc3545; /* Standard red */
+      --background-color: #1a1a1a; /* Deep dark background */
+      --card-background: #2b2b2b; /* Slightly lighter card background */
+      --text-primary: #e0e0e0; /* Light grey text */
+      --text-secondary: #b0b0b0; /* Muted light grey text */
+      --text-muted: #808080; /* Darker muted text */
+      --border-color: #3a3a3a; /* Darker borders */
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.25);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    /* Aggressive Reset for Mobile Margins/Padding */
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box; /* Include padding/border in element's total width and height */
+    }
+    /* BASIC CSS - Mobile-First Design (Defaults for small screens) */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, var(--background-color) 0%, #2a2a2a 100%); /* Modern dark gradient */
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden; /* Prevent body scroll during swipe */
+      font-size: 1.125rem; /* BASE FONT SIZE for MOBILE (18px) - Consistent base for rem scaling */
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .container {
+      width: 100%; /* Full width on mobile */
+      height: 100%; /* Full height on mobile */
+      margin: 0 auto; /* Centers on desktop */
+      padding: 12px; /* Mobile container padding */
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      overflow: hidden; /* Prevent container scroll during swipe */
+    }
+    header {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+      color: white;
+      padding: 18px 20px; /* Reduced padding for header */
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 12px; /* Consistent spacing */
+      border-radius: var(--radius-md); /* Added for consistency with nav/cards */
+    }
+    header::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(45deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.8rem; /* Header title size for mobile */
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    /* Enhanced navigation */
+    nav {
+      background: var(--card-background);
+      padding: 10px; /* Reduced padding for nav */
+      margin: 0 0 12px 0; /* Consistent spacing */
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      justify-content: space-around;
+      gap: 10px; /* Smaller gap */
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--border-color);
+      border-radius: var(--radius-md); /* Added for rounded corners */
+    }
+    nav button {
+      background: var(--background-color);
+      border: 2px solid transparent;
+      padding: 12px 16px; /* Adjusted padding */
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 0.95rem; /* Adjusted for readability, scales from body font */
+      font-weight: 500;
+      flex-grow: 1;
+      transition: all 0.2s ease;
+      color: var(--text-secondary);
+      position: relative;
+      overflow: hidden;
+      min-height: 44px; /* Standard touch target size */
+    }
+    nav button::before {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.5s;
+    }
+    nav button:hover::before { left: 100%; }
+    nav button.active {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      border-color: var(--primary-dark);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+    nav button:hover:not(.active) {
+      background: var(--border-color);
+      transform: translateY(-1px);
+    }
+    /* Dashboard styling - full screen card container */
+    .dashboard-view {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0; /* Managed by .container */
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* NEW: Container for the task cards */
+    .task-grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Adjusted min width */
+        gap: 15px; /* Consistent gap */
+        padding: 0; /* Padding will come from .container on mobile */
+        overflow-y: auto;
+        align-content: start;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+    }
+
+    .card-wrapper {
+        width: 100%; height: 100%;
+        position: relative; display: flex; justify-content: center; align-items: center;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    /* Enhanced email card with modern design */
+    .email-card {
+      background: var(--card-background);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      margin: 0;
+      padding: 18px; /* Reduced internal padding for overall compactness */
+      overflow: hidden; position: relative; text-align: left;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out;
+      touch-action: none; cursor: grab;
+      width: 100%; height: 100%;
+      box-sizing: border-box;
+      display: flex; flex-direction: column; justify-content: space-between;
+      border: 1px solid var(--border-color);
+    }
+    .email-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-top-left-radius: var(--radius-lg);
+      border-top-right-radius: var(--radius-lg);
+    }
+    .email-card.dragging {
+      transition: none; cursor: grabbing;
+      box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+    }
+    .email-card-header h3 {
+      margin: 0 0 6px 0; /* Reduced margin */
+      color: var(--text-primary);
+      font-size: 1.3rem; /* Subject font size for mobile */
+      font-weight: 600; line-height: 1.3;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .email-card-header p {
+      margin: 0 0 4px 0; /* Reduced margin */
+      font-size: 0.85rem; /* From/Date font size */
+      color: var(--text-secondary); font-weight: 400;
+      line-height: 1.4;
+    }
+    /* SNIPPET FONT SIZE AND HEIGHT ADJUSTMENT - Relying on specificity over !important */
+    #emailCardContainer div.email-card > div.email-card-snippet,
+    #emailCardContainer div.email-card > div.email-card-snippet p,
+    #emailCardContainer div.email-card > div.email-card-snippet span,
+    #emailCardContainer div.email-card > div.email-card-snippet div {
+      flex-grow: 1;
+      margin: 8px 0 8px 0; /* MODIFIED: Reduced bottom margin for snippet to pull actions up */
+      font-size: 0.95rem; /* Clearer font size for mobile snippet */
+      line-height: 1.6;
+      color: var(--text-primary);
+      max-height: 120px; /* MODIFIED: Tighter max-height to encourage compactness */
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 5; /* Adjusted line clamp to fit tighter max-height */
+      -webkit-box-orient: vertical;
+    }
+    .email-card-meta {
+      font-size: 0.75rem; /* Smaller meta info */
+      margin-top: 6px; /* Reduced margin-top */
+      color: var(--text-muted);
+      text-align: right; font-weight: 500;
+    }
+    /* Enhanced button styling */
+    .email-card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr; /* MODIFIED: 3 columns for actions on mobile */
+      gap: 6px; /* MODIFIED: Reduced gap for buttons to fit more */
+      margin-top: 8px; /* MODIFIED: Reduced margin-top to pull actions closer to snippet */
+      max-height: 100%; /* Allow height to adjust to content, should fit 6 buttons */
+      overflow-y: visible; /* Prevent unwanted scrollbar if possible */
+    }
+    .email-card-actions button {
+      background: var(--background-color); border: 1px solid var(--border-color);
+      padding: 6px 8px; /* MODIFIED: Significantly reduced padding for buttons to fit */
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.8rem; /* MODIFIED: Smaller button font size to fit 3 per row */
+      font-weight: 500; color: var(--text-primary);
+      transition: all 0.2s ease; position: relative; overflow: hidden;
+      min-height: 36px; /* MODIFIED: Reduced min-height for compactness */
+      white-space: nowrap; /* Prevent text wrapping inside buttons if possible */
+      text-overflow: ellipsis; /* Add ellipsis if text overflows */
+      overflow: hidden; /* Hide overflowing text */
+    }
+    .email-card-actions button:hover {
+      background: var(--primary-color); color: white; border-color: var(--primary-color);
+      transform: translateY(-1px); box-shadow: var(--shadow-sm);
+    }
+    .email-card-actions button:active { transform: translateY(0); }
+
+    /* Swipe Hint Overlays */
+    .swipe-hint {
+        position: absolute;
+        font-size: 2.5rem; /* Standardized size for hints */
+        font-weight: 700;
+        color: white;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        opacity: 0;
+        transition: opacity 0.15s ease-in-out;
+        pointer-events: none;
+        z-index: 5;
+        white-space: nowrap;
+        text-align: center;
+        top: 0; left: 0; width: 100%; height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+    }
+    .swipe-hint.show { opacity: 1; }
+    /* Positioning relative to swipe direction (words appear ON THE SIDE OF THE ACTION) */
+    .swipe-hint.left {
+        justify-content: flex-start;
+        padding-left: 20px;
+        color: var(--danger-color);
+        background: linear-gradient(90deg, rgba(220,53,69,0.3), transparent);
+    }
+    .swipe-hint.right {
+        justify-content: flex-end;
+        padding-right: 20px;
+        color: var(--success-color);
+        background: linear-gradient(270deg, rgba(40,167,69,0.3), transparent);
+    }
+    .swipe-hint.up {
+        top: 15px; bottom: auto;
+        color: var(--danger-color);
+        background: linear-gradient(180deg, rgba(220,53,69,0.3), transparent);
+        border-radius: var(--radius-lg);
+        width: calc(100% - 30px); height: calc(100% - 30px);
+        left: 15px;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+    .swipe-hint.down {
+        bottom: 15px; top: auto;
+        color: var(--warning-color);
+        background: linear-gradient(0deg, rgba(255,193,7,0.3), transparent);
+        border-radius: var(--radius-lg);
+        width: calc(100% - 30px); height: calc(100% - 30px);
+        left: 15px;
+        align-items: flex-end;
+        padding-bottom: 20px;
+    }
+
+    /* Modals */
+    .modal {
+      display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%;
+      overflow: auto; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+      justify-content: center; align-items: center; padding: 15px;
+      animation: fadeIn 0.2s ease-out;
+      overflow-x: hidden;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal-content {
+      background: var(--card-background); margin: auto;
+      padding: 20px; /* Adjusted padding */
+      border: none; border-radius: var(--radius-lg);
+      width: 90%; max-width: 550px;
+      max-height: 85vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35); position: relative; animation: slideUp 0.3s ease-out;
+      overflow-x: hidden;
+    }
+    @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal-content h2 { margin-top: 0; margin-bottom: 15px;
+      color: var(--text-primary); font-weight: 600; font-size: 1.3rem;
+    }
+    .modal-body {
+        flex-grow: 1; overflow-y: auto; border: 1px solid var(--border-color);
+        padding: 15px;
+        background: var(--background-color); border-radius: var(--radius-sm);
+        font-size: 0.9rem; line-height: 1.6; margin-bottom: 15px;
+    }
+    .modal-body.raw-html { white-space: pre-wrap; font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace; }
+    .close-button {
+      color: var(--text-muted); float: right; font-size: 28px; font-weight: bold;
+      position: absolute; top: 15px; right: 18px;
+      cursor: pointer; transition: color 0.2s ease;
+    }
+    .close-button:hover, .close-button:focus { color: var(--text-primary); text-decoration: none; }
+    /* Enhanced form styling */
+    .modal-content label {
+      display: block; width: 100%; margin-bottom: 8px;
+      font-weight: 500; color: var(--text-primary); font-size: 0.9rem;
+    }
+    .modal-content input, .modal-content textarea, .modal-content select {
+      display: block; width: 100%; margin-bottom: 15px;
+      padding: 10px;
+      border: 2px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.95rem;
+      transition: border-color 0.2s ease; background: var(--background-color); color: var(--text-primary);
+      box-sizing: border-box;
+    }
+    .modal-content input:focus, .modal-content textarea:focus, .modal-content select:focus {
+      outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    }
+    .modal-content button {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white; border: none; padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      cursor: pointer; font-size: 0.95rem; font-weight: 600; margin-top: 15px;
+      transition: all 0.2s ease; box-shadow: var(--shadow-md);
+      min-height: 44px;
+    }
+    .modal-content button:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .modal-content button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+    /* Enhanced action buttons */
+    .full-email-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr; /* MODIFIED: 3 columns for actions in full email modal */
+      gap: 8px; /* MODIFIED: Smaller gap */
+      margin-top: 15px; padding-top: 15px;
+      border-top: 1px solid var(--border-color);
+    }
+    .full-email-actions button {
+      background: var(--background-color); border: 1px solid var(--border-color);
+      padding: 8px 12px; /* MODIFIED: Reduced padding */ border-radius: var(--radius-sm); cursor: pointer;
+      font-size: 0.9rem; /* MODIFIED: Adjusted size */ font-weight: 500; margin-top: 0; transition: all 0.2s ease;
+      min-height: 40px; /* MODIFIED: Reduced min-height */
+      white-space: nowrap; /* Prevent text wrapping */
+      text-overflow: ellipsis; /* Add ellipsis */
+      overflow: hidden; /* Hide overflow */
+    }
+    .full-email-actions button:hover {
+      background: var(--primary-color); color: white; border-color: var(--primary-color);
+    }
+    /* Enhanced snackbar */
+    #snackbar {
+      visibility: hidden; min-width: 280px;
+      margin-left: -140px;
+      background: var(--card-background);
+      color: var(--text-primary); text-align: center; border-radius: var(--radius-md);
+      padding: 15px; position: fixed; z-index: 101; left: 50%; bottom: 25px;
+      font-size: 0.9rem; font-weight: 500; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);
+    }
+    #snackbar.show {
+      visibility: visible;
+      -webkit-animation: snackbarFadeIn 0.5s, snackbarFadeOut 0.5s 2.5s;
+      animation: snackbarFadeIn 0.5s, snackbarFadeOut 0.5s 2.5s;
+    }
+    #snackbar button {
+        background: var(--success-color); color: white; border: none;
+        padding: 8px 15px; margin-left: 10px;
+        cursor: pointer; border-radius: var(--radius-sm); font-weight: 500;
+        transition: background 0.2s ease; min-height: 36px;
+    }
+    #snackbar button:hover { background: #38a169; }
+    @keyframes snackbarFadeIn { from { bottom: 0; opacity: 0; transform: scale(0.8); } to { bottom: 25px; opacity: 1; transform: scale(1); } }
+    @keyframes snackbarFadeOut { from { bottom: 25px; opacity: 1; transform: scale(1); } to { bottom: 0; opacity: 0; transform: scale(0.8); } }
+
+    /* Task card styling - apply adjustments for grid */
+    .task-card {
+        background: var(--card-background);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-sm);
+        padding: 16px;
+        margin-bottom: 0;
+        border: 1px solid var(--border-color);
+        transition: box-shadow 0.2s ease;
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+    }
+
+    .task-card:hover {
+        box-shadow: var(--shadow-md);
+    }
+    .task-card-header h3 {
+        color: var(--text-primary);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+    .task-card-details p {
+        margin: 0 0 5px 0;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+    .task-card-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: auto;
+        padding-top: 8px;
+        border-top: 1px solid var(--border-color);
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+    .task-card-actions button {
+        background: var(--background-color);
+        border: 1px solid var(--border-color);
+        padding: 10px 16px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        min-height: 40px;
+    }
+    .task-card-actions button.done {
+        background: var(--success-color);
+        color: white;
+        border-color: var(--success-color);
+    }
+    .task-card-actions button.edit {
+        background: var(--warning-color);
+        color: white;
+        border-color: var(--warning-color);
+    }
+    .task-card-actions button.email {
+        background: var(--accent-color);
+        color: white;
+        border-color: var(--accent-color);
+    }
+    /* Loading states */
+    #loadingEmails,
+    #loadingTasks {
+        color: var(--text-secondary);
+        font-size: 1.6rem;
+        font-weight: 500;
+        padding: 20px;
+    }
+
+    /* Responsive design for larger screens (min-width: 600px) */
+    @media (min-width: 600px) {
+      body { font-size: 1rem; } /* Base font size for desktop (16px) */
+      .container { padding: 20px; }
+      header { border-radius: var(--radius-md); }
+      nav { border-radius: var(--radius-md); margin-bottom: 16px; }
+      
+      h1 { font-size: 2rem; }
+      nav button { font-size: 0.9rem; }
+
+      .email-card { padding: 20px; }
+      .email-card-header h3 { font-size: 1.15rem; }
+      /* DESKTOP SNIPPET */
+      #emailCardContainer div.email-card > div.email-card-snippet,
+      #emailCardContainer div.email-card > div.email-card-snippet p,
+      #emailCardContainer div.email-card > div.email-card-snippet span,
+      #emailCardContainer div.email-card > div.email-card-snippet div {
+        font-size: 0.85rem; /* Smaller on desktop */
+        max-height: 100px;
+        -webkit-line-clamp: 5;
+        margin: 10px 0;
+      }
+      .email-card-header p { font-size: 0.75rem; }
+      .email-card-meta { font-size: 0.7rem; }
+      .email-card-actions {
+        grid-template-columns: repeat(3, 1fr); /* MODIFIED: Keep 3 columns on tablet/small desktop */
+        gap: 8px;
+        margin-top: 15px; /* MODIFIED: Adjusted margin */
+      }
+      .email-card-actions button { font-size: 0.8rem; }
+
+      .full-email-actions {
+        grid-template-columns: repeat(3, 1fr); /* MODIFIED: Keep 3 columns here too */
+        gap: 8px;
+      }
+      .full-email-actions button { font-size: 0.85rem; }
+
+      .swipe-hint { font-size: 2rem; }
+      .swipe-hint.left { padding-left: 30px; }
+      .swipe-hint.right { padding-right: 30px; }
+      .swipe-hint.up { top: 20px; left: 20px; width: calc(100% - 40px); height: calc(100% - 40px); padding-top: 25px; }
+      .swipe-hint.down { bottom: 20px; left: 20px; width: calc(100% - 40px); height: calc(100% - 40px); padding-bottom: 25px; }
+
+      /* MODAL adjustments for desktop */
+      .modal-content {
+        padding: 20px;
+        max-width: 600px;
+      }
+      .modal-content h2 { font-size: 1.25rem; }
+      .modal-body { font-size: 0.85rem; }
+      .modal-content label { font-size: 0.85rem; }
+      .modal-content input, .modal-content textarea, .modal-content select { font-size: 0.9rem; padding: 8px; }
+      .modal-content button { font-size: 0.9rem; padding: 10px 20px; min-height: 40px; }
+      .close-button { font-size: 24px; top: 12px; right: 15px; }
+      #snackbar { font-size: 0.85rem; bottom: 20px; }
+
+      /* Task card adjustments for desktop */
+      .task-card { padding: 16px; }
+      .task-card-header h3 { font-size: 1rem; }
+      .task-card-details p { font-size: 0.8rem; }
+      .task-card-actions button { font-size: 0.75rem; }
+      #loadingEmails, #loadingTasks { font-size: 1.2rem; }
+    }
+
+    /* NEW: Media Query for Larger Desktops / Laptops (min-width: 900px) */
+    @media (min-width: 900px) {
+      body {
+        font-size: 1rem; /* Consistent 16px base */
+      }
+      .container {
+        max-width: 960px; /* Standard max-width for content */
+        padding: 25px;
+      }
+
+      /* HEADER ADJUSTMENTS for 900px+ */
+      header {
+        padding: 20px 30px;
+        margin-bottom: 20px;
+      }
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      /* FOOTER ADJUSTMENTS for 900px+ */
+      footer {
+        padding: 18px 25px;
+        font-size: 0.85rem;
+      }
+
+      nav button {
+        font-size: 0.95rem;
+        padding: 14px 20px;
+      }
+
+      .email-card {
+        padding: 25px;
+      }
+      .email-card-header h3 {
+        font-size: 1.25rem;
+        margin-bottom: 10px;
+      }
+      /* SNIPPET FOR LARGE DESKTOP */
+      #emailCardContainer div.email-card > div.email-card-snippet,
+      #emailCardContainer div.email-card > div.email-card-snippet p,
+      #emailCardContainer div.email-card > div.email-card-snippet span,
+      #emailCardContainer div.email-card > div.email-card-snippet div {
+        font-size: 0.9rem; /* Slightly larger for larger desktops */
+        max-height: 120px;
+        -webkit-line-clamp: 6;
+        margin: 15px 0;
+      }
+      .email-card-header p {
+        font-size: 0.8rem;
+      }
+      .email-card-meta {
+        font-size: 0.75rem;
+      }
+      .email-card-actions {
+        grid-template-columns: repeat(4, 1fr); /* MODIFIED: 4 columns on larger desktop */
+        gap: 10px;
+        margin-top: 20px;
+      }
+      .email-card-actions button {
+        font-size: 0.85rem;
+        padding: 12px 18px;
+      }
+
+      .task-grid-container {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+      }
+      .task-card {
+        padding: 20px;
+      }
+      .task-card-header h3 {
+        font-size: 1.1rem;
+      }
+      .task-card-details p {
+        font-size: 0.85rem;
+      }
+      .task-card-actions button {
+        font-size: 0.8rem;
+      }
+
+      /* Modal adjustments for 900px+ */
+      .modal-content {
+        max-width: 650px;
+        padding: 25px;
+      }
+      .modal-content h2 { font-size: 1.4rem; }
+      .modal-body { font-size: 0.9rem; }
+      .modal-content label { font-size: 0.9rem; }
+      .modal-content input, .modal-content textarea, .modal-content select { font-size: 0.95rem; padding: 10px; }
+      .modal-content button { font-size: 1rem; padding: 12px 24px; }
+      .full-email-actions button { font-size: 0.9rem; }
+      #snackbar { font-size: 0.9rem; }
+    }
+
+    /* Final rule for very large desktops, if needed - a little extra space */
+    @media (min-width: 1200px) {
+      .container {
+        max-width: 1100px;
+      }
+      .task-grid-container {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>MailFlow Manager</h1>
+    </header>
+
+    <nav>
+      <button id="showEmailsBtn" class="active">Emails</button>
+      <button id="showTasksBtn">Tasks</button>
+    </nav>
+
+    <div id="emailDashboard" class="dashboard-view">
+      <div id="swipeHintLeft" class="swipe-hint left">UNREAD</div>
+      <div id="swipeHintRight" class="swipe-hint right">READ</div>
+      <div id="swipeHintUp" class="swipe-hint up">TRASH</div>
+      <div id="swipeHintDown" class="swipe-hint down">REPLY LATER</div>
+
+      <div id="emailCardContainer" class="card-wrapper">
+        <p id="loadingEmails">Loading emails...</p>
+        </div>
+    </div>
+
+    <div id="taskDashboard" class="dashboard-view" style="display: none;">
+      <div id="taskCardsContainer" class="task-grid-container">
+        <p id="loadingTasks">Loading tasks...</p>
+        </div>
+    </div>
+
+    <div id="summaryModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" onclick="closeModal('summaryModal')">&times;</span>
+        <h2>Email Summary</h2>
+        <div id="summaryText" class="modal-body">Loading summary...</div>
+        <button id="generateSummaryBtn">Generate Summary (AI)</button>
+        <p style="font-size: 0.8em; color: #777;">Note: Free AI summary limit applies (e.g., 10/month).</p>
+      </div>
+    </div>
+
+    <div id="createTaskModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" onclick="closeModal('createTaskModal')">&times;</span>
+        <h2>Create New Task</h2>
+        <form id="taskForm">
+          <label for="taskAction">Task Action:</label>
+          <input type="text" id="taskAction" required>
+
+          <label for="taskDueDate">Due Date:</label>
+          <input type="date" id="taskDueDate">
+
+          <label for="taskDueTime">Due Time:</label>
+          <input type="time" id="taskDueTime">
+
+          <label for="taskAssignee">Assignee Email (Optional):</label>
+          <input type="email" id="taskAssignee">
+
+          <label for="taskNotes">Notes:</label>
+          <textarea id="taskNotes" rows="4" placeholder="Add any relevant notes or details here..."></textarea>
+
+          <input type="hidden" id="taskMessageId">
+          <button type="submit">Save Task</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="replyModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" onclick="closeModal('replyModal')">&times;</span>
+        <h2>Reply to Email</h2>
+        <form id="replyForm">
+          <label for="replyBody">Your Reply:</label>
+          <textarea id="replyBody" rows="8" required></textarea>
+          <input type="hidden" id="replyMessageId">
+          <button type="submit">Send Reply</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="fullEmailModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" onclick="closeModal('fullEmailModal')">&times;</span>
+        <h2>Full Email Content</h2>
+        <div id="fullEmailContent" class="modal-body">Loading email...</div>
+        <div class="full-email-actions">
+          </div>
+      </div>
+    </div>
+
+    <div id="replyLaterModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" onclick="closeModal('replyLaterModal')">&times;</span>
+        <h2>Remind Me To Reply Later</h2>
+        <form id="replyLaterForm">
+          <label for="reminderTimeSelect">Remind me:</label>
+          <select id="reminderTimeSelect" required>
+            <option value="">Choose a time...</option>
+            <option value="in 30 minutes">In 30 Minutes</option>
+            <option value="in 1 hour">In 1 Hour</option>
+            <option value="in 2 hours">In 2 Hours</option>
+            <option value="in 3 hours">In 3 Hours</option>
+            <option value="mid-day">Today Mid-day (12 PM)</option>
+            <option value="end-of-day">Today End-of-Day (5 PM)</option>
+            <option value="tomorrow 8am">Tomorrow Morning (8 AM)</option>
+          </select>
+          <input type="hidden" id="replyLaterMessageId">
+          <button type="submit">Set Reminder</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="snackbar"></div>
+  </div>
+
+  <footer style="
+    background: var(--primary-dark);
+    color: var(--text-muted);
+    text-align: center;
+    padding: 10px 15px; /* Reduced footer padding */
+    font-size: 0.75rem; /* Smaller footer font */
+    border-top: 1px solid var(--border-color);
+    flex-shrink: 0; /* Prevents footer from shrinking */
+    margin-top: auto; /* Pushes footer to the bottom if content is short */
+  ">
+    <p>Made by GC Education Analytics</p>
+    <p>&copy; 2025 <a href="https://GCEducationAnalytics.com" target="_blank" style="color: var(--text-secondary); text-decoration: none;">GCEducationAnalytics.com</a>. All rights reserved.</p>
+    <p style="margin-top: 5px;">MailFlow Manager v1.0</p>
+  </footer>
+
+  <script>
+    const emailDashboard = document.getElementById('emailDashboard');
+    const taskDashboard = document.getElementById('taskDashboard');
+    const loadingEmails = document.getElementById('loadingEmails');
+    const loadingTasks = document.getElementById('loadingTasks');
+    const summaryModal = document.getElementById('summaryModal');
+    const createTaskModal = document.getElementById('createTaskModal');
+    const replyModal = document.getElementById('replyModal');
+    const fullEmailModal = document.getElementById('fullEmailModal');
+    const replyLaterModal = document.getElementById('replyLaterModal'); // New: Reply Later Modal element
+    const snackbar = document.getElementById('snackbar');
+    const emailCardContainer = document.getElementById('emailCardContainer');
+    const fullEmailActionsDiv = document.querySelector('#fullEmailModal .full-email-actions');
+    const taskCardsContainer = document.getElementById('taskCardsContainer');
+
+
+    // Swipe hints
+    const swipeHintLeft = document.getElementById('swipeHintLeft');
+    const swipeHintRight = document.getElementById('swipeHintRight');
+    const swipeHintUp = document.getElementById('swipeHintUp');
+    const swipeHintDown = document.getElementById('swipeHintDown');
+
+
+    let emailQueue = [];
+    let isFetching = false;
+    let emailBeforeModal = null;
+    const PRELOAD_THRESHOLD = 2;
+    const BATCH_FETCH_COUNT = 10;
+
+    let currentEmailDisplayed = null; // Email object currently on the main card
+    let currentFullEmailMessageId = null; // Message ID of email open in the full email modal
+    let currentTasks = []; // Now holds mock task data
+    let undoAction = null;
+
+    // --- Swipe Variables ---
+    let initialTouchX = 0;
+    let initialTouchY = 0;
+    let currentTranslateX = 0;
+    let currentTranslateY = 0;
+    let isDragging = false;
+    let isSwipeDetected = false; // Flag to indicate if a valid swipe gesture is in progress
+    let dominantAxis = null; // 'x' or 'y'
+    const SWIPE_THRESHOLD = 80; // pixels to trigger a swipe action
+    const SWIPE_OPACITY_START_THRESHOLD = 30; // pixels before hint starts appearing
+    const SWIPE_OPACITY_END_THRESHOLD = 150; // pixels to reach full opacity for hint
+
+
+    // --- UI State Management ---
+    document.getElementById('showEmailsBtn').addEventListener('click', () => showView('emails'));
+    document.getElementById('showTasksBtn').addEventListener('click', () => showView('tasks'));
+
+    function showView(view) {
+        if (view === 'emails') {
+            emailDashboard.style.display = 'flex';
+            taskDashboard.style.display = 'none';
+            document.getElementById('showEmailsBtn').classList.add('active');
+            document.getElementById('showTasksBtn').classList.remove('active');
+            if (!currentEmailDisplayed && emailQueue.length === 0) {
+                preloadEmails(true); // Force display if no email is showing
+            } else if (!currentEmailDisplayed && emailQueue.length > 0) {
+                displayNextEmail();
+            }
+        } else if (view === 'tasks') {
+            emailDashboard.style.display = 'none';
+            taskDashboard.style.display = 'flex'; // Use flex for taskDashboard as per CSS
+            document.getElementById('showEmailsBtn').classList.remove('active');
+            document.getElementById('showTasksBtn').classList.add('active');
+            refreshTasks(); // Call refreshTasks to load the grid
+        }
+    }
+
+    function showSnackbar(message, actionText = null, actionCallback = null) {
+        snackbar.textContent = message;
+        let existingButton = snackbar.querySelector('button');
+        if (existingButton) snackbar.removeChild(existingButton);
+
+        if (actionText && actionCallback) {
+            const actionButton = document.createElement('button');
+            actionButton.textContent = actionText;
+            actionButton.onclick = () => {
+                actionCallback();
+                snackbar.classList.remove('show');
+            };
+            snackbar.appendChild(actionButton);
+        }
+
+        snackbar.classList.add('show');
+        setTimeout(() => {
+            snackbar.classList.remove('show');
+        }, 3000);
+    }
+
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'flex';
+      // When opening a modal that interacts with the current email, save it
+      // and temporarily hide the email card to avoid visual clutter.
+      if (modalId === 'summaryModal' || modalId === 'createTaskModal' || modalId === 'replyModal' || modalId === 'fullEmailModal' || modalId === 'replyLaterModal') {
+          if (currentEmailDisplayed) {
+              emailBeforeModal = currentEmailDisplayed; // Store the current email object
+              const card = emailCardContainer.querySelector('.email-card');
+              if (card) {
+                  card.style.transition = 'opacity 0.2s ease-out'; // Smooth fade out
+                  card.style.opacity = '0'; // Hide the card
+                  card.style.transform = 'translate3d(0, 0, 0)'; // Ensure it's not flung
+              }
+          }
+      }
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+
+        // Reset modal specific state
+        if (modalId === 'createTaskModal') {
+            document.getElementById('taskForm').removeAttribute('data-editing-taskId');
+            document.getElementById('createTaskModal').querySelector('h2').innerText = 'Create New Task';
+            document.getElementById('createTaskModal').querySelector('button[type="submit"]').innerText = 'Save Task';
+            document.getElementById('taskForm').reset();
+        }
+        if (modalId === 'replyModal') {
+            document.getElementById('replyBody').value = '';
+        }
+        if (modalId === 'replyLaterModal') {
+            document.getElementById('reminderTimeSelect').value = '';
+        }
+
+        // FIX: If a modal (that processes the current email) is closed without the email being advanced,
+        // restore the email card to the view.
+        if (['summaryModal', 'createTaskModal', 'replyModal', 'fullEmailModal', 'replyLaterModal'].includes(modalId)) {
+            // Check if the email that was displayed before the modal opened is still the current one.
+            // If it is, it means the modal action was not completed (e.g., cancelled),
+            // and the UI hasn't advanced to the next email. So, we bring the card back.
+            if (emailBeforeModal && currentEmailDisplayed && emailBeforeModal.id === currentEmailDisplayed.id) {
+                renderSingleEmailCard(currentEmailDisplayed); // Re-render to ensure event listeners are fresh
+                resetCardPosition(); // Bring it back to center and full opacity
+            }
+            emailBeforeModal = null; // Clear the stored email regardless, for the next interaction
+        }
+    }
+
+    // --- New: Function to dynamically update reminder options ---
+    function updateReminderOptions() {
+        const now = new Date();
+        const currentHour = now.getHours(); // Get the current hour (0-23)
+
+        const midDayOption = document.querySelector('#reminderTimeSelect option[value="mid-day"]');
+        const endOfDayOption = document.querySelector('#reminderTimeSelect option[value="end-of-day"]');
+
+        if (midDayOption) {
+            // Check if current time is past 12 PM (mid-day)
+            if (currentHour >= 12) { // 12 PM (noon) and later
+                midDayOption.textContent = 'Tomorrow Mid-day (12 PM)';
+            } else {
+                midDayOption.textContent = 'Today Mid-day (12 PM)';
+            }
+        }
+
+        if (endOfDayOption) {
+            // Check if current time is past 5 PM (end of day)
+            if (currentHour >= 17) { // 17:00 (5 PM) and later
+                endOfDayOption.textContent = 'Tomorrow End-of-Day (5 PM)';
+            } else {
+                endOfDayOption.textContent = 'Today End-of-Day (5 PM)';
+            }
+        }
+    }
+
+    function handleError(error) {
+        console.error("Mock Error:", error);
+        showSnackbar("Error: " + (error.message || "An unknown error occurred."), true);
+    }
+
+    // 2. Modified handleTaskFormSubmit to collect new fields and handle update
+    function handleTaskFormSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const taskIdToEdit = form.dataset.editingTaskId;
+        const taskMessageId = document.getElementById('taskMessageId').value; // Check if this task originated from an email
+
+        const taskDetails = {
+            id: taskIdToEdit || 'mock-task-' + Date.now(),
+            action: document.getElementById('taskAction').value,
+            dueDate: document.getElementById('taskDueDate').value,
+            dueTime: document.getElementById('taskDueTime').value,
+            assigneeEmail: document.getElementById('taskAssignee').value,
+            notes: document.getElementById('taskNotes').value,
+            messageId: document.getElementById('taskMessageId').value,
+            status: 'Pending'
+        };
+
+        if (taskIdToEdit) {
+            // Simulate update
+            const taskIndex = currentTasks.findIndex(task => task.id === taskIdToEdit);
+            if (taskIndex !== -1) {
+                currentTasks[taskIndex] = { ...currentTasks[taskIndex], ...taskDetails };
+                closeModal('createTaskModal');
+                showSnackbar('Task updated successfully!');
+                refreshTasks();
+            } else {
+                showError("Mock Task not found for update.");
+            }
+            emailBeforeModal = null; // Clear the flag, as the task was handled (edit)
+        } else {
+            // Simulate new task creation
+            currentTasks.push(taskDetails);
+            closeModal('createTaskModal');
+            showSnackbar('Task created successfully!');
+            refreshTasks();
+            // Only advance email if this new task was linked to an email.
+            if (taskMessageId) {
+                emailBeforeModal = null; // Clear the flag
+                displayNextEmail();
+            } else {
+                // If it's a standalone task creation, ensure the email card is reset to visible
+                if (currentEmailDisplayed) {
+                    renderSingleEmailCard(currentEmailDisplayed);
+                    resetCardPosition();
+                }
+                emailBeforeModal = null; // Clear the flag
+            }
+        }
+    }
+
+    // --- Initial Load ---
+    document.addEventListener('DOMContentLoaded', () => {
+        // Initial load of emails (default view)
+        preloadEmails(true); // Ensure emails are loaded and displayed initially
+
+        // Nav button click handlers
+        document.getElementById('showEmailsBtn').addEventListener('click', () => showView('emails'));
+        document.getElementById('showTasksBtn').addEventListener('click', () => showView('tasks'));
+
+        // Form submission listeners (already there, just ensure they call the correct handlers)
+        document.getElementById('taskForm').addEventListener('submit', handleTaskFormSubmit);
+        document.getElementById('replyForm').addEventListener('submit', handleReplyFormSubmit);
+        document.getElementById('generateSummaryBtn').addEventListener('click', handleGenerateSummary);
+        document.getElementById('replyLaterForm').addEventListener('submit', handleReplyLaterFormSubmit);
+        // NEW: Call the function to update reminder options when the page loads
+        updateReminderOptions();
+        document.getElementById('replyLaterModal').addEventListener('click', updateReminderOptions);
+    });
+
+    // --- Email Dashboard Functions ---
+
+    // Mock Email Data (Education-focused)
+    const mockEmails = [
+        {
+            id: 'email-1',
+            threadId: 'thread-1',
+            from: 'Sarah Chen <sarah.chen@districtschools.org>',
+            subject: 'Urgent: Absences & Substitute Coverage for 3rd Grade',
+            snippet: 'Good morning Principal [Your Last Name], Mr. Davis (3rd Grade) called in sick and we have no substitute. His class has been split amongst other teachers but classroom 302 needs attention. Please advise.',
+            date: new Date('2025-06-15T07:45:00Z').toISOString(), // June 15, 2025 7:45 AM CDT (Adjusted for current time)
+            isUnread: true,
+            hasAttachment: false,
+            fullBody: `<p>Good morning Principal [Your Last Name],</p><p>Mr. Davis (3rd Grade) called in sick this morning. Unfortunately, due to the late notice, we do not have a substitute available. His class has been temporarily split amongst Ms. Rodriguez (301) and Mr. Kim (303) for first period, but we need a longer-term solution.</p><p>Classroom 302 itself also needs a quick tidy-up after a spilled milk incident yesterday that Mr. Davis didn't get to. It's not urgent, but should be addressed when possible.</p><p>Please advise on the best course of action for the remainder of the day regarding substitute coverage for 3rd grade. I've already notified the front office.</p><p>Thanks,</p><p>Sarah Chen<br>School Secretary</p>`
+        },
+        {
+            id: 'email-2',
+            threadId: 'thread-2',
+            from: 'Parent Council <parentcouncil@community.org>',
+            subject: 'Volunteer Request: Fall Festival Planning Meeting Tonight',
+            snippet: 'Dear Principal, a quick reminder about the Fall Festival planning meeting tonight at 6 PM in the library. We\'re still looking for volunteers to help with booth setup and coordination. Your presence is highly valued!',
+            date: new Date('2025-06-14T18:00:00Z').toISOString(), // June 14, 2025 6:00 PM CDT
+            isUnread: true,
+            hasAttachment: true,
+            fullBody: `<p>Dear Principal,</p><p>This is a quick reminder about the Parent Council meeting tonight, **June 14th, at 6:00 PM in the school library**. The primary agenda item is the planning for our annual Fall Festival.</p><p>We are still actively looking for parent volunteers to help with various aspects, including booth setup, game coordination, food vendors, and promotion. Your insights and support are crucial for making this event a success for our students and community.</p><p>We will be discussing budget allocations, vendor selections, and volunteer assignments. Please come prepared with any ideas or suggestions you may have. Minutes from the last meeting are attached.</p><p>We look forward to seeing you there!</p><p>Sincerely,</p><p>The Parent Council Leadership Team</p>`
+        },
+        {
+            id: 'email-3',
+            threadId: 'thread-3',
+            from: 'District IT Support <itsupport@districtschools.org>',
+            subject: 'Mandatory Software Update: Chrome OS for Student Devices',
+            snippet: 'Attention Principals, a mandatory Chrome OS update will be rolled out to all student Chromebooks this weekend (June 15-16). Please ensure all devices are charged and connected to school Wi-Fi by Friday dismissal for seamless update. Failure to update may impact device functionality.',
+            date: new Date('2025-06-13T10:00:00Z').toISOString(), // June 13, 2025 10:00 AM CDT
+            isUnread: true,
+            hasAttachment: false,
+            fullBody: `<p>Attention Principals,</p><p>Please be advised of a mandatory Chrome OS update scheduled for all student Chromebooks across the district this weekend, **June 15-16**.</p><p>To ensure a seamless update process and minimize disruption, please ensure that all student devices are charged and connected to the school Wi-Fi network before dismissal on Friday, June 14th. Devices not connected to the network during this window may not receive the update and could experience functionality issues when school resumes.</p><p>A brief guide on verifying the update status will be shared early next week. If you encounter significant issues with devices post-update, please submit an IT ticket through the usual portal.</p><p>Thank you for your cooperation.</p><p>Sincerely,</p><p>District IT Support Team</p>`
+        },
+        {
+            id: 'email-4',
+            threadId: 'thread-4',
+            from: 'Teacher Lead Ms. Davis <m.davis@districtschools.org>',
+            subject: 'Request for Meeting: New Curriculum Implementation Concerns',
+            snippet: 'Dear Principal, I would like to request a brief meeting with you and perhaps other grade-level leads to discuss some emerging concerns regarding the implementation of the new Math curriculum. Specifically, pacing and resource allocation for differentiation. Available Tuesday or Wednesday afternoon.',
+            date: new Date('2025-06-12T14:30:00Z').toISOString(), // June 12, 2025 2:30 PM CDT
+            isUnread: true,
+            hasAttachment: false,
+            fullBody: `<p>Dear Principal,</p><p>I am writing on behalf of several teachers from my grade level to request a brief meeting with you. We would also welcome the presence of other grade-level leads or your assistant principal, if available.</p><p>Our main objective is to discuss some emerging concerns and challenges we are facing with the implementation of the new Math curriculum. Specifically, we are finding difficulties with the prescribed pacing, and there are questions regarding the allocation of resources to effectively differentiate instruction for all students, especially those needing additional support or enrichment.</p><p>We believe addressing these issues proactively will be beneficial for student learning outcomes and teacher morale. I am available to meet on Tuesday afternoon (June 17th) between 1:00 PM and 3:00 PM, or Wednesday afternoon (June 18th) between 2:00 PM and 4:00 PM.</p><p>Please let me know what time works best for you. Thank you for your time and consideration.</p><p>Sincerely,</p><p>Ms. Davis<br>5th Grade Lead Teacher</p>`
+        },
+        {
+            id: 'email-5',
+            threadId: 'thread-5',
+            from: 'District Superintendent <superintendent@districtschools.org>',
+            subject: 'Superintendent\'s Weekly Briefing: Focus on Student Wellness',
+            snippet: 'Good afternoon, Principals. This week\'s briefing focuses on student wellness initiatives. We are launching new mental health support programs next quarter. Please review the attached policy updates and prepare for discussion at next month\'s district meeting.',
+            date: new Date('2025-06-11T16:45:00Z').toISOString(), // June 11, 2025 4:45 PM CDT
+            isUnread: true,
+            hasAttachment: true,
+            fullBody: `<p>Good afternoon, Principals,</p><p>This week's Superintendent's Briefing is centered on a critical area: **Student Wellness Initiatives**. Our goal is to ensure a supportive and healthy environment for all students.</p><p>We are excited to announce the forthcoming launch of new mental health support programs, including expanded counseling services and resilience-building workshops, starting next quarter. Details regarding funding, staffing, and implementation timelines are outlined in the attached "Student Wellness Policy Updates 2025.pdf".</p><p>Please review these policy updates thoroughly. We will be dedicating a significant portion of our next monthly district meeting (July 10th) to discuss the implications and implementation strategies for these programs at the school level.</p><p>Your feedback and insights are invaluable as we roll out these vital services.</p><p>Best regards,</p><p>Dr. Eleanor Vance<br>District Superintendent</p>`
+        }
+    ];
+
+    function preloadEmails(forceDisplay = false) {
+        if (isFetching) {
+            console.log("Already fetching emails, skipping preload.");
+            return;
+        }
+        isFetching = true;
+        
+        if (emailQueue.length === 0 && !currentEmailDisplayed) {
+            emailCardContainer.innerHTML = '<p id="loadingEmails">Loading emails...</p>';
+            loadingEmails.style.display = 'block';
+        }
+
+        // Simulate fetching emails
+        setTimeout(() => {
+            isFetching = false;
+            // Add mock emails if queue is empty (simulates initial fetch)
+            if (emailQueue.length === 0) {
+                emailQueue.push(...mockEmails);
+            }
+            if (!currentEmailDisplayed || forceDisplay) {
+                displayNextEmail();
+            }
+        }, 500); // Simulate network delay
+    }
+
+    function displayNextEmail() {
+        if (emailQueue.length > 0) {
+            loadingEmails.style.display = 'none';
+            currentEmailDisplayed = emailQueue.shift();
+            renderSingleEmailCard(currentEmailDisplayed);
+            resetCardPosition(); // Ensure new card is in original position
+        } else {
+            currentEmailDisplayed = null;
+            emailCardContainer.innerHTML = '<p>No more unread or important emails at the moment! 🎉</p><p>Check back later or switch to tasks.</p>';
+        }
+    }
+
+    function renderSingleEmailCard(email) {
+      emailCardContainer.innerHTML = '';
+      const card = document.createElement('div');
+      card.className = 'email-card';
+      card.dataset.messageId = email.id;
+
+      const date = new Date(email.date).toLocaleString();
+      const attachmentIndicator = email.hasAttachment ? '<span style="font-weight: bold; color: #FF9800;">Has Attachment</span>' : '';
+
+      card.innerHTML = `
+        <div class="email-card-header">
+          <h3>${email.subject}</h3>
+          <p>From: ${email.from} - Received: ${date}</p>
+        </div>
+        <div class="email-card-snippet">
+          ${email.snippet || "No preview available."}
+        </div>
+        <div class="email-card-meta">
+            ${attachmentIndicator}
+        </div>
+        <div class="email-card-actions">
+          <button onclick="handleEmailAction('${email.id}', 'reply')">Reply Now</button>
+          <button onclick="handleEmailAction('${email.id}', 'archive')">Archive</button>
+          <button onclick="handleEmailAction('${email.id}', 'trash')">Trash</button>
+          <button onclick="handleEmailAction('${email.id}', 'replyLater')">Reply Later</button>
+          <button onclick="handleEmailAction('${email.id}', 'createTask')">Create Task</button>
+          <button onclick="handleEmailAction('${email.id}', 'summarize')">Summarize</button>
+          <button onclick="handleEmailAction('${email.id}', 'readFull')">Read Full Email</button>
+          <button onclick="handleEmailAction('${email.id}', 'unread')">Leave Unread</button>
+        </div>
+      `;
+      emailCardContainer.appendChild(card);
+
+      // Attach swipe event listeners to the newly rendered card
+      card.addEventListener('touchstart', handleTouchStart);
+      card.addEventListener('touchmove', handleTouchMove);
+      card.addEventListener('touchend', handleTouchEnd);
+    }
+
+    function handleEmailAction(messageId, action) {
+      if (!currentEmailDisplayed || currentEmailDisplayed.id !== messageId) {
+          showError("Action attempted on an outdated email card.");
+          return;
+      }
+
+      let successMessage = '';
+      let shouldAdvanceUI = false;
+
+      // Define actions that immediately process the email and advance the UI
+      const immediateActions = ['archive', 'trash', 'read', 'unread']; // 'read' from swipe right
+
+      // Define actions that open a modal for further user input
+      const modalActions = ['reply', 'replyLater', 'createTask', 'summarize', 'readFull'];
+
+      if (immediateActions.includes(action)) {
+        shouldAdvanceUI = true;
+        switch (action) {
+          case 'archive':
+            successMessage = 'Email archived.';
+            showSnackbar(successMessage, 'Undo', () => console.log('Mock Undo Archive'));
+            break;
+          case 'trash':
+            successMessage = 'Email moved to trash.';
+            showSnackbar(successMessage, 'Undo', () => console.log('Mock Undo Trash'));
+            break;
+          case 'read':
+            successMessage = 'Email marked as read.';
+            showSnackbar(successMessage);
+            break;
+          case 'unread':
+            successMessage = 'Email marked as unread.';
+            showSnackbar(successMessage);
+            break;
+        }
+
+        // Animate the card off-screen for immediate actions (archive, trash, read, unread)
+        const card = emailCardContainer.querySelector('.email-card');
+        if (card) {
+            let flingX = 0, flingY = 0;
+            if (action === 'unread') flingX = -window.innerWidth * 1.5;
+            else if (action === 'read') flingX = window.innerWidth * 1.5;
+            else if (action === 'trash') flingY = -window.innerHeight * 1.5;
+            // The 'replyLater' action is now a modal, so it's not in this list for flinging.
+            // For general action buttons like 'Archive', a default fling right is common.
+            else if (action === 'archive') flingX = window.innerWidth * 1.5; 
+            
+            card.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out';
+            card.style.transform = `translate3d(${flingX}px, ${flingY}px, 0)`;
+            card.style.opacity = '0';
+        }
+
+      } else if (modalActions.includes(action)) {
+          // For modal actions, just open the modal. The card was already faded out by openModal.
+          // `displayNextEmail()` will only be called by the modal's *submit* handler IF successful.
+          // If modal is closed without submit, `closeModal` will restore the card.
+          switch (action) {
+            case 'reply': openReplyModal(messageId); break;
+            case 'replyLater': openReplyLaterModal(messageId); break;
+            case 'createTask': openCreateTaskModal(messageId, currentEmailDisplayed.subject); break;
+            case 'summarize': openSummaryModal(messageId); break;
+            case 'readFull': openFullEmailModal(messageId); break;
+            case 'goToNext': // This action only happens in fullEmailModal, not a main card swipe/button
+                shouldAdvanceUI = true; // For 'Go to Next Email' button in modal
+                successMessage = 'Skipping to next email.';
+                break;
+          }
+      } else {
+        showError("Invalid email action.");
+        // If an invalid action, ensure card is reset just in case.
+        if (currentEmailDisplayed) { // Only attempt to restore if there's a current email
+            renderSingleEmailCard(currentEmailDisplayed);
+            resetCardPosition();
+        }
+        emailBeforeModal = null; // Clear any pending modal state
+        return; // Don't advance UI for invalid actions
+      }
+
+      if (shouldAdvanceUI) {
+          // Delay displayNextEmail slightly to allow fling animation to start
+          setTimeout(displayNextEmail, 300);
+      }
+    }
+
+    // --- Summary Modal Functions ---
+    function openSummaryModal(messageId) {
+      const emailToSummarize = currentEmailDisplayed;
+      if (!emailToSummarize || emailToSummarize.id !== messageId) {
+        showError("Email not found for summarization.");
+        return;
+      }
+      document.getElementById('summaryText').innerHTML = emailToSummarize.snippet || "No preview available.";
+      document.getElementById('generateSummaryBtn').style.display = 'block';
+      document.getElementById('generateSummaryBtn').disabled = false;
+      openModal('summaryModal');
+    }
+
+    function handleGenerateSummary() {
+      const emailToSummarize = currentEmailDisplayed;
+      if (!emailToSummarize) return;
+
+      document.getElementById('summaryText').innerHTML = 'Generating summary... (this may take a moment)';
+      document.getElementById('generateSummaryBtn').disabled = true;
+
+      setTimeout(() => {
+          const mockSummary = `AI Summary: This email requires your urgent attention. Mr. Davis (3rd Grade) is sick, no substitute is available. His class is split, but Room 302 needs attention. Advise on substitute coverage for the day.`;
+          document.getElementById('summaryText').innerHTML = mockSummary;
+          if (currentEmailDisplayed && currentEmailDisplayed.id === emailToSummarize.id) {
+              currentEmailDisplayed.snippet = mockSummary;
+              renderSingleEmailCard(currentEmailDisplayed); // Re-render card with new snippet
+          }
+          showSnackbar('Summary generated successfully!');
+          document.getElementById('generateSummaryBtn').disabled = false;
+      }, 1500); // Simulate AI processing time
+    }
+
+    // --- Reply Modal Functions ---
+    function openReplyModal(messageId) {
+      document.getElementById('replyMessageId').value = messageId;
+      document.getElementById('replyBody').value = '';
+      openModal('replyModal');
+    }
+
+    function handleReplyFormSubmit(event) {
+        event.preventDefault();
+        const messageId = document.getElementById('replyMessageId').value;
+        const replyBody = document.getElementById('replyBody').value;
+
+        // Simulate sending reply
+        console.log(`Mock Reply to ${messageId}: "${replyBody}"`);
+        closeModal('replyModal');
+        showSnackbar('Reply sent successfully!');
+        // After successful reply, advance the UI to the next email
+        emailBeforeModal = null; // Clear the flag so closeModal doesn't restore
+        displayNextEmail();
+    }
+
+    // --- New: Reply Later Modal Functions ---
+    let currentReplyLaterMessageId = null; // Store messageId for Reply Later modal
+
+    function openReplyLaterModal(messageId) {
+        currentReplyLaterMessageId = messageId;
+        document.getElementById('replyLaterMessageId').value = messageId; // Set hidden input
+        document.getElementById('reminderTimeSelect').value = ''; // Reset dropdown
+        updateReminderOptions(); // NEW: Update options just before showing the modal
+        openModal('replyLaterModal');
+    }
+
+    function handleReplyLaterFormSubmit(event) {
+        event.preventDefault();
+        const messageId = document.getElementById('replyLaterMessageId').value;
+        const reminderTimeChoice = document.getElementById('reminderTimeSelect').value;
+
+        if (!reminderTimeChoice) {
+            showError("Please select a reminder time.");
+            return;
+        }
+
+        // Simulate setting reminder
+        console.log(`Mock Reminder set for ${messageId} at ${reminderTimeChoice}`);
+        closeModal('replyLaterModal');
+        showSnackbar('Reminder set!');
+        // After successfully setting reminder, advance the UI to the next email
+        emailBeforeModal = null; // Clear the flag
+        displayNextEmail();
+    }
+
+
+    // --- Task Management Functions ---
+    // Mock Task Data (Education-focused)
+    currentTasks = [
+        {
+            id: 'task-1',
+            messageId: 'email-1',
+            action: 'Address 3rd Grade Substitute Coverage',
+            dueDate: '2025-06-15', // Today's date
+            dueTime: '09:00', // 9:00 AM
+            assigneeEmail: 'assistant.principal@example.com',
+            notes: 'Find sub for Mr. Davis. Check on split class arrangement. Tidy Room 302.',
+            status: 'Pending'
+        },
+        {
+            id: 'task-2',
+            messageId: 'email-2',
+            action: 'Prepare for Fall Festival Planning Meeting',
+            dueDate: '2025-06-14', // Yesterday's date
+            dueTime: '17:30', // 5:30 PM
+            assigneeEmail: 'principal@example.com',
+            notes: 'Review attached minutes. Brainstorm volunteer incentives. Prepare agenda points for booths/food.',
+            status: 'Done' // Marking as done for demo purposes, as meeting was yesterday
+        },
+        {
+            id: 'task-3',
+            messageId: 'email-4',
+            action: 'Meet with Ms. Davis regarding new Math curriculum',
+            dueDate: '2025-06-18', // Wednesday
+            dueTime: '15:00', // 3:00 PM
+            assigneeEmail: 'principal@example.com',
+            notes: 'Discuss pacing and differentiation resources. Consider involving curriculum coordinator.',
+            status: 'Pending'
+        },
+        {
+            id: 'task-4',
+            messageId: 'email-5',
+            action: 'Review Superintendent\'s Briefing: Student Wellness',
+            dueDate: '2025-07-09', // Day before district meeting
+            dueTime: '16:00', // 4:00 PM
+            assigneeEmail: 'principal@example.com',
+            notes: 'Read attached policy updates. Prepare questions/feedback for July 10th district meeting.',
+            status: 'Pending'
+        },
+        {
+            id: 'task-5',
+            messageId: 'email-3',
+            action: 'Notify staff about Chrome OS update for student Chromebooks',
+            dueDate: '2025-06-14', // Yesterday
+            dueTime: '14:00', // 2:00 PM
+            assigneeEmail: 'it.coordinator@example.com',
+            notes: 'Send school-wide announcement. Remind teachers to have students charge devices.',
+            status: 'Done' // Marking as done as the update was this weekend
+        }
+    ];
+
+    function openCreateTaskModal(messageId = '', subject = '', taskId = '', action = '', rawDueDate = '', rawDueTime = '', assigneeEmail = '', notes = '') {
+        const modal = document.getElementById('createTaskModal');
+        const form = document.getElementById('taskForm');
+
+        form.reset(); // Clear form fields
+        form.removeAttribute('data-editing-taskId'); // Clear any previous editing ID
+        document.getElementById('taskMessageId').value = ''; // Clear message ID by default
+
+        // Set modal title and button text based on whether it's an edit or create operation
+        if (taskId) {
+            modal.querySelector('h2').innerText = 'Edit Task';
+            modal.querySelector('button[type="submit"]').innerText = 'Update Task';
+            form.dataset.editingTaskId = taskId; // Store taskId for update
+
+            // Pre-fill form for editing
+            document.getElementById('taskAction').value = action;
+            document.getElementById('taskDueDate').value = rawDueDate;
+            document.getElementById('taskDueTime').value = rawDueTime;
+            document.getElementById('taskAssignee').value = assigneeEmail;
+            document.getElementById('taskNotes').value = notes;
+            document.getElementById('taskMessageId').value = messageId;
+        } else {
+            modal.querySelector('h2').innerText = 'Create New Task';
+            modal.querySelector('button[type="submit"]').innerText = 'Save Task';
+
+            // Pre-fill for creation (if from an email)
+            document.getElementById('taskMessageId').value = messageId;
+            document.getElementById('taskAction').value = subject ? `Follow up on: ${subject}` : '';
+            document.getElementById('taskDueDate').value = '';
+            document.getElementById('taskDueTime').value = '';
+            document.getElementById('taskAssignee').value = '';
+            document.getElementById('taskNotes').value = '';
+        }
+
+        openModal('createTaskModal');
+    }
+
+    function refreshTasks() {
+        // Show loading message initially
+        taskCardsContainer.innerHTML = '<p id="loadingTasks" style="text-align: center; padding: 20px;">Loading tasks...</p>';
+        const existingLoadingP = document.getElementById('loadingTasks');
+        if (existingLoadingP) existingLoadingP.style.display = 'block';
+
+        setTimeout(() => {
+            displayMockTasksGrid(currentTasks);
+        }, 500); // Simulate loading delay
+    }
+
+    // New function to display mock tasks
+    function displayMockTasksGrid(tasks) {
+        let tasksHtml = '';
+        const pendingTasks = tasks.filter(task => task.status !== 'Done');
+
+        if (pendingTasks.length === 0) {
+            tasksHtml = '<p id="loadingTasks" style="text-align: center; padding: 20px;">No pending tasks found.</p>';
+        } else {
+            pendingTasks.forEach(task => {
+                let dueDateDisplay = 'N/A';
+                let dueTimeDisplay = '';
+                let rawDateOnly = task.dueDate || '';
+                let rawTimeOnly = task.dueTime || '';
+
+                if (task.dueDate) {
+                    try {
+                        const dueDateObj = new Date(`${task.dueDate}T${task.dueTime || '00:00'}`);
+                        // Adjust for current timezone (Yukon, Oklahoma, US - CDT)
+                        const optionsDate = { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'America/Chicago' };
+                        const optionsTime = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'America/Chicago' };
+
+                        dueDateDisplay = dueDateObj.toLocaleDateString('en-US', optionsDate);
+                        dueTimeDisplay = dueDateObj.toLocaleTimeString('en-US', optionsTime);
+                    } catch (e) {
+                        console.error(`Invalid due date/time for task ${task.id}:`, e);
+                        dueDateDisplay = 'Invalid Date';
+                        dueTimeDisplay = '';
+                    }
+                }
+
+                tasksHtml += `
+                    <div class="task-card"
+                         data-task-id="${task.id}"
+                         data-raw-duedate="${rawDateOnly}"
+                         data-raw-duetime="${rawTimeOnly}"
+                         data-raw-notes="${task.notes}"
+                         data-message-id="${task.messageId}">
+                        <div class="task-card-header">
+                            <h3>${task.action}</h3>
+                        </div>
+                        <div class="task-card-details">
+                            <p><strong>Assigned To:</strong> ${task.assigneeEmail}</p>
+                            <p><strong>Due Date:</strong> ${dueDateDisplay}</p>
+                            ${dueTimeDisplay ? `<p><strong>Due Time:</strong> ${dueTimeDisplay}</p>` : ''}
+                            <p><strong>Status:</strong> ${task.status}</p>
+                            ${task.notes ? `<p><strong>Notes:</strong> ${task.notes}</p>` : ''}
+                        </div>
+                        <div class="task-card-actions">
+                            <button class="done">Mark Done</button>
+                            <button class="edit">Edit</button>
+                            ${task.assigneeEmail && task.assigneeEmail !== 'principal@example.com' ? `<button class="email">Email Assignee</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        taskCardsContainer.innerHTML = tasksHtml;
+        attachTaskButtonListeners();
+    }
+
+    function attachTaskButtonListeners() {
+        document.querySelectorAll('.task-card-actions .done').forEach(button => {
+            button.onclick = function() {
+                const taskId = this.closest('.task-card').dataset.taskId;
+                updateTaskStatus(taskId, 'Done');
+            };
+        });
+
+        document.querySelectorAll('.task-card-actions .edit').forEach(button => {
+            button.onclick = function() {
+                const card = this.closest('.task-card');
+                const taskId = card.dataset.taskId;
+                const task = currentTasks.find(t => t.id === taskId);
+                if (task) {
+                    openCreateTaskModal(task.messageId, task.subject, task.id, task.action, task.dueDate, task.dueTime, task.assigneeEmail, task.notes);
+                } else {
+                    showError("Mock Task not found for editing.");
+                }
+            };
+        });
+
+        document.querySelectorAll('.task-card-actions .email').forEach(button => {
+            button.onclick = function() {
+                const taskId = this.closest('.task-card').dataset.taskId;
+                emailAssignee(taskId);
+            };
+        });
+    }
+
+    function updateTaskStatus(taskId, status) {
+        const taskIndex = currentTasks.findIndex(task => task.id === taskId);
+        if (taskIndex !== -1) {
+            currentTasks[taskIndex].status = status;
+            showSnackbar(`Task marked as ${status}!`);
+            refreshTasks();
+        } else {
+            showError("Mock Task not found for status update.");
+        }
+    }
+
+    function emailAssignee(taskId) {
+        const task = currentTasks.find(t => t.id === taskId);
+        if (task && task.assigneeEmail) {
+            showSnackbar(`Simulating email sent to ${task.assigneeEmail} for task "${task.action}"!`);
+        } else {
+            showError("No assignee found for this task or task not found.");
+        }
+    }
+
+    // --- Full Email Content Functions ---
+    function openFullEmailModal(messageId) {
+        currentFullEmailMessageId = messageId;
+        const fullEmailContentDiv = document.getElementById('fullEmailContent');
+        fullEmailContentDiv.innerHTML = '<p>Loading full email...</p>';
+        fullEmailContentDiv.classList.remove('raw-html');
+        openModal('fullEmailModal');
+
+        fullEmailActionsDiv.innerHTML = `
+            <button onclick="handleModalEmailAction('${messageId}', 'reply')">Reply Now</button>
+            <button onclick="handleModalEmailAction('${messageId}', 'archive')">Archive</button>
+            <button onclick="handleModalEmailAction('${messageId}', 'trash')">Trash</button>
+            <button onclick="handleModalEmailAction('${messageId}', 'replyLater')">Reply Later</button>
+            <button onclick="handleModalEmailAction('${messageId}', 'createTask')">Create Task</button>
+            <button onclick="handleModalEmailAction('${messageId}', 'summarize')">Summarize</button>
+            <button onclick="handleModalEmailAction('${messageId}', 'unread')">Leave Unread</button>
+            <button onclick="handleModalEmailAction('${messageId}', 'goToNext')">Go to Next Email</button>
+        `;
+
+        const email = mockEmails.find(e => e.id === messageId);
+        if (email) {
+            setTimeout(() => {
+                fullEmailContentDiv.innerHTML = email.fullBody;
+                showSnackbar('Full email loaded.');
+            }, 500); // Simulate loading time
+        } else {
+            fullEmailContentDiv.textContent = `Error: Mock email with ID ${messageId} not found.`;
+            showError("Mock email not found for full view.");
+        }
+    }
+
+    function handleModalEmailAction(messageId, action) {
+        if (!messageId) {
+            showError("No email currently loaded in full view modal for action.");
+            closeModal('fullEmailModal');
+            return;
+        }
+
+        let successMessage = '';
+
+        switch (action) {
+            case 'archive':
+                successMessage = 'Email archived.';
+                showSnackbar(successMessage, 'Undo', () => console.log('Mock Undo Archive from Modal'));
+                break;
+            case 'trash':
+                successMessage = 'Email moved to trash.';
+                showSnackbar(successMessage, 'Undo', () => console.log('Mock Undo Trash from Modal'));
+                break;
+            case 'unread':
+                successMessage = 'Email marked as unread.';
+                showSnackbar(successMessage);
+                break;
+            case 'reply':
+                closeModal('fullEmailModal');
+                openReplyModal(messageId);
+                return;
+            case 'replyLater':
+                closeModal('fullEmailModal');
+                openReplyLaterModal(messageId);
+                return;
+            case 'createTask':
+                closeModal('fullEmailModal');
+                // Find the original email to pass its subject to the task modal
+                const originalEmail = mockEmails.find(e => e.id === messageId);
+                openCreateTaskModal(messageId, originalEmail ? originalEmail.subject : '');
+                return;
+            case 'summarize':
+                closeModal('fullEmailModal');
+                openSummaryModal(messageId);
+                return;
+            case 'goToNext':
+                showSnackbar('Skipping to next email.');
+                break;
+            default:
+                showError("Invalid modal action.");
+                return;
+        }
+
+        closeModal('fullEmailModal');
+        displayNextEmail();
+    }
+
+
+    // --- Swipe Functionality ---
+    function handleTouchStart(e) {
+        if (e.touches.length === 1) {
+            const touch = e.touches[0];
+            initialTouchX = touch.clientX;
+            initialTouchY = touch.clientY;
+            const card = e.currentTarget;
+            card.classList.add('dragging');
+            isDragging = true;
+            isSwipeDetected = false;
+            // REMOVED: dominantAxis = null; // No longer needed
+            currentTranslateX = 0;
+            currentTranslateY = 0;
+
+            hideAllSwipeHints();
+        }
+    }
+
+    function handleTouchMove(e) {
+        if (!isDragging || e.touches.length !== 1) return;
+
+        const touch = e.touches[0];
+        let deltaX = touch.clientX - initialTouchX;
+        let deltaY = touch.clientY - initialTouchY;
+        const card = e.currentTarget;
+
+        // NO AXIS LOCKING: Allow movement in both X and Y
+        currentTranslateX = deltaX;
+        currentTranslateY = deltaY;
+
+        card.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
+
+        const absDelta = Math.max(Math.abs(deltaX), Math.abs(deltaY)); // Use max for hint opacity calculation
+        const opacityStrength = Math.min(1, Math.max(0, (absDelta - SWIPE_OPACITY_START_THRESHOLD) / SWIPE_OPACITY_END_THRESHOLD));
+        card.style.opacity = 1 - (opacityStrength * 0.5);
+
+        hideAllSwipeHints();
+        if (absDelta > SWIPE_OPACITY_START_THRESHOLD) {
+            // Show hint based on current primary direction, even if not strictly locked
+            if (Math.abs(deltaX) > Math.abs(deltaY)) { // More horizontal movement
+                if (deltaX < 0) swipeHintLeft.classList.add('show');
+                else swipeHintRight.classList.add('show');
+            } else { // More vertical movement
+                if (deltaY < 0) swipeHintUp.classList.add('show');
+                else swipeHintDown.classList.add('show');
+            }
+        }
+    }
+
+    function handleTouchEnd(e) {
+        if (!isDragging) return;
+
+        isDragging = false;
+        const card = e.currentTarget;
+        card.classList.remove('dragging');
+        hideAllSwipeHints();
+
+        const absDeltaX = Math.abs(currentTranslateX);
+        const absDeltaY = Math.abs(currentTranslateY);
+
+        let actionTriggered = false;
+        let triggeredAction = null;
+
+        // Determine which action would be triggered based on swipe distance and direction
+        if (absDeltaX >= SWIPE_THRESHOLD || absDeltaY >= SWIPE_THRESHOLD) {
+            if (absDeltaX > absDeltaY) { // Horizontal movement is more significant
+                if (currentTranslateX < 0) { triggeredAction = 'unread'; }
+                else { triggeredAction = 'read'; }
+            } else { // Vertical movement is more significant (or equal)
+                if (currentTranslateY < 0) { triggeredAction = 'trash'; }
+                else { triggeredAction = 'replyLater'; } // This will now open a modal
+            }
+
+            if (triggeredAction) {
+                // Call handleEmailAction, which now determines if it should fling or open a modal
+                handleEmailAction(card.dataset.messageId, triggeredAction);
+                actionTriggered = true;
+            }
+        }
+
+        if (!actionTriggered) {
+            // If no action was triggered (e.g., swipe not far enough), just reset the card position.
+            // This also covers cases where a modal-opening action was triggered, but the fling
+            // is handled by `handleEmailAction` or `openModal`.
+            resetCardPosition();
+        }
+        // No explicit fling logic here anymore; it's handled by handleEmailAction if applicable.
+        
+        initialTouchX = 0;
+        initialTouchY = 0;
+        currentTranslateX = 0;
+        currentTranslateY = 0;
+    }
+
+    function resetCardPosition() {
+        const card = emailCardContainer.querySelector('.email-card');
+        if (card) {
+            card.style.transform = 'translate3d(0, 0, 0)';
+            card.style.opacity = '1';
+        }
+    }
+
+    function hideAllSwipeHints() {
+        swipeHintLeft.classList.remove('show');
+        swipeHintRight.classList.remove('show');
+        swipeHintUp.classList.remove('show');
+        swipeHintDown.classList.remove('show');
+    }
+
+
+    // --- Error Handling ---
+    function showError(error) {
+      console.error('Mock Error:', error);
+      showSnackbar(`Error: ${error.message || 'An unknown error occurred.'}`);
+    }
+
+    // Mock google.script.run for local testing purposes
+    // In a real deployment, these would be provided by Apps Script
+    if (typeof google === 'undefined' || typeof google.script === 'undefined') {
+        window.google = {
+            script: {
+                run: {
+                    withSuccessHandler: function(callback) {
+                        return {
+                            withFailureHandler: function(errorCallback) {
+                                return {
+                                    // Mock implementations
+                                    fetchEmails: function() { console.log('Mock fetchEmails called'); callback([]); },
+                                    archiveEmail: function(id) { console.log('Mock archiveEmail called for', id); callback(); },
+                                    trashEmail: function(id) { console.log('Mock trashEmail called for', id); callback(); },
+                                    markAsRead: function(id) { console.log('Mock markAsRead called for', id); callback(); },
+                                    markAsUnread: function(id) { console.log('Mock markAsUnread called for', id); callback(); },
+                                    sendReply: function(id, body) { console.log('Mock sendReply called for', id); callback(); },
+                                    logReminder: function(id, time) { console.log('Mock logReminder called for', id, time); callback(); },
+                                    saveTask: function(task) { console.log('Mock saveTask called', task); callback('mock-task-' + Date.now()); },
+                                    updateTask: function(id, updates) { console.log('Mock updateTask called for', id, updates); callback(); },
+                                    listTasks: function() { console.log('Mock listTasks called'); callback(''); }, // Handled by displayMockTasksGrid
+                                    emailTaskAssignee: function(id) { console.log('Mock emailTaskAssignee called for', id); callback(); },
+                                    getFullEmailContent: function(id) { 
+                                        const email = mockEmails.find(e => e.id === id);
+                                        callback(email ? email.fullBody : 'Mock Full Email Content not found.'); 
+                                    },
+                                    callAISummarize: function(id, body) { console.log('Mock callAISummarize called for', id); callback('Mock AI Summary for ' + id + ': ' + body.substring(0, 50) + '...'); }
+                                };
+                            }
+                        };
+                    }
+                }
+            }
+        };
+    }
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mustang Activity Hub - MVP Demo</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* --- CORE STYLES FROM ORIGINAL --- */
+    html { overflow-y: auto; }
+    body { font-family: 'Roboto', Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; min-height: 100vh; }
+    
+    /* Navigation Bar / Logo Area */
+    .global-logo {
+      position: fixed; top: 0; width: 100%; background: white; z-index: 1000;
+      padding: 10px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); height: 60px;
+      display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;
+    }
+    .brand-title { font-weight: 700; font-size: 1.2rem; color: #0056b3; display: flex; align-items: center; gap: 10px; }
+    
+    /* DEMO SPECIFIC: Role Switcher */
+    .demo-role-switcher {
+      display: flex; align-items: center; gap: 10px; background: #eee; padding: 5px 10px; border-radius: 20px;
+    }
+    .switch-label { font-size: 0.9em; font-weight: 500; color: #555; }
+    .toggle-switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 20px; }
+    .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .slider { background-color: #0056b3; }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    /* Layout */
+    .container { margin-top: 80px; padding: 20px; max-width: 1000px; margin-left: auto; margin-right: auto; }
+    .page { display: none; animation: fadeIn 0.3s; }
+    .active-page { display: block; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* UI Components */
+    .section { margin-bottom: 25px; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    h2, h3, h4 { color: #0056b3; margin-top: 0; }
+    
+    /* Inputs & Buttons */
+    button {
+      padding: 10px 18px; background-color: #007BFF; color: white; border: none; border-radius: 5px;
+      cursor: pointer; margin: 5px; font-size: 1em; transition: background-color 0.2s ease, transform 0.1s;
+    }
+    button:hover { background-color: #0056b3; }
+    button:active { transform: scale(0.98); }
+    button:disabled { background-color: #cccccc; cursor: not-allowed; transform: none; }
+    
+    .nav-button { display: block; width: 100%; max-width: 350px; margin: 10px auto; padding: 15px; font-size: 1.1em; text-align: left; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .nav-button .fas { margin-right: 12px; width: 20px; text-align: center; }
+    .back-button { background-color: #6c757d; margin-bottom: 15px; }
+    .back-button:hover { background-color: #5a6268; }
+    .delete-btn { background-color: #dc3545; }
+    .delete-btn:hover { background-color: #c82333; }
+
+    select, input[type="text"], input[type="date"], input[type="number"], textarea {
+      width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 1em;
+    }
+
+    /* Lists */
+    ul { list-style-type: none; padding: 0; }
+    li { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+    
+    /* Status Messages */
+    .status-message { padding: 12px; margin: 15px 0; border-radius: 5px; display: none; text-align: center; font-weight: 500; }
+    .status-message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .status-message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    .status-message.info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+
+    /* Tables */
+    .grade-report-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9em; }
+    .grade-report-table th, .grade-report-table td { border: 1px solid #dee2e6; padding: 10px; text-align: left; }
+    .grade-report-table th { background-color: #e9ecef; position: sticky; top: 60px; }
+    .failing-grade-row { background-color: #fff5f5; border-left: 4px solid #dc3545; }
+
+    /* Eligibility Cards */
+    .eligibility-student-card { border: 1px solid #e0e0e0; padding: 15px; margin-bottom: 15px; border-radius: 6px; background-color: #fff; }
+    .eligibility-status-eligible { border-left: 5px solid #28a745; background-color: #f0fff4; }
+    .eligibility-status-ineligible { border-left: 5px solid #dc3545; background-color: #fff5f5; }
+    .eligibility-status-text { font-weight: bold; margin-left: 10px; }
+
+    /* Loaders */
+    #globalLoader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 2000; display: flex; justify-content: center; align-items: center; }
+    .spinner-content { text-align: center; color: #0056b3; }
+    .fa-spin { font-size: 2em; }
+
+    /* Helper Utility Classes */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <div class="global-logo">
+    <div class="brand-title">
+      <i class="fas fa-horse-head"></i> Mustang Activity Hub <span style="font-size:0.7em; opacity:0.6; font-weight:400;">(MVP Demo)</span>
+    </div>
+    <div class="demo-role-switcher">
+      <span class="switch-label">View: Coach</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="roleToggle" onchange="APP.toggleRole()">
+        <span class="slider"></span>
+      </label>
+      <span class="switch-label">Admin</span>
+    </div>
+  </div>
+
+  <div id="globalLoader" class="hidden">
+    <div class="spinner-content">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p id="globalLoaderText">Processing...</p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div id="mainMenuPage" class="page active-page">
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h2>Activity Dashboard</h2>
+        <p>Welcome, <strong id="userEmailDisplay">coach@mustangps.org</strong>!</p>
+        <div id="roleBadge" style="display:inline-block; padding: 4px 12px; border-radius:12px; background:#007bff; color:white; font-size:0.8em;">Coach Access</div>
+      </div>
+      
+      <button class="nav-button" onclick="APP.navigateTo('manageStudentListsHubPage')">
+        <i class="fas fa-users"></i> Manage Student Lists
+      </button>
+      <button class="nav-button" onclick="APP.navigateTo('scheduleEventPage')">
+        <i class="fas fa-calendar-plus"></i> Submit Roster & Schedule Event
+      </button>
+      <button class="nav-button" onclick="APP.navigateTo('viewEligibilityPage')">
+        <i class="fas fa-clipboard-check"></i> View Eligibility Report
+      </button>
+      <button class="nav-button" onclick="APP.navigateTo('markAttendancePage')">
+        <i class="fas fa-clipboard-list"></i> Mark Event Attendance
+      </button>
+      <button class="nav-button" onclick="APP.navigateTo('activityApprovalPage')">
+        <i class="fas fa-paper-plane"></i> Submit Activity Request
+      </button>
+
+      <div id="adminButtons" class="hidden" style="margin-top: 20px; border-top: 2px dashed #ccc; padding-top: 20px;">
+        <h4 style="text-align:center; color:#444;">Admin Tools</h4>
+        <button class="nav-button" style="background-color:#6f42c1;" onclick="APP.navigateTo('adminApprovalPage')">
+          <i class="fas fa-check-double"></i> Approve Activity Requests
+        </button>
+        <button class="nav-button" style="background-color:#dc3545;" onclick="APP.navigateTo('superAdminPage')">
+          <i class="fas fa-database"></i> SuperAdmin: All Submissions
+        </button>
+        <button class="nav-button" style="background-color:#fd7e14;" onclick="APP.navigateTo('adminSubmitAttendancePage')">
+          <i class="fas fa-tools"></i> Admin Roster Tools
+        </button>
+      </div>
+    </div>
+
+    <div id="manageStudentListsHubPage" class="page">
+      <button class="back-button" onclick="APP.navigateTo('mainMenuPage')">← Back</button>
+      <h2>Manage Student Lists</h2>
+      <div class="section">
+        <button class="nav-button" onclick="APP.navigateTo('createListPage')"><i class="fas fa-plus"></i> Create New List</button>
+        <button class="nav-button" onclick="APP.navigateTo('editListPage')"><i class="fas fa-edit"></i> Edit Existing List</button>
+      </div>
+    </div>
+
+    <div id="createListPage" class="page">
+      <button class="back-button" onclick="APP.navigateTo('manageStudentListsHubPage')">← Back</button>
+      <h2>Create New List</h2>
+      <div class="section">
+        <label>List Name:</label>
+        <input type="text" id="newListName" placeholder="e.g., Varsity Football 2026">
+        
+        <label>Add Students (Search):</label>
+        <div style="display:flex; gap:10px;">
+          <input type="text" id="studentSearchInput" placeholder="Type a name (e.g., John)...">
+          <button onclick="APP.searchStudent()" style="margin-top:0; height: 42px;">Search</button>
+        </div>
+        
+        <div id="searchResults" style="max-height: 150px; overflow-y: auto; border: 1px solid #eee; margin-bottom: 10px; display:none;"></div>
+
+        <h4>Students in List:</h4>
+        <ul id="currentListUl" style="background:#f9f9f9; padding:10px; min-height: 50px;">
+          <li style="color:#777; justify-content: center;">No students added yet.</li>
+        </ul>
+
+        <button onclick="APP.saveList()" style="width:100%; background-color:#28a745;">Save List</button>
+      </div>
+    </div>
+
+    <div id="scheduleEventPage" class="page">
+      <button class="back-button" onclick="APP.navigateTo('mainMenuPage')">← Back</button>
+      <h2>Schedule Event / Submit Roster</h2>
+      <div class="section">
+        <label>Select Base Roster:</label>
+        <select id="eventBaseListSelect">
+          <option value="">-- Select a List --</option>
+        </select>
+
+        <div class="grid-2">
+          <div>
+            <label>Event Name:</label>
+            <input type="text" id="schedEventName" placeholder="e.g., Game vs. Central">
+          </div>
+          <div>
+            <label>Date:</label>
+            <input type="date" id="schedEventDate">
+          </div>
+        </div>
+
+        <label>Location:</label>
+        <input type="text" id="schedEventLoc" placeholder="e.g., Main Stadium">
+
+        <button onclick="APP.submitEvent()" style="width:100%; margin-top:10px;">Submit Event</button>
+        <div id="eventStatus" class="status-message"></div>
+      </div>
+    </div>
+
+    <div id="markAttendancePage" class="page">
+      <button class="back-button" onclick="APP.navigateTo('mainMenuPage')">← Back</button>
+      <h2>Mark Attendance</h2>
+      <div class="section">
+        <label>Select Event:</label>
+        <select id="attEventSelect" onchange="APP.loadAttendanceRoster()">
+          <option value="">-- Loading Events --</option>
+        </select>
+
+        <div id="attRosterArea" class="hidden" style="margin-top:20px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+            <strong>Student Name</strong>
+            <span>Status</span>
+          </div>
+          <div id="attStudentList"></div>
+          <button onclick="APP.saveAttendance()" style="width:100%; margin-top:20px; background:#28a745;">Save Attendance</button>
+        </div>
+        <div id="attStatus" class="status-message"></div>
+      </div>
+    </div>
+
+    <div id="activityApprovalPage" class="page">
+        <button class="back-button" onclick="APP.navigateTo('mainMenuPage')">← Back</button>
+        <h2>Submit Activity Request</h2>
+        <div class="section">
+            <label>Event Name:</label>
+            <input type="text" id="reqEventName" placeholder="e.g., Debate Tournament">
+            <div class="grid-2">
+                <div><label>Start Date:</label><input type="date" id="reqStartDate"></div>
+                <div><label>Location:</label><input type="text" id="reqLoc"></div>
+            </div>
+            <label>Trip Type:</label>
+            <select id="reqType">
+                <option>Day Trip</option>
+                <option>Overnight</option>
+            </select>
+            <button onclick="APP.submitRequest()" style="width:100%;">Submit for Approval</button>
+            <div id="reqStatus" class="status-message"></div>
+        </div>
+    </div>
+
+    <div id="superAdminPage" class="page">
+        <button class="back-button" onclick="APP.navigateTo('mainMenuPage')">← Back</button>
+        <h2>SuperAdmin: All Submissions</h2>
+        <div class="section">
+            <div style="overflow-x:auto;">
+                <table class="grade-report-table" id="superAdminTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Event</th>
+                            <th>User</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminApprovalPage" class="page">
+        <button class="back-button" onclick="APP.navigateTo('mainMenuPage')">← Back</button>
+        <h2>Pending Approvals</h2>
+        <div class="section">
+            <div id="pending approvalsList">
+                <p style="text-align:center; color:#777;">No pending approvals.</p>
+            </div>
+        </div>
+    </div>
+
+  </div> <script>
+/**
+ * MOCK DATABASE & SERVER
+ * This simulates the Google Apps Script backend.
+ */
+const MOCK_DB = {
+    currentUser: "coach@mustangps.org",
+    isAdmin: false,
+    students: [
+        {id: "1001", name: "John Doe"}, {id: "1002", name: "Jane Smith"},
+        {id: "1003", name: "Michael Johnson"}, {id: "1004", name: "Emily Davis"},
+        {id: "1005", name: "Chris Brown"}, {id: "1006", name: "Sarah Wilson"},
+        {id: "1007", name: "David Lee"}, {id: "1008", name: "Emma Taylor"},
+        {id: "1009", name: "James Anderson"}, {id: "1010", name: "Olivia Martinez"}
+    ],
+    lists: [
+        { listName: "Varsity Football", coachEmail: "coach@mustangps.org", studentIds: ["1001", "1003", "1005", "1007"] },
+        { listName: "Chess Club", coachEmail: "coach@mustangps.org", studentIds: ["1002", "1004", "1006"] }
+    ],
+    events: [
+        { id: "EVT-001", name: "Varsity Football vs. Central", date: "2023-10-27", listName: "Varsity Football", coachEmail: "coach@mustangps.org" }
+    ],
+    attendance: {}, // Map eventId -> studentId -> status
+    requests: [
+        { id: "REQ-101", eventName: "State Championship", submitter: "coach@mustangps.org", date: "2023-11-15", status: "Pending", location: "Tulsa, OK" },
+        { id: "REQ-102", eventName: "Science Fair", submitter: "teacher@mustangps.org", date: "2023-12-01", status: "Approved", location: "Cafeteria" }
+    ]
+};
+
+// Simulation of google.script.run
+const mockServer = {
+    getAppInitData: () => {
+        return {
+            email: MOCK_DB.currentUser,
+            permissions: {
+                isSuperAdmin: MOCK_DB.isAdmin,
+                isActivityAdmin: MOCK_DB.isAdmin,
+                isEligibilityAdmin: MOCK_DB.isAdmin,
+                isPdAdmin: MOCK_DB.isAdmin
+            }
+        };
+    },
+    getMasterStudentList: () => MOCK_DB.students,
+    getCoachLists: () => {
+        // Return object { "ListName": ["Name1", "Name2"] }
+        const result = {};
+        MOCK_DB.lists.filter(l => l.coachEmail === MOCK_DB.currentUser).forEach(l => {
+            result[l.listName] = l.studentIds.map(id => MOCK_DB.students.find(s => s.id === id).name);
+        });
+        return result;
+    },
+    saveCoachList: (name, ids, oldName) => {
+        if(oldName) {
+            // Edit existing (simple filter out old)
+            MOCK_DB.lists = MOCK_DB.lists.filter(l => l.listName !== oldName);
+        }
+        MOCK_DB.lists.push({ listName: name, coachEmail: MOCK_DB.currentUser, studentIds: ids });
+        return { success: true, message: "List saved successfully!", listName: name };
+    },
+    scheduleNewEvent: (data) => {
+        const newId = "EVT-" + Math.floor(Math.random() * 10000);
+        MOCK_DB.events.push({
+            id: newId,
+            name: data.eventName,
+            date: data.startDate,
+            listName: data.listName,
+            coachEmail: MOCK_DB.currentUser
+        });
+        return { success: true, message: `Event scheduled (ID: ${newId})` };
+    },
+    getScheduledEventsForAttendance: () => {
+        // Map to format expected by frontend
+        return MOCK_DB.events.filter(e => e.coachEmail === MOCK_DB.currentUser).map(e => {
+            const list = MOCK_DB.lists.find(l => l.listName === e.listName);
+            const students = list ? list.studentIds.map(id => {
+                const s = MOCK_DB.students.find(st => st.id === id);
+                return { Student_ID: s.id, Student_Name: s.name };
+            }) : [];
+            
+            return {
+                Event_ID: e.id,
+                Event_Name: e.name,
+                Event_Start_Date: e.date,
+                Event_End_Date: e.date,
+                Students_JSON: students
+            };
+        });
+    },
+    saveAttendance: (eventId, name, date, list, data) => {
+        MOCK_DB.attendance[eventId] = data;
+        return { success: true, message: "Attendance saved!" };
+    },
+    submitActivityApproval: (data) => {
+        const id = "REQ-" + Math.floor(Math.random() * 1000);
+        MOCK_DB.requests.push({
+            id: id,
+            eventName: data.eventName,
+            submitter: MOCK_DB.currentUser,
+            date: data.startDate,
+            status: "Pending",
+            location: data.location
+        });
+        return { success: true, message: "Request submitted for approval." };
+    },
+    getAllSubmissionsForSuperAdmin: () => {
+        // Map to expected format
+        return { data: MOCK_DB.requests.map(r => ({
+            SubmissionID: r.id,
+            EventName: r.eventName,
+            SubmitterName: "John Doe", // Mock name
+            SubmitterEmail: r.submitter,
+            "Approved?": r.status,
+            StartDate: r.date
+        }))};
+    },
+    getSubmissionsForAdmin: () => {
+        // Return pending requests
+        return { data: MOCK_DB.requests.filter(r => r.status === "Pending").map(r => ({
+            SubmissionID: r.id,
+            EventName: r.eventName,
+            SubmitterName: "John Doe",
+            SubmitterEmail: r.submitter,
+            StartDate: r.date,
+            "Approved?": "Pending",
+            GroupProgram: "Athletics"
+        }))};
+    },
+    processAdminApproval: (id, status) => {
+        const req = MOCK_DB.requests.find(r => r.id === id);
+        if(req) req.status = status;
+        return { success: true, message: `Request ${status === 'Yes' ? 'Approved' : 'Denied'}` };
+    }
+};
+
+/**
+ * CLIENT-SIDE APP LOGIC
+ */
+const APP = {
+    // Navigation
+    navigateTo: (pageId) => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+        document.getElementById(pageId).classList.add('active-page');
+        window.scrollTo(0,0);
+        APP.onPageLoad(pageId);
+    },
+
+    // Role Toggling
+    toggleRole: () => {
+        const isChecked = document.getElementById('roleToggle').checked;
+        MOCK_DB.isAdmin = isChecked;
+        MOCK_DB.currentUser = isChecked ? "admin@mustangps.org" : "coach@mustangps.org";
+        
+        // Show loader for effect
+        APP.showLoader("Switching Roles...");
+        setTimeout(() => {
+            APP.init(); // Re-initialize with new permissions
+            APP.hideLoader();
+            APP.navigateTo('mainMenuPage');
+        }, 600);
+    },
+
+    // Initialization
+    init: () => {
+        const data = mockServer.getAppInitData();
+        document.getElementById('userEmailDisplay').textContent = data.email;
+        
+        const badge = document.getElementById('roleBadge');
+        if(data.permissions.isSuperAdmin) {
+            document.getElementById('adminButtons').classList.remove('hidden');
+            badge.style.background = "#dc3545";
+            badge.textContent = "Admin Access";
+        } else {
+            document.getElementById('adminButtons').classList.add('hidden');
+            badge.style.background = "#007bff";
+            badge.textContent = "Coach Access";
+        }
+    },
+
+    // Page Specific Loaders
+    onPageLoad: (pageId) => {
+        if(pageId === 'manageStudentListsHubPage') {
+            // Nothing needed immediately
+        } else if (pageId === 'scheduleEventPage') {
+            APP.populateListDropdown('eventBaseListSelect');
+        } else if (pageId === 'markAttendancePage') {
+            APP.loadEventsForAttendance();
+        } else if (pageId === 'superAdminPage') {
+            APP.loadSuperAdminTable();
+        } else if (pageId === 'adminApprovalPage') {
+            APP.loadAdminPending();
+        }
+    },
+
+    // --- List Management ---
+    newListStudents: [],
+    searchStudent: () => {
+        const term = document.getElementById('studentSearchInput').value.toLowerCase();
+        const resultsDiv = document.getElementById('searchResults');
+        resultsDiv.innerHTML = '';
+        resultsDiv.style.display = 'block';
+        
+        const matches = MOCK_DB.students.filter(s => s.name.toLowerCase().includes(term));
+        if(matches.length === 0) {
+            resultsDiv.innerHTML = '<div style="padding:10px;">No students found</div>';
+            return;
+        }
+
+        matches.forEach(s => {
+            const div = document.createElement('div');
+            div.textContent = `${s.name} (ID: ${s.id})`;
+            div.style.padding = '8px';
+            div.style.cursor = 'pointer';
+            div.style.borderBottom = '1px solid #eee';
+            div.onmouseover = () => div.style.background = '#f0f0f0';
+            div.onmouseout = () => div.style.background = 'transparent';
+            div.onclick = () => {
+                APP.newListStudents.push(s);
+                APP.renderNewList();
+                resultsDiv.style.display = 'none';
+                document.getElementById('studentSearchInput').value = '';
+            };
+            resultsDiv.appendChild(div);
+        });
+    },
+    renderNewList: () => {
+        const ul = document.getElementById('currentListUl');
+        ul.innerHTML = '';
+        APP.newListStudents.forEach((s, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span>${s.name}</span> <button class="delete-btn" style="padding:4px 8px; font-size:0.8em; margin:0;" onclick="APP.removeStudentFromList(${index})">X</button>`;
+            ul.appendChild(li);
+        });
+    },
+    removeStudentFromList: (index) => {
+        APP.newListStudents.splice(index, 1);
+        APP.renderNewList();
+    },
+    saveList: () => {
+        const name = document.getElementById('newListName').value;
+        if(!name || APP.newListStudents.length === 0) {
+            alert("Please enter a name and add students.");
+            return;
+        }
+        APP.showLoader();
+        setTimeout(() => {
+            mockServer.saveCoachList(name, APP.newListStudents.map(s=>s.id), null);
+            APP.hideLoader();
+            alert("List Saved!");
+            APP.navigateTo('manageStudentListsHubPage');
+            APP.newListStudents = [];
+            APP.renderNewList();
+            document.getElementById('newListName').value = '';
+        }, 500);
+    },
+
+    // --- Scheduling ---
+    populateListDropdown: (elemId) => {
+        const select = document.getElementById(elemId);
+        select.innerHTML = '<option value="">Loading...</option>';
+        setTimeout(() => {
+            const lists = mockServer.getCoachLists();
+            select.innerHTML = '<option value="">-- Select a List --</option>';
+            Object.keys(lists).forEach(name => {
+                const opt = document.createElement('option');
+                opt.value = name;
+                opt.textContent = name;
+                select.appendChild(opt);
+            });
+        }, 300);
+    },
+    submitEvent: () => {
+        const name = document.getElementById('schedEventName').value;
+        const date = document.getElementById('schedEventDate').value;
+        const list = document.getElementById('eventBaseListSelect').value;
+        
+        if(!name || !date || !list) { alert("Missing fields"); return; }
+        
+        APP.showLoader("Scheduling...");
+        setTimeout(() => {
+            const res = mockServer.scheduleNewEvent({eventName: name, startDate: date, listName: list});
+            APP.hideLoader();
+            const status = document.getElementById('eventStatus');
+            status.textContent = res.message;
+            status.className = 'status-message success';
+            status.style.display = 'block';
+        }, 600);
+    },
+
+    // --- Attendance ---
+    loadEventsForAttendance: () => {
+        const sel = document.getElementById('attEventSelect');
+        sel.innerHTML = '<option>Loading...</option>';
+        setTimeout(() => {
+            const events = mockServer.getScheduledEventsForAttendance();
+            sel.innerHTML = '<option value="">-- Select Event --</option>';
+            events.forEach(e => {
+                const opt = document.createElement('option');
+                opt.value = e.Event_ID;
+                opt.textContent = e.Event_Name;
+                opt.dataset.students = JSON.stringify(e.Students_JSON);
+                sel.appendChild(opt);
+            });
+        }, 400);
+    },
+    loadAttendanceRoster: () => {
+        const sel = document.getElementById('attEventSelect');
+        const opt = sel.options[sel.selectedIndex];
+        const area = document.getElementById('attRosterArea');
+        const listDiv = document.getElementById('attStudentList');
+        
+        if(!opt.value) { area.classList.add('hidden'); return; }
+        
+        const students = JSON.parse(opt.dataset.students);
+        listDiv.innerHTML = '';
+        
+        students.forEach(s => {
+            const row = document.createElement('div');
+            row.style.cssText = "display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee; align-items:center;";
+            row.innerHTML = `
+                <span>${s.Student_Name}</span>
+                <div>
+                    <button class="att-btn" style="background:#ddd; color:#333; padding:5px 10px;" onclick="APP.toggleAtt(this)">Present</button>
+                </div>
+            `;
+            listDiv.appendChild(row);
+        });
+        area.classList.remove('hidden');
+    },
+    toggleAtt: (btn) => {
+        if(btn.textContent === 'Present') {
+            btn.textContent = 'Absent';
+            btn.style.background = '#dc3545';
+            btn.style.color = 'white';
+        } else {
+            btn.textContent = 'Present';
+            btn.style.background = '#28a745';
+            btn.style.color = 'white';
+        }
+    },
+    saveAttendance: () => {
+        APP.showLoader("Saving...");
+        setTimeout(() => {
+            APP.hideLoader();
+            const status = document.getElementById('attStatus');
+            status.textContent = "Attendance Saved Successfully!";
+            status.className = 'status-message success';
+            status.style.display = 'block';
+        }, 600);
+    },
+
+    // --- Approval Request ---
+    submitRequest: () => {
+        const name = document.getElementById('reqEventName').value;
+        const date = document.getElementById('reqStartDate').value;
+        const loc = document.getElementById('reqLoc').value;
+        
+        if(!name || !date) { alert("Missing fields"); return; }
+        
+        APP.showLoader();
+        setTimeout(() => {
+            const res = mockServer.submitActivityApproval({eventName: name, startDate: date, location: loc});
+            APP.hideLoader();
+            const status = document.getElementById('reqStatus');
+            status.textContent = res.message;
+            status.className = 'status-message success';
+            status.style.display = 'block';
+        }, 500);
+    },
+
+    // --- Admin Views ---
+    loadSuperAdminTable: () => {
+        const tbody = document.querySelector('#superAdminTable tbody');
+        tbody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+        setTimeout(() => {
+            const res = mockServer.getAllSubmissionsForSuperAdmin();
+            tbody.innerHTML = '';
+            res.data.forEach(r => {
+                const tr = document.createElement('tr');
+                const statusColor = r['Approved?'] === 'Pending' ? '#ffc107' : (r['Approved?'] === 'Approved' || r['Approved?'] === 'Yes' ? '#28a745' : '#dc3545');
+                tr.innerHTML = `
+                    <td>${r.SubmissionID}</td>
+                    <td>${r.EventName}</td>
+                    <td>${r.SubmitterName}</td>
+                    <td><span style="padding:3px 8px; border-radius:4px; background:${statusColor}; color:white; font-size:0.8em;">${r['Approved?']}</span></td>
+                    <td>${r.StartDate}</td>
+                    <td><button style="padding:4px 8px; font-size:0.8em;">View</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }, 400);
+    },
+    loadAdminPending: () => {
+        const div = document.getElementById('pending approvalsList');
+        div.innerHTML = 'Loading...';
+        setTimeout(() => {
+            const res = mockServer.getSubmissionsForAdmin();
+            if(res.data.length === 0) {
+                div.innerHTML = '<p style="text-align:center; color:#777;">No pending approvals.</p>';
+            } else {
+                let html = '';
+                res.data.forEach(r => {
+                    html += `
+                    <div style="border:1px solid #ddd; padding:15px; border-radius:5px; margin-bottom:10px; background:#fff;">
+                        <div style="display:flex; justify-content:space-between;">
+                            <strong>${r.EventName}</strong>
+                            <small>${r.StartDate}</small>
+                        </div>
+                        <p>${r.SubmitterName} (${r.SubmitterEmail}) - ${r.GroupProgram}</p>
+                        <div style="text-align:right;">
+                            <button style="background:#28a745;" onclick="APP.adminAction('${r.SubmissionID}', 'Yes')">Approve</button>
+                            <button style="background:#dc3545;" onclick="APP.adminAction('${r.SubmissionID}', 'No')">Deny</button>
+                        </div>
+                    </div>`;
+                });
+                div.innerHTML = html;
+            }
+        }, 400);
+    },
+    adminAction: (id, decision) => {
+        APP.showLoader("Processing...");
+        setTimeout(() => {
+            mockServer.processAdminApproval(id, decision);
+            APP.hideLoader();
+            APP.loadAdminPending();
+        }, 500);
+    },
+
+    // --- Utility ---
+    showLoader: (msg="Loading...") => {
+        document.getElementById('globalLoaderText').textContent = msg;
+        document.getElementById('globalLoader').classList.remove('hidden');
+    },
+    hideLoader: () => {
+        document.getElementById('globalLoader').classList.add('hidden');
+    }
+};
+
+// Start the App
+window.onload = APP.init;
+
+</script>
+</body>
+</html>

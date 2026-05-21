@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Teacher coverage workflow automation</title>
+  <desc id="desc">A clean workflow showing absence intake, coverage posting, teacher selection, confirmation, and admin tracking.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eef8fa"/>
+      <stop offset="1" stop-color="#f8fbff"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e9f5f7"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#10223a" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="760" rx="42" fill="url(#bg)"/>
+  <circle cx="1040" cy="120" r="190" fill="#2d7f88" opacity="0.08"/>
+  <circle cx="150" cy="670" r="230" fill="#4389ba" opacity="0.07"/>
+  <path d="M178 233 C302 105 448 105 570 232 S838 361 1014 206" fill="none" stroke="#2d7f88" stroke-width="5" stroke-linecap="round" stroke-dasharray="11 18" opacity="0.42"/>
+  <path d="M188 530 C330 430 454 436 590 530 S842 632 1002 518" fill="none" stroke="#10223a" stroke-width="5" stroke-linecap="round" stroke-dasharray="11 18" opacity="0.22"/>
+  <g filter="url(#shadow)">
+    <rect x="90" y="110" width="250" height="150" rx="28" fill="url(#card)" stroke="#cfe4ea"/>
+    <text x="122" y="158" fill="#2d7f88" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800" letter-spacing="2">STEP 01</text>
+    <text x="122" y="198" fill="#10223a" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800">Absence</text>
+    <text x="122" y="232" fill="#10223a" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800">reported</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="475" y="88" width="250" height="150" rx="28" fill="url(#card)" stroke="#cfe4ea"/>
+    <text x="507" y="136" fill="#2d7f88" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800" letter-spacing="2">STEP 02</text>
+    <text x="507" y="176" fill="#10223a" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800">Coverage</text>
+    <text x="507" y="210" fill="#10223a" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800">posted</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="860" y="150" width="250" height="150" rx="28" fill="#10223a" stroke="#2d7f88"/>
+    <text x="892" y="198" fill="#9bd7de" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800" letter-spacing="2">STEP 03</text>
+    <text x="892" y="238" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800">Teacher</text>
+    <text x="892" y="272" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800">selects</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="242" y="455" width="270" height="150" rx="28" fill="#10223a" stroke="#2d7f88"/>
+    <text x="274" y="503" fill="#9bd7de" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800" letter-spacing="2">STEP 04</text>
+    <text x="274" y="543" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800">Confirmation</text>
+    <text x="274" y="577" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800">sent</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="690" y="480" width="290" height="150" rx="28" fill="url(#card)" stroke="#cfe4ea"/>
+    <text x="722" y="528" fill="#2d7f88" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800" letter-spacing="2">STEP 05</text>
+    <text x="722" y="568" fill="#10223a" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800">Admin tracks</text>
+    <text x="722" y="602" fill="#10223a" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800">the fill</text>
+  </g>
+  <g opacity="0.9">
+    <circle cx="600" cy="350" r="58" fill="#2d7f88"/>
+    <path d="M575 350l18 18 36-42" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3L49QVWC6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-M3L49QVWC6');
+    </script>
+        
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>American High School - Admin Analytics</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta property="og:title" content="American High School Admin Dashboard (Demo)">
+    <meta property="og:description" content="A demonstration of education analytics tracking student failure rates and interventions.">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ 
+<style>
+    /* --- CRITICAL FIX: Global Box Sizing Reset --- */
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    :root {
+        --primary: #0F52BA;
+        --primary-dark: #0a3d8f;
+        --secondary: #6c757d;
+        --success-bg: #d4edda;
+        --success-text: #155724;
+        --danger-bg: #f8d7da;
+        --danger-text: #721c24;
+        --warning-bg: #fff3cd;
+        --warning-text: #856404;
+        --light-bg: #f4f6f9;
+        --card-bg: #ffffff;
+        --border: #e0e0e0;
+    }
+
+    body {
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--light-bg);
+        margin: 0;
+        padding: 0;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden; /* Prevent page-wide scroll */
+    }
+
+    /* --- Header --- */
+    header {
+        background-color: var(--card-bg);
+        padding: 1rem 2rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .brand-container { display: flex; align-items: center; gap: 30px; }
+    .brand h1 { margin: 0; font-size: 1.5rem; color: var(--primary); line-height: 1.2; }
+    .brand h2 { margin: 0; font-size: 0.9rem; color: var(--secondary); font-weight: 400; margin-top: 4px; }
+    
+    .header-right { display: flex; align-items: center; gap: 20px; }
+    .date-display { font-size: 0.9rem; font-weight: 600; color: #333; }
+    
+    .settings-btn {
+        background: none; border: none; font-size: 1.4rem; cursor: pointer;
+        color: var(--secondary); transition: 0.2s; padding: 8px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .settings-btn:hover { background-color: #f0f0f0; color: var(--primary); transform: rotate(45deg); }
+
+    /* --- Navigation Tabs --- */
+    .nav-tabs { display: flex; gap: 20px; margin-left: 20px; }
+    .nav-item { 
+        background: none; border: none; font-size: 0.95rem; font-weight: 600; 
+        color: var(--secondary); cursor: pointer; padding: 10px 5px; 
+        border-bottom: 3px solid transparent; transition: 0.2s;
+        white-space: nowrap;
+    }
+    .nav-item:hover { color: var(--primary); }
+    .nav-item.active { color: var(--primary); border-bottom: 3px solid var(--primary); }
+
+    /* --- Layout --- */
+    .disclaimer-banner {
+        background-color: var(--warning-bg); color: var(--warning-text);
+        text-align: center; padding: 12px; font-size: 0.85rem;
+        border-bottom: 1px solid #ffeeba; font-weight: 600;
+    }
+
+    .container {
+        max-width: 1400px; margin: 2rem auto; padding: 0 1.5rem;
+        flex: 1; width: 100%;
+    }
+
+    /* View Switching */
+    .view-section { display: none; animation: fadeIn 0.3s ease-in-out; }
+    .view-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* --- KPI Section --- */
+    .kpi-section { display: flex; justify-content: center; margin-bottom: 2rem; }
+    .kpi-card {
+        background: white; border-radius: 8px; padding: 1.5rem 4rem;
+        text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        border-top: 5px solid var(--danger-text); width: 100%; max-width: 600px;
+    }
+    .kpi-title { font-size: 1.1rem; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    .kpi-value { font-size: 4rem; font-weight: 800; color: var(--danger-text); margin: 5px 0; line-height: 1; }
+    .kpi-sub { font-size: 1.1rem; color: var(--secondary); margin-top: 10px; }
+
+    /* --- Stats Container --- */
+    .stats-container {
+        background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        padding: 2rem; margin-bottom: 2rem;
+    }
+    .section-header { 
+        display: flex; justify-content: space-between; align-items: center; 
+        margin-bottom: 1.5rem; border-bottom: 2px solid var(--light-bg); 
+        padding-bottom: 1rem; flex-wrap: wrap; gap: 15px;
+    }
+    .section-title { margin: 0; color: var(--primary); font-size: 1.4rem; }
+    
+    .view-controls { display: flex; align-items: center; gap: 10px; background: #f1f3f5; padding: 4px; border-radius: 20px; }
+    .view-label { font-size: 0.85rem; font-weight: 600; color: var(--secondary); margin-right: 5px; padding-left: 10px;}
+    .toggle-btn {
+        border: none; background: transparent; padding: 8px 16px; border-radius: 16px;
+        font-size: 0.85rem; cursor: pointer; color: #666; font-weight: 600; transition: 0.2s;
+    }
+    .toggle-btn.active { background: white; color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+    /* --- TABLES --- */
+    .table-responsive { overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; }
+    
+    /* Base Table */
+    table { width: 100%; border-collapse: separate; border-spacing: 0; }
+    
+    /* Only force min-width on large data tables, NOT the accordion tables */
+    #main-stats-table, .mini-table { min-width: 600px; }
+
+    th { 
+        padding: 15px; text-align: center; background-color: #f8f9fa; 
+        color: var(--secondary); font-size: 0.85rem; text-transform: uppercase; 
+        font-weight: 700; border-bottom: 2px solid var(--border);
+    }
+    
+    /* Sticky Column Logic */
+    th:first-child { text-align: left; position: sticky; left: 0; background-color: #f8f9fa; z-index: 10; box-shadow: 2px 0 5px rgba(0,0,0,0.05); }
+    td { padding: 12px 15px; text-align: center; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+    td:first-child { 
+        text-align: left; font-weight: 600; color: #2c3e50; 
+        width: 30%; position: sticky; left: 0; background-color: white; 
+        z-index: 10; box-shadow: 2px 0 5px rgba(0,0,0,0.05); 
+    }
+    
+    tr.row-bad td, tr.row-bad td:first-child { background-color: #fff5f5; } 
+    tr.row-good td, tr.row-good td:first-child { background-color: #f0fff4; } 
+    tr:hover td, tr:hover td:first-child { background-color: #eef2ff !important; transition: background-color 0.2s; }
+
+    .clickable-cell {
+        cursor: pointer; color: var(--primary); font-weight: 700; 
+        text-decoration: underline; text-decoration-color: rgba(15, 82, 186, 0.3);
+        border-radius: 4px; padding: 6px 10px; transition: all 0.2s; display: inline-block;
+    }
+    .clickable-cell:hover { background-color: rgba(15, 82, 186, 0.1); text-decoration-color: var(--primary); }
+    .non-clickable-cell { color: #555; font-weight: 400; padding: 6px 10px; display: inline-block;}
+
+    /* Top Lists */
+    .top-ten-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .top-list { background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow-x: hidden; }
+    .top-list-header { border-bottom: 2px solid var(--border); padding-bottom: 10px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 10px;}
+    @media(min-width: 600px) { .top-list-header { flex-direction: row; justify-content: space-between; align-items: center; } }
+
+    .top-list h4 { margin: 0; color: var(--secondary); text-transform: uppercase; font-size: 0.9rem; }
+    .list-tabs { display: flex; gap: 10px; }
+    .list-tab { background: none; border: none; padding: 5px 10px; font-size: 0.85rem; cursor: pointer; color: var(--secondary); font-weight: 600; border-bottom: 3px solid transparent; transition: all 0.2s; }
+    .list-tab:hover { color: var(--primary); }
+    .list-tab.active { color: var(--primary); border-bottom: 3px solid var(--primary); }
+    
+    .mini-table th { background: white; border-bottom: 1px solid var(--primary); color: var(--primary); padding: 8px; font-size: 0.8rem; box-shadow: none; position: static;}
+    .mini-table td { padding: 8px; font-size: 0.9rem; border-bottom: 1px solid #eee; position: static; box-shadow: none; width: auto;}
+    .rank-col { width: 30px; color: var(--secondary); font-weight: bold; }
+    .val-col { font-weight: bold; color: var(--danger-text); }
+    .rate-col { font-weight: bold; color: #d35400; }
+
+    /* --- History / Charts Styles --- */
+    .chart-wrapper { position: relative; height: 350px; width: 100%; margin-bottom: 20px; }
+    .history-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+    .history-card { 
+        background: white; border: 1px solid var(--border); border-radius: 8px; 
+        padding: 1.5rem 1rem; text-align: center; cursor: pointer; transition: 0.2s;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .history-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: var(--primary); }
+    .history-card.active { border: 2px solid var(--primary); background: #f0f7ff; }
+    .h-card-title { font-size: 0.8rem; color: var(--secondary); text-transform: uppercase; font-weight: 700; margin-bottom: 5px;}
+    .h-card-val { font-size: 1.5rem; font-weight: 700; color: #333; }
+
+    /* --- Intervention Styles (FIXED) --- */
+    .intervention-header-controls { display: flex; gap: 10px; align-items: center; }
+    
+    .modern-select { 
+        padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; 
+        font-size: 0.95rem; background-color: white; 
+        max-width: 100% !important; width: 100%; box-sizing: border-box;
+    }
+    
+    .accordion-item { border: 1px solid #eee; margin-bottom: 8px; border-radius: 6px; overflow: hidden; background: white; }
+    .accordion-header { padding: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.1s; touch-action: manipulation; }
+    .accordion-header:hover { background: #f9f9f9; }
+    
+    .acc-title-container { font-weight: 600; margin-right: 10px; word-break: break-word; }
+    .acc-badge-container { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    
+    .accordion-content { display: none; background: #fafafa; border-top: 1px solid #eee; padding: 15px; width: 100%; box-sizing: border-box; }
+    
+    /* --- DROPDOWN TABLE FIX --- */
+    .accordion-content table { 
+        width: 100%; 
+        table-layout: fixed !important; /* Critical: Forces table to fit in width */
+        min-width: 0 !important; /* Override global min-width */
+    }
+    
+    .accordion-content td {
+        border: none;
+        padding: 8px 4px;
+        vertical-align: top;
+    }
+    
+    /* Force Wrapping for Course Name */
+    .accordion-content td:first-child {
+        width: 70%;
+        white-space: normal !important; /* Allow wrapping */
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        text-align: left;
+    }
+    
+    /* Keep Duration on one line */
+    .accordion-content td:last-child {
+        width: 30%;
+        white-space: nowrap;
+        text-align: right;
+    }
+    
+    /* Ensure Button Fits */
+    .accordion-content > div { width: 100%; box-sizing: border-box; }
+    
+    .streak-badge { background:#fff5f5; color:#c53030; padding:3px 8px; border-radius:4px; font-weight:bold; font-size:0.8rem; white-space: nowrap; }
+    .accordion-icon { transition: transform 0.3s; color: #999; margin-left: 10px;}
+    .rotate-down { transform: rotate(180deg); }
+
+    /* --- Footer --- */
+    footer { background-color: white; border-top: 1px solid var(--border); padding: 2rem; text-align: center; margin-top: auto; }
+    .footer-content p { margin: 5px 0; font-size: 0.9rem; color: var(--secondary); }
+    .footer-link { color: var(--primary); text-decoration: none; font-weight: 600; }
+    .footer-link:hover { color: var(--primary-dark); text-decoration: underline; }
+
+    /* --- Modals --- */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); z-index: 2000; justify-content: center; align-items: center; padding: 0; }
+    .modal-content { background: white; width: 700px; max-width: 95%; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); display: flex; flex-direction: column; max-height: 90vh; animation: slideUp 0.3s ease-out; margin: 10px; }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal-header { padding: 15px 20px; background-color: var(--primary); color: white; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    .modal-header h3 { margin: 0; font-size: 1.1rem; }
+    .modal-close { background: none; border: none; color: white; font-size: 2rem; cursor: pointer; padding: 0 10px; line-height: 1;}
+    .modal-subheader { padding: 12px 20px; background-color: #f1f3f5; border-bottom: 1px solid var(--border); flex-shrink: 0;}
+    .modal-body { padding: 0; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+    .modal-footer { padding: 15px 20px; border-top: 1px solid var(--border); text-align: right; background-color: #fff; border-radius: 0 0 8px 8px; flex-shrink: 0; }
+    .student-row { padding: 12px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+    .student-row:hover { background: #f9f9f9; }
+    .student-name { font-weight: 700; color: var(--primary); font-size: 1rem; display: block;}
+    .student-meta { font-size: 0.8rem; color: #666; margin-top: 3px; display: block;}
+    .action-btn { font-size: 0.85rem; cursor: pointer; color: #555; background: #fff; border: 1px solid #ccc; padding: 8px 12px; border-radius: 4px; white-space: nowrap;}
+    .btn-close { background-color: var(--secondary); color: white; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+    
+    /* Note Modal */
+    #noteModal .modal-content { width: 550px; }
+    .note-history-container { background-color: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 4px; padding: 15px; max-height: 150px; overflow-y: auto; margin-bottom: 15px; }
+    .note-textarea { width: 100%; height: 100px; padding: 12px; border: 1px solid var(--border); border-radius: 4px; font-family: inherit; font-size: 1rem; resize: vertical; margin-bottom: 10px; }
+    .note-save-btn { background-color: var(--success-text); color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; font-weight: 600; margin-left: 10px; }
+
+    /* Settings Modal */
+    .settings-section { padding: 20px; border-bottom: 1px solid #eee; }
+    .settings-label { display: block; font-weight: 600; margin-bottom: 8px; color: #333; }
+    .settings-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; /* Prevents zoom on iOS */ }
+    .btn-save-settings { background-color: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; font-weight: 600; }
+
+    /* --- MOBILE OPTIMIZATION --- */
+    @media (max-width: 900px) { 
+        .top-ten-grid { grid-template-columns: 1fr; } 
+    }
+
+    @media (max-width: 768px) {
+        /* Header */
+        header { flex-direction: column; gap: 15px; padding: 1rem; }
+        .brand-container { flex-direction: column; gap: 15px; align-items: center; width: 100%; text-align: center; }
+        .brand h1 { font-size: 1.3rem; }
+        .header-right { width: 100%; justify-content: space-between; border-top: 1px solid #eee; padding-top: 10px; }
+        
+        /* Nav Tabs - Horizontal Scroll */
+        .nav-tabs { 
+            margin-left: 0; width: 100%; 
+            overflow-x: auto; 
+            justify-content: flex-start; 
+            white-space: nowrap; 
+            padding-bottom: 5px; /* space for scrollbar */
+            gap: 10px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .nav-item { padding: 10px 15px; flex-shrink: 0; }
+
+        /* Layout */
+        .container { margin: 1rem auto; padding: 0 1rem; }
+        
+        /* KPI */
+        .kpi-card { padding: 1.5rem; }
+        .kpi-value { font-size: 3rem; }
+
+        /* Stats Table */
+        .stats-container { padding: 1rem; }
+        .section-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+        .view-controls { width: 100%; justify-content: space-between; }
+        
+        /* Sticky Column Adjustment for small screens */
+        td:first-child, th:first-child { width: auto; min-width: 120px; max-width: 40%; box-shadow: 1px 0 3px rgba(0,0,0,0.1); }
+        
+        /* Intervention Mobile Specifics */
+        .intervention-header-controls { flex-direction: column; align-items: flex-start; width: 100%; margin-top: 10px; gap: 5px; }
+        
+        /* Updated Accordion Header Layout */
+        .accordion-header { flex-direction: column; align-items: flex-start; gap: 5px; padding: 12px; }
+        .acc-badge-container { width: 100%; justify-content: space-between; margin-top: 5px; }
+        /* Badge tweaks */
+        .streak-badge { font-size: 0.75rem; padding: 4px 8px; }
+
+        /* Modals */
+        .modal-content { max-height: 85vh; margin: 10px; width: 95%; }
+        .student-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+        .action-btn { width: 100%; text-align: center; margin-top: 5px; }
+        
+        /* History Grid */
+        .history-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 480px) {
+        .history-grid { grid-template-columns: 1fr; }
+        .kpi-value { font-size: 2.5rem; }
+        .nav-tabs { gap: 5px; }
+        .nav-item { font-size: 0.9rem; padding: 8px 10px; }
+    }
+
+    /* Fix intervention section overflow */
+    .top-ten-grid > div {
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    /* Remove min-width from intervention table specifically */
+    #view-intervention .mini-table {
+        min-width: 0;
+    }
+
+    /* Ensure student list doesn't overflow horizontally */
+    #intervention-student-list {
+        overflow-x: hidden;
+    }
+
+    /* Add/Replace inside your <style> tag */
+    
+    .btn-pilot {
+        /* Bright Gradient to stand out against the blue header */
+        background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%); 
+        color: white;
+        border: none;
+        padding: 10px 24px; /* Larger click area */
+        border-radius: 50px; /* Fully rounded pill shape */
+        font-weight: 800; /* Extra Bold */
+        font-size: 0.95rem;
+        cursor: pointer;
+        margin-right: 20px;
+        
+        /* Glow Effect */
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4); 
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        
+        /* Attention-grabbing animation */
+        animation: pulse-glow 2s infinite;
+    }
+    
+    .btn-pilot:hover {
+        transform: translateY(-2px) scale(1.05); /* Slight grow effect */
+        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+    }
+    
+    /* Keyframes for the heartbeat/pulse effect */
+    @keyframes pulse-glow {
+        0% {
+            box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+        }
+    }
+</style>
+
+</head>
+<body>
+
+    <header>
+        <div class="brand-container">
+            <div class="brand">
+                <h1 id="schoolNameDisplay">American High School</h1>
+                <h2>Administration Analytics Dashboard</h2>
+            </div>
+            <div class="nav-tabs">
+                <button class="nav-item active" onclick="switchView('snapshot')" id="nav-snapshot">Snapshot</button>
+                <button class="nav-item" onclick="switchView('history')" id="nav-history">Trends</button>
+                <button class="nav-item" onclick="switchView('intervention')" id="nav-intervention">⚠️ Intervention</button>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="btn-pilot" onclick="openLeadModal()">🚀 Join Pilot or Waitlist</button>
+            <div class="date-display" id="header-date"></div>
+            <button class="settings-btn" onclick="openSettingsModal()" title="Settings">⚙️</button>
+        </div>
+    </header>
+
+    <div class="disclaimer-banner">
+        ⚠️ DEMO MODE: All student data displayed here is completely fictitious and is for product demonstration purposes only.
+    </div>
+
+    <div class="container">
+        
+        <div id="view-snapshot" class="view-section active">
+            
+            <div class="kpi-section">
+                <div class="kpi-card">
+                    <div class="kpi-title">School-Wide Failure Rate</div>
+                    <div class="kpi-value" id="kpi-percent">--%</div>
+                    <div class="kpi-sub" id="kpi-context">-- Students Failing 1+ classes</div>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="section-header"> 
+                    <h3 class="section-title">Weekly Statistics Summary</h3>
+                    <div class="view-controls">
+                        <span class="view-label">View By:</span>
+                        <div>
+                            <button class="toggle-btn active" id="btnGroups" onclick="renderMainTable('groups')">Groups</button>
+                            <button class="toggle-btn" id="btnGrades" onclick="renderMainTable('grades')">Grade Level</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table id="main-stats-table">
+                        <thead id="stats-header-row"></thead>
+                        <tbody id="stats-body-row"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="top-ten-grid">
+                <div class="top-list" id="teachers-container">
+                    <div class="top-list-header">
+                        <h4>Top 10 Teachers (Failing Students)</h4>
+                        <div class="list-tabs">
+                            <button class="list-tab active" onclick="renderTopList('teachers', 'volume', this)">By Volume</button>
+                            <button class="list-tab" onclick="renderTopList('teachers', 'rate', this)">By Rate</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="mini-table">
+                            <thead id="teachers-thead"></thead>
+                            <tbody id="top-teachers-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="top-list" id="classes-container">
+                    <div class="top-list-header">
+                        <h4>Top 10 Classes (Failing Students)</h4>
+                        <div class="list-tabs">
+                            <button class="list-tab active" onclick="renderTopList('classes', 'volume', this)">By Volume</button>
+                            <button class="list-tab" onclick="renderTopList('classes', 'rate', this)">By Rate</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="mini-table">
+                            <thead id="classes-thead"></thead>
+                            <tbody id="top-classes-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-history" class="view-section">
+            
+            <div class="stats-container" style="margin-bottom: 2rem;">
+                <div class="section-header">
+                    <div>
+                        <h3 class="section-title">Failure Velocity (New vs. Cleared)</h3>
+                        <p style="margin:0; font-size:0.9rem; color:#666;">Are we gaining or losing ground? (Red > Green = Bad)</p>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="velocityChart"></canvas>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="section-header">
+                    <div>
+                        <h3 class="section-title">Historical Trends</h3>
+                        <p style="margin:0; font-size:0.9rem; color:#666;">Data aggregation over the last 8 weeks.</p>
+                    </div>
+                </div>
+                
+                <div class="chart-wrapper">
+                    <canvas id="trendChart"></canvas>
+                </div>
+
+                <div class="history-grid" id="history-card-container">
+                    </div>
+            </div>
+        </div>
+
+        <div id="view-intervention" class="view-section">
+            <div class="stats-container">
+                <div class="section-header">
+                    <div>
+                        <h3 class="section-title">Failure Streak Analysis</h3>
+                        <p style="margin:0; font-size:0.9rem; color:#666;">Students failing the same course consecutively.</p>
+                    </div>
+                    <div class="intervention-header-controls">
+                        <span style="font-weight:600; font-size:0.9rem;">Show streaks of at least:</span>
+                        <select id="streakWeeks" class="modern-select" onchange="renderIntervention()">
+                            <option value="2">2 Weeks</option>
+                            <option value="3" selected>3 Weeks</option>
+                            <option value="4">4 Weeks</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="top-ten-grid">
+                    <div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <h4 style="margin:0;">Students at Risk</h4>
+                            <span class="streak-badge" id="risk-count">--</span>
+                        </div>
+                        <div id="intervention-student-list" style="max-height: 600px; overflow-y: auto;"></div>
+                    </div>
+                    <div>
+                        <h4 style="margin:20px 0 10px 0;">Course Intervention Needs</h4>
+                        <div id="intervention-teacher-list" style="max-height: 600px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 GC Education Analytics. All Rights Reserved.</p>
+            <p>
+                <a href="https://gceducationanalytics.com" class="footer-link" target="_blank">Main Website</a> | 
+                <a href="https://gceducationanalytics.com/privacy" class="footer-link" target="_blank">Privacy Policy</a>
+            </p>
+        </div>
+    </footer>
+
+    <div id="dataModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Student List</h3>
+                <button class="modal-close" onclick="closeModal('dataModal')">×</button>
+            </div>
+            <div class="modal-subheader">
+                <div id="modalStatsLine" class="modal-stats-line"></div>
+                <div id="modalDescLine" class="modal-desc-line"></div>
+            </div>
+            <div class="modal-body" id="modalList"></div>
+            <div class="modal-footer">
+                <button class="btn-close" onclick="closeModal('dataModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="noteModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Student Note</h3>
+                <button class="modal-close" onclick="closeModal('noteModal')">×</button>
+            </div>
+            <div class="modal-body" style="padding: 15px 20px;">
+                <p style="margin-top: 0; margin-bottom: 20px; color: #555; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                    Student: <strong id="noteStudentName" style="color: var(--primary); font-size: 1.1em;"></strong>
+                </p>
+                <label style="font-weight:600; display:block; margin-bottom:5px;">History:</label>
+                <div id="noteHistory" class="note-history-container"></div>
+                <label style="font-weight:600; display:block; margin-bottom:5px;">New Note:</label>
+                <textarea id="noteInput" class="note-textarea" placeholder="Type details here..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-close" onclick="closeModal('noteModal')" style="background-color: #6c757d;">Cancel</button>
+                <button class="note-save-btn" onclick="saveNote()">Save Note</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Dashboard Configuration</h3>
+                <button class="modal-close" onclick="closeModal('settingsModal')">×</button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="settings-section">
+                    <label class="settings-label">School Name</label>
+                    <input type="text" id="settingSchoolName" class="settings-input" value="American High School">
+                </div>
+
+                <div class="settings-section">
+                    <label class="settings-label">Last Name Groupings</label>
+                    <div class="group-input-row" style="margin-bottom: 10px;">
+                        <span>Group 1:</span>
+                        <input type="text" id="settingGroup1" class="settings-input" value="Group A-G" style="margin-top:5px;">
+                    </div>
+                    <div class="group-input-row" style="margin-bottom: 10px;">
+                        <span>Group 2:</span>
+                        <input type="text" id="settingGroup2" class="settings-input" value="Group H-O" style="margin-top:5px;">
+                    </div>
+                    <div class="group-input-row" style="margin-bottom: 10px;">
+                        <span>Group 3:</span>
+                        <input type="text" id="settingGroup3" class="settings-input" value="Group P-Z" style="margin-top:5px;">
+                    </div>
+                    <div class="settings-sub" style="font-size:0.85rem; color:#666;">Customize the headers for your alpha-split columns.</div>
+                </div>
+
+                <div class="settings-section">
+                    <label class="settings-label">Data Mapping</label>
+                    <div class="mapping-mock">
+                        <strong>Column Mapping Configured</strong><br>
+                        Student ID: <em>Column A</em><br>
+                        Student Name: <em>Column B</em><br>
+                        Grade Level: <em>Column D</em><br>
+                        Letter Grade: <em>Column F</em><br>
+                        <br>
+                        <a href="#" style="color:var(--primary); text-decoration:underline;">Edit Mapping Definition</a>
+                    </div>
+                    <div class="settings-sub" style="font-size:0.85rem; color:#666; margin-top:5px;">Changes to mapping will apply on next data upload.</div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn-close" onclick="closeModal('settingsModal')" style="background-color: #6c757d; margin-right:10px;">Cancel</button>
+                <button class="btn-save-settings" onclick="saveSettings()">Save Configuration</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="leadModal" class="modal-overlay">
+        <div class="modal-content" style="width: 500px; max-height: 90vh;">
+            <div class="modal-header">
+                <h3>Get Dashboard Access</h3>
+                <button class="modal-close" onclick="closeModal('leadModal')">×</button>
+            </div>
+            <div class="modal-body" style="padding: 0; overflow: hidden;">
+                
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc7F2Nk8TXjilfT9pMyi6c-Ypv-ZogFCNBkH8MMRwVDdnggfg/viewform?embedded=true" 
+                        width="100%" 
+                        height="500" 
+                        frameborder="0" 
+                        marginheight="0" 
+                        marginwidth="0">Loading…</iframe>
+                        
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        /**
+         * CLIENT-SIDE DATA GENERATOR
+         * Ensures 100% consistency between KPIs, Charts, and Drill-downs.
+         */
+        
+        // --- CONFIG & GLOBAL STATE ---
+        const studentDB = [];
+        const TOTAL_STUDENTS = 1450;
+        let currentView = 'groups'; // 'groups' or 'grades'
+        
+        // Aggregated Stats Objects
+        let stats = {};
+        let teacherStats = [];
+        let classStats = [];
+        let velocityChart = null;
+
+        const TEACHERS = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson"];
+        const COURSES = ["Algebra I", "Geometry", "Algebra II", "Biology", "Chemistry", "Physics", "English 9", "English 10", "English 11", "World History", "US History", "Economics", "Spanish I", "Art"];
+        const FIRST_NAMES = ["James", "Mary", "Robert", "Patricia", "John", "Jennifer", "Michael", "Linda", "David", "Elizabeth", "William", "Barbara", "Richard", "Susan", "Joseph", "Jessica", "Thomas", "Sarah", "Charles", "Karen"];
+        const LAST_NAMES = ["Adams", "Baker", "Clark", "Davis", "Evans", "Foster", "Garcia", "Green", "Harris", "Ingram", "Jackson", "King", "Lewis", "Martin", "Nelson", "Owens", "Parker", "Quinn", "Roberts", "Smith", "Taylor", "Underwood", "Wilson", "Young", "Zimmerman"];
+
+        // --- 1. DATA GENERATION ENGINE ---
+        function initData() {
+            // 1. Generate Students
+            for(let i=0; i<TOTAL_STUDENTS; i++) {
+                const fn = FIRST_NAMES[Math.floor(Math.random()*FIRST_NAMES.length)];
+                const ln = LAST_NAMES[Math.floor(Math.random()*LAST_NAMES.length)];
+                const grade = 9 + Math.floor(Math.random() * 4);
+                
+                // Determine Group
+                let grp = 'Group P-Z';
+                if(ln[0] <= 'G') grp = 'Group A-G';
+                else if(ln[0] <= 'O') grp = 'Group H-O';
+
+                // DETERMINE PERSONA
+                const pRand = Math.random();
+                let persona = 'average';
+                if(pRand < 0.25) persona = 'honor';      
+                else if(pRand > 0.85) persona = 'risk';  
+
+                const student = {
+                    id: 10000 + i,
+                    name: `${ln}, ${fn}`,
+                    gradeLevel: `Grade ${grade}`,
+                    group: grp,
+                    courses: [],
+                    fCount: 0,
+                    isAllAs: true,
+                    isAllAsBs: true,
+                    // Flags initialized to false, calculated AFTER grades
+                    isNewF: false,
+                    isClearedF: false,
+                    isIncreasedF: false,
+                    isReducedF: false,
+                    isGpaTo4: false,
+                    isNewTardy: false,
+                    isNewGuidance: false
+                };
+
+                // Generate 6 Classes
+                for(let c=0; c<6; c++) {
+                    const courseName = COURSES[Math.floor(Math.random()*COURSES.length)];
+                    const tName = TEACHERS[Math.floor(Math.random()*TEACHERS.length)];
+                    
+                    // GRADE LOGIC
+                    const gRand = Math.random();
+                    let gradeChar = 'C';
+
+                    if(persona === 'honor') {
+                        if(gRand < 0.85) gradeChar = 'A';
+                        else if(gRand < 0.98) gradeChar = 'B';
+                        else gradeChar = 'C';
+                    } else if(persona === 'risk') {
+                        if(gRand < 0.10) gradeChar = 'A';
+                        else if(gRand < 0.30) gradeChar = 'B';
+                        else if(gRand < 0.60) gradeChar = 'C';
+                        else if(gRand < 0.85) gradeChar = 'D';
+                        else gradeChar = 'F';
+                    } else {
+                        if(gRand < 0.25) gradeChar = 'A';
+                        else if(gRand < 0.55) gradeChar = 'B';
+                        else if(gRand < 0.85) gradeChar = 'C';
+                        else if(gRand < 0.97) gradeChar = 'D';
+                        else gradeChar = 'F';
+                    }
+
+                    if(gradeChar !== 'A') student.isAllAs = false;
+                    if(gradeChar !== 'A' && gradeChar !== 'B') student.isAllAsBs = false;
+                    
+                    let streak = 0;
+                    if(gradeChar === 'F') {
+                        student.fCount++;
+                        streak = 1 + Math.floor(Math.random() * 5);
+                    }
+
+                    student.courses.push({ course: courseName, teacher: tName, grade: gradeChar, streak: streak });
+                }
+
+                // --- CRITICAL FIX: LOGIC CONSISTENCY ---
+                // Now that we know the grades, assign the flags logically.
+                
+                if (student.fCount > 0) {
+                    // If failing, they CANNOT be a "Cleared F"
+                    // They MIGHT be a "New F" (random chance representing history)
+                    if(Math.random() < 0.20) student.isNewF = true; 
+                    
+                    // They MIGHT have "Increased Fs"
+                    else if(Math.random() < 0.15) student.isIncreasedF = true;
+                } else {
+                    // If passing, they MIGHT be a "Cleared F" (was failing previously)
+                    if(Math.random() < 0.05) student.isClearedF = true;
+                    
+                    // If they have all As, maybe they just reached 4.0
+                    if(student.isAllAs && Math.random() < 0.10) student.isGpaTo4 = true;
+                }
+                
+                // Independent flags
+                if(Math.random() < 0.03) student.isNewTardy = true;
+                if(Math.random() < 0.01) student.isNewGuidance = true;
+
+                studentDB.push(student);
+            }
+
+            // 2. Aggregate Data
+            calculateAggregates();
+        }
+
+        function calculateAggregates() {
+            // Reset Stats Structure matches the MVP rows
+            stats = {
+                TotalStudents: { total: 0, groups: {}, grades: {} },
+                TotalFailing: { total: 0, groups: {}, grades: {} },
+                TotalFailingPct: { total: 0, groups: {}, grades: {} }, // Calculated later
+                AllAs: { total: 0, groups: {}, grades: {} },
+                AllAsPct: { total: 0, groups: {}, grades: {} }, // Calculated later
+                AllAsBs: { total: 0, groups: {}, grades: {} },
+                NewFs: { total: 0, groups: {}, grades: {} },
+                ClearedFs: { total: 0, groups: {}, grades: {} },
+                IncreasedFs: { total: 0, groups: {}, grades: {} },
+                ReducedFs: { total: 0, groups: {}, grades: {} },
+                GpaTo4: { total: 0, groups: {}, grades: {} },
+                NewTardies: { total: 0, groups: {}, grades: {} },
+                NewGuidances: { total: 0, groups: {}, grades: {} }
+            };
+
+            // Init sub-objects
+            const keys = Object.keys(stats);
+            ['Group A-G', 'Group H-O', 'Group P-Z'].forEach(g => keys.forEach(k => stats[k].groups[g] = 0));
+            ['Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'].forEach(g => keys.forEach(k => stats[k].grades[g] = 0));
+
+            // Helper to increment
+            const inc = (key, s) => {
+                stats[key].total++;
+                stats[key].groups[s.group]++;
+                stats[key].grades[s.gradeLevel]++;
+            };
+
+            // Top Lists Maps
+            const tMap = {};
+            const cMap = {};
+
+            studentDB.forEach(s => {
+                inc('TotalStudents', s);
+                if(s.fCount > 0) inc('TotalFailing', s);
+                if(s.isAllAs) inc('AllAs', s);
+                if(s.isAllAsBs) inc('AllAsBs', s);
+                if(s.isNewF) inc('NewFs', s);
+                if(s.isClearedF) inc('ClearedFs', s);
+                if(s.isIncreasedF) inc('IncreasedFs', s);
+                if(s.isReducedF) inc('ReducedFs', s);
+                if(s.isGpaTo4) inc('GpaTo4', s);
+                if(s.isNewTardy) inc('NewTardies', s);
+                if(s.isNewGuidance) inc('NewGuidances', s);
+
+                // Top Lists Aggregation
+                s.courses.forEach(c => {
+                    if(!tMap[c.teacher]) tMap[c.teacher] = { total: 0, fails: 0 };
+                    if(!cMap[c.course]) cMap[c.course] = { total: 0, fails: 0 };
+                    
+                    tMap[c.teacher].total++;
+                    cMap[c.course].total++;
+                    
+                    if(c.grade === 'F') {
+                        tMap[c.teacher].fails++;
+                        cMap[c.course].fails++;
+                    }
+                });
+            });
+
+            // Calculate Percentages
+            const calcPct = (targetKey, numKey, denomKey) => {
+                stats[targetKey].total = (stats[numKey].total / stats[denomKey].total * 100).toFixed(1);
+                for(let g in stats[targetKey].groups) {
+                    const div = stats[denomKey].groups[g] || 1;
+                    stats[targetKey].groups[g] = (stats[numKey].groups[g] / div * 100).toFixed(1);
+                }
+                for(let g in stats[targetKey].grades) {
+                    const div = stats[denomKey].grades[g] || 1;
+                    stats[targetKey].grades[g] = (stats[numKey].grades[g] / div * 100).toFixed(1);
+                }
+            };
+
+            calcPct('TotalFailingPct', 'TotalFailing', 'TotalStudents');
+            calcPct('AllAsPct', 'AllAs', 'TotalStudents');
+
+            // Convert Top Lists
+            teacherStats = Object.keys(tMap).map(k => ({
+                name: k, count: tMap[k].fails, rate: (tMap[k].fails/tMap[k].total*100).toFixed(1)
+            }));
+            classStats = Object.keys(cMap).map(k => ({
+                name: k, count: cMap[k].fails, rate: (cMap[k].fails/cMap[k].total*100).toFixed(1)
+            }));
+        }
+
+        // --- 2. RENDERERS ---
+
+        function init() {
+            document.getElementById('header-date').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            initData(); 
+            
+            // Render KPI
+            document.getElementById('kpi-percent').textContent = stats.TotalFailingPct.total + "%";
+            document.getElementById('kpi-context').textContent = `${stats.TotalFailing.total} Students Failing 1+ classes`;
+
+            renderMainTable('groups');
+            renderTopList('teachers', 'volume');
+            renderTopList('classes', 'volume');
+            
+            // ADD THIS LINE:
+            renderIntervention(); 
+            
+            initChart();
+            initVelocityChart();
+        }
+
+        function renderMainTable(mode) {
+            currentView = mode;
+            document.getElementById('btnGroups').classList.toggle('active', mode === 'groups');
+            document.getElementById('btnGrades').classList.toggle('active', mode === 'grades');
+
+            const thead = document.getElementById('stats-header-row');
+            const tbody = document.getElementById('stats-body-row');
+            
+            let cols = mode === 'groups' ? ['Group A-G', 'Group H-O', 'Group P-Z'] : ['Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'];
+            let headHTML = `<tr><th style="min-width:150px;">Statistic</th><th>Total</th>${cols.map(c=>`<th>${c}</th>`).join('')}</tr>`;
+            thead.innerHTML = headHTML;
+
+            const rows = [
+                { k: 'TotalStudents', l: 'Total Students', type: 'neutral', desc: 'Active enrollment' },
+                { k: 'TotalFailing', l: 'Total Failing', type: 'bad', desc: 'Students with 1+ F' },
+                { k: 'TotalFailingPct', l: 'Total Failing %', type: 'bad', pct: true, desc: 'Failure rate' },
+                { k: 'AllAs', l: "Current All A's", type: 'good', desc: '4.0 GPA' },
+                { k: 'AllAsPct', l: "All A's %", type: 'good', pct: true, desc: '4.0 Percentage' },
+                { k: 'AllAsBs', l: "Current All A's/B's", type: 'good', desc: 'No Cs, Ds, Fs' },
+                { k: 'NewFs', l: "New F's", type: 'bad', desc: 'Dropped to failing' },
+                { k: 'ClearedFs', l: "Cleared F's", type: 'good', desc: 'Improved to passing' },
+                { k: 'IncreasedFs', l: "Increased F's", type: 'bad', desc: 'More failures' },
+                { k: 'ReducedFs', l: "Reduced F's", type: 'good', desc: 'Fewer failures' },
+                { k: 'GpaTo4', l: "Achieved 4.0 GPA", type: 'good', desc: 'Reached 4.0' },
+                { k: 'NewTardies', l: "Increase of 5+ Tardies", type: 'bad', desc: 'Attendance issue' },
+                { k: 'NewGuidances', l: "Increase of 5+ Guidances", type: 'bad', desc: 'Behavior issue' }
+            ];
+
+            let bodyHTML = '';
+            rows.forEach(r => {
+                const s = stats[r.k];
+                const cls = r.type === 'bad' ? 'row-bad' : (r.type === 'good' ? 'row-good' : '');
+                
+                // FIXED: Helper to safely create clickable cell
+                const mkCell = (val, colName) => {
+                    // Percentages are not clickable drill-downs in this version
+                    if(r.pct) return `<span class="non-clickable-cell">${val}%</span>`;
+                    
+                    // Allow 0 to be non-clickable
+                    if(val == 0) return `<span class="non-clickable-cell" style="color:#ccc">0</span>`;
+                    
+                    // Safe Strings (escaped quotes)
+                    const safeKey = r.k;
+                    const safeTitle = r.l.replace(/'/g, "\\'");
+                    const safeCol = colName.replace(/'/g, "\\'");
+                    const safeDesc = r.desc.replace(/'/g, "\\'");
+
+                    return `<span class="clickable-cell" onclick="openModal('${safeKey}', '${safeTitle}', '${safeCol}', '${safeDesc}')">${val}</span>`;
+                }
+
+                let row = `<tr class="${cls}"><td>${r.l}</td>`;
+                row += `<td>${mkCell(s.total, 'Total')}</td>`;
+                
+                cols.forEach(c => {
+                    const val = mode === 'groups' ? s.groups[c] : s.grades[c];
+                    row += `<td>${mkCell(val, c)}</td>`;
+                });
+                row += `</tr>`;
+                bodyHTML += row;
+            });
+            tbody.innerHTML = bodyHTML;
+        }
+
+        function renderTopList(cat, type, btn) {
+            if(btn) {
+                btn.parentElement.querySelectorAll('.list-tab').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            
+            const listData = cat === 'teachers' ? [...teacherStats] : [...classStats];
+            const tbodyId = cat === 'teachers' ? 'top-teachers-list' : 'top-classes-list';
+            const theadId = cat === 'teachers' ? 'teachers-thead' : 'classes-thead';
+            
+            // Sort
+            if(type === 'volume') listData.sort((a,b) => b.count - a.count);
+            else listData.sort((a,b) => b.rate - a.rate);
+
+            const top10 = listData.slice(0, 10);
+            const headerLabel = type === 'volume' ? '% of School Fs' : 'Fail Rate';
+
+            document.getElementById(theadId).innerHTML = `<tr><th class="rank-col">#</th><th>Name</th><th class="val-col">F Count</th><th class="rate-col">${headerLabel}</th></tr>`;
+            
+            document.getElementById(tbodyId).innerHTML = top10.map((d, i) => `
+                <tr><td class="rank-col">${i+1}</td><td>${d.name}</td><td class="val-col">${d.count}</td><td class="rate-col">${d.rate}%</td></tr>
+            `).join('');
+        }
+
+        // --- 3. MODAL LOGIC (Data Binding) ---
+        function openModal(statKey, title, column, desc) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalStatsLine').innerHTML = `Filter: <strong style="color:var(--primary)">${column}</strong>`;
+            document.getElementById('modalDescLine').textContent = desc;
+            
+            const listDiv = document.getElementById('modalList');
+            listDiv.innerHTML = '<div style="padding:20px; text-align:center; color:#999;">Loading...</div>';
+            
+            // Filter Logic based on statKey
+            const results = studentDB.filter(s => {
+                // 1. Column Filter
+                if(column !== 'Total') {
+                    if(column.startsWith('Group') && s.group !== column) return false;
+                    if(column.startsWith('Grade') && s.gradeLevel !== column) return false;
+                }
+
+                // 2. Metric Filter
+                if(statKey === 'TotalStudents') return true;
+                if(statKey === 'TotalFailing') return s.fCount > 0;
+                if(statKey === 'AllAs') return s.isAllAs;
+                if(statKey === 'AllAsBs') return s.isAllAsBs;
+                if(statKey === 'NewFs') return s.isNewF;
+                if(statKey === 'ClearedFs') return s.isClearedF;
+                if(statKey === 'IncreasedFs') return s.isIncreasedF;
+                if(statKey === 'ReducedFs') return s.isReducedF;
+                if(statKey === 'GpaTo4') return s.isGpaTo4;
+                if(statKey === 'NewTardies') return s.isNewTardy;
+                if(statKey === 'NewGuidances') return s.isNewGuidance;
+                return false;
+            });
+
+            // Render Results
+            document.getElementById('dataModal').style.display = 'flex';
+            
+            if(results.length === 0) {
+                listDiv.innerHTML = '<div style="padding:20px; text-align:center;">No students found.</div>';
+                return;
+            }
+
+            listDiv.innerHTML = results.map(s => `
+                <div class="student-row">
+                    <div class="student-info">
+                        <span class="student-name">${s.name}</span>
+                        <span class="student-meta">ID: ${s.id} | ${s.gradeLevel}</span>
+                    </div>
+                    <button class="action-btn" onclick="openNoteModal('${s.name.replace(/'/g,"\\'")}')">📝 Note</button>
+                </div>
+            `).join('');
+        }
+
+        // --- 4. INTERVENTION LOGIC ---
+        function renderIntervention() {
+            const weeks = parseInt(document.getElementById('streakWeeks').value);
+            const studentContainer = document.getElementById('intervention-student-list');
+            const teacherContainer = document.getElementById('intervention-teacher-list');
+
+            // 1. Filter At-Risk Students
+            const atRisk = studentDB.filter(s => s.courses.some(c => c.streak >= weeks));
+            
+            // Sort students by severity
+            atRisk.sort((a,b) => {
+                const countA = a.courses.filter(c => c.streak >= weeks).length;
+                const countB = b.courses.filter(c => c.streak >= weeks).length;
+                return countB - countA;
+            });
+
+            document.getElementById('risk-count').textContent = atRisk.length;
+
+            // 2. Render Student Left Column
+            if(atRisk.length === 0) {
+                studentContainer.innerHTML = '<div style="padding:20px; text-align:center;">No streaks found.</div>';
+                teacherContainer.innerHTML = '<div style="padding:20px; text-align:center;">No data.</div>';
+                return;
+            }
+
+            let sHtml = '';
+            atRisk.forEach((s, idx) => {
+                const badCount = s.courses.filter(c => c.streak >= weeks).length;
+                
+                sHtml += `
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAcc('student', ${idx})">
+                        <div class="acc-title-container">
+                            ${s.name} <span style="font-weight:400; color:#666; font-size:0.9em;">(${s.id})</span>
+                        </div>
+                        <div class="acc-badge-container">
+                            <span class="streak-badge">${badCount} Classes</span>
+                            <span class="accordion-icon" id="icon-student-${idx}">▼</span>
+                        </div>
+                    </div>
+                    <div class="accordion-content" id="acc-student-${idx}" style="padding: 0;"> 
+                        <table style="width:100%; font-size:0.95rem; border-collapse: collapse;">
+                            ${s.courses.map(c => {
+                                const isFailing = c.streak >= weeks;
+                                
+                                // Logic for Teacher Prefix (Consistent based on name length)
+                                const prefix = c.teacher.length % 2 === 0 ? "Ms." : "Mr.";
+                                
+                                // Styling
+                                const rowBg = isFailing ? '#fff5f5' : 'white';
+                                const textColor = isFailing ? '#c53030' : '#28a745'; 
+                                const statusText = isFailing ? `⚠️ ${c.streak} Wks` : `${c.grade}`; 
+                                const weight = isFailing ? 'bold' : '500';
+
+                                return `
+                                <tr style="background-color: ${rowBg}; border-bottom:1px solid #f0f0f0;">
+                                    <td style="text-align:left; border:none; padding: 12px 15px;">
+                                        <span style="font-weight:500; color:#333;">${c.course}</span> 
+                                        <span style="color:#888; font-size:0.9em; margin-left:4px;">(${prefix} ${c.teacher})</span>
+                                    </td>
+                                    <td style="text-align:center; border:none; padding: 12px 15px; color:${textColor}; font-weight:${weight}; width: 80px;">
+                                        ${statusText}
+                                    </td>
+                                </tr>
+                                `;
+                            }).join('')}
+                        </table>
+                        <div style="text-align:right; padding: 12px 15px; background: #fafafa; border-top:1px solid #eee;">
+                            <button class="action-btn" onclick="openNoteModal('${s.name.replace(/'/g,"\\'")}')">Add Note</button>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            studentContainer.innerHTML = sHtml;
+
+            // 3. Aggregate Teacher Data (Right Column)
+            const iTMap = {};
+            atRisk.forEach(s => {
+                s.courses.forEach(c => {
+                    if(c.streak >= weeks) {
+                        const key = c.teacher + "|" + c.course;
+                        if(!iTMap[key]) iTMap[key] = { t: c.teacher, c: c.course, count: 0, students: [] };
+                        iTMap[key].count++;
+                        iTMap[key].students.push({ name: s.name, streak: c.streak });
+                    }
+                });
+            });
+            
+            const iList = Object.values(iTMap).sort((a,b) => b.count - a.count).slice(0, 10);
+
+            // 4. Render Teacher Right Column
+            let tHtml = '';
+            iList.forEach((item, idx) => {
+                // Determine prefix for teacher column too
+                const prefix = item.t.length % 2 === 0 ? "Ms." : "Mr.";
+                
+                tHtml += `
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAcc('teacher', ${idx})">
+                        <div class="acc-title-container">
+                             ${prefix} ${item.t} <span style="font-weight:400; color:#666; font-size:0.9em;">- ${item.c}</span>
+                        </div>
+                        <div class="acc-badge-container">
+                            <span class="streak-badge">${item.count} Students</span>
+                            <span class="accordion-icon" id="icon-teacher-${idx}">▼</span>
+                        </div>
+                    </div>
+                    <div class="accordion-content" id="acc-teacher-${idx}" style="padding:0;">
+                        <table style="width:100%; font-size:0.85rem; border-collapse: collapse;">
+                            ${item.students.map(st => `
+                                <tr style="border-bottom: 1px solid #f0f0f0;">
+                                    <td style="text-align:left; border:none; padding:10px 15px;">${st.name}</td>
+                                    <td style="text-align:right; border:none; padding:10px 15px; font-weight:bold; color:#c53030;">${st.streak} Wks</td>
+                                </tr>
+                            `).join('')}
+                        </table>
+                    </div>
+                </div>`;
+            });
+            teacherContainer.innerHTML = tHtml;
+        }
+
+        
+        // Updated Toggle Function (Handles both Student and Teacher sides)
+        function toggleAcc(type, id) {
+            const el = document.getElementById(`acc-${type}-${id}`);
+            const icon = document.getElementById(`icon-${type}-${id}`);
+            
+            if(el.style.display === 'block') {
+                el.style.display = 'none';
+                icon.classList.remove('rotate-down');
+            } else {
+                el.style.display = 'block';
+                icon.classList.add('rotate-down');
+            }
+        }
+
+        // --- 5. HISTORY CHART ---
+        function initChart() {
+            // Cards Logic
+            const histContainer = document.getElementById('history-card-container');
+            histContainer.innerHTML = `
+                <div class="history-card active" onclick="updateChart('failing', this)">
+                    <div class="h-card-title">Total Failing</div><div class="h-card-val" style="color:#dc3545">${stats.TotalFailing.total}</div>
+                </div>
+                <div class="history-card" onclick="updateChart('allas', this)">
+                    <div class="h-card-title">All A's</div><div class="h-card-val" style="color:#28a745">${stats.AllAs.total}</div>
+                </div>
+                <div class="history-card" onclick="updateChart('allasbs', this)">
+                    <div class="h-card-title">All A's & B's</div><div class="h-card-val" style="color:#17a2b8">${stats.AllAsBs.total}</div>
+                </div>
+                <div class="history-card" onclick="updateChart('enrollment', this)">
+                    <div class="h-card-title">Enrollment</div><div class="h-card-val" style="color:#6c757d">${stats.TotalStudents.total}</div>
+                </div>
+            `;
+
+            updateChart('failing', null); // Initial Render
+        }
+
+        let myChart = null;
+        function updateChart(type, card) {
+            if(card) {
+                document.querySelectorAll('.history-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+            }
+
+            // Consistent Data Generator for History
+            // We ensure the LAST point matches the current live data
+            let currentVal = 0;
+            let color = '#333';
+            let label = '';
+
+            if(type === 'failing') { currentVal = stats.TotalFailing.total; color = '#dc3545'; label = 'Total Failing'; }
+            if(type === 'allas') { currentVal = stats.AllAs.total; color = '#28a745'; label = "All A's"; }
+            if(type === 'allasbs') { currentVal = stats.AllAsBs.total; color = '#17a2b8'; label = "All A's & B's"; }
+            if(type === 'enrollment') { currentVal = stats.TotalStudents.total; color = '#6c757d'; label = 'Total Students'; }
+
+            // Generate fake historical points relative to current
+            const data = [
+                Math.round(currentVal * 0.95),
+                Math.round(currentVal * 1.02),
+                Math.round(currentVal * 0.98),
+                Math.round(currentVal * 1.05),
+                Math.round(currentVal * 0.97),
+                Math.round(currentVal * 1.01),
+                Math.round(currentVal * 0.99),
+                currentVal // Ensure consistency
+            ];
+
+            const ctx = document.getElementById('trendChart').getContext('2d');
+            if(myChart) myChart.destroy();
+
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Current'],
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        borderColor: color,
+                        backgroundColor: color,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fff',
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: false } }
+                }
+            });
+        }
+
+        // --- NAVIGATION & UTILS ---
+        function switchView(view) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(`view-${view}`).classList.add('active');
+            document.getElementById(`nav-${view}`).classList.add('active');
+
+            if(view === 'intervention') renderIntervention();
+            if(view === 'history') updateChart('failing', document.querySelector('.history-card')); // Reset chart
+        }
+
+        // Note Modal
+        let currentNoteStudent = '';
+        function openNoteModal(name) {
+            currentNoteStudent = name;
+            document.getElementById('noteStudentName').textContent = name;
+            document.getElementById('noteInput').value = "";
+            document.getElementById('noteHistory').innerHTML = '<div style="color:#999; font-style:italic;">No previous notes found.</div>';
+            document.getElementById('noteModal').style.display = 'flex';
+        }
+        function saveNote() {
+            const val = document.getElementById('noteInput').value;
+            if(!val) return alert("Enter note.");
+            alert(`Note saved for ${currentNoteStudent}`);
+            closeModal('noteModal');
+        }
+
+        // Settings Modal
+        function openSettingsModal() { document.getElementById('settingsModal').style.display = 'flex'; }
+        function saveSettings() {
+            document.getElementById('schoolNameDisplay').textContent = document.getElementById('settingSchoolName').value;
+            closeModal('settingsModal');
+            alert("Settings Saved");
+        }
+
+        // --- ADD THIS FUNCTION TO GENERATE THE NEW CHART ---
+        function initVelocityChart() {
+            const ctx = document.getElementById('velocityChart').getContext('2d');
+            
+            // 1. Get REAL current totals from the generated DB
+            const currentNew = parseInt(stats.NewFs.total);
+            const currentCleared = parseInt(stats.ClearedFs.total);
+
+            // 2. Generate plausible history based on the current real number
+            // We create 7 previous weeks of data that fluctuate around the current value
+            const generateHistory = (baseVal) => {
+                const hist = [];
+                for(let i=0; i<7; i++) {
+                    // Random variance +/- 40%
+                    hist.push(Math.round(baseVal * (0.6 + Math.random() * 0.8)));
+                }
+                hist.push(baseVal); // Ensure the last point matches live data
+                return hist;
+            };
+
+            const dataNew = generateHistory(currentNew);
+            const dataCleared = generateHistory(currentCleared);
+
+            if (velocityChart) velocityChart.destroy();
+
+            velocityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Current'],
+                    datasets: [
+                        {
+                            label: 'New Fs (Bad)',
+                            data: dataNew,
+                            borderColor: '#dc3545', // Red
+                            backgroundColor: 'rgba(220, 53, 69, 0.05)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Cleared Fs (Good)',
+                            data: dataCleared,
+                            borderColor: '#28a745', // Green
+                            backgroundColor: 'rgba(40, 167, 69, 0.05)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ": " + context.raw;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        // ADD this function anywhere in your script section
+        function openLeadModal() { 
+            document.getElementById('leadModal').style.display = 'flex'; 
+        }
+        
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        window.onclick = function(e) { if(e.target.classList.contains('modal-overlay')) e.target.style.display = 'none'; }
+
+        // Start
+        init();
+
+    </script>
+</body>
+</html>

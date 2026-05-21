@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom School Software, Data Analytics, and AI Training | GC Education Analytics</title>
+  <meta name="description" content="GC Education Analytics helps schools build custom software, answer harder data questions, and give administrators practical AI training for real school workflows.">
+  <link rel="canonical" href="https://gceducationanalytics.com/">
+  <meta property="og:title" content="Custom School Software, Data Analytics, and AI Training | GC Education Analytics">
+  <meta property="og:description" content="Custom school software, deeper data analytics, and practical AI training for administrators and school leaders.">
+  <meta property="og:image" content="https://gceducationanalytics.com/assets/images/gceducationlogo.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://gceducationanalytics.com/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Custom School Software, Data Analytics, and AI Training | GC Education Analytics">
+  <meta name="twitter:description" content="Custom school software, deeper data analytics, and practical AI training for administrators and school leaders.">
+  <meta name="twitter:image" content="https://gceducationanalytics.com/assets/images/gceducationlogo.png">
+  <meta name="theme-color" content="#10223a">
+  <link rel="icon" href="assets/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="assets/icons/site.webmanifest">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body data-root="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div id="site-header" class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="./">
+        <img class="brand__logo" src="assets/images/gceducationlogo.png" alt="GC Education Analytics logo">
+        <div class="brand__text">
+          <span class="brand__name">GC Education Analytics LLC</span>
+          <span class="brand__sub">Custom software, data analytics, and AI training</span>
+        </div>
+      </a>
+      <div class="site-header__right">
+        <nav id="primary-navigation" class="site-nav" aria-label="Primary navigation">
+          <a href="./">Home</a>
+          <a href="about/">About</a>
+          <a href="services/">Services</a>
+          <a href="ai-training/">AI Training</a>
+          <a href="contact/">Contact</a>
+        </nav>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme">
+          <span class="theme-toggle__icon" aria-hidden="true"></span>
+          <span class="theme-toggle__text">Dark</span>
+        </button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation">
+          <span>Menu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <main id="main-content" class="page-wrap">
+    <section class="hero">
+      <div class="shell hero__grid">
+        <div class="hero__content">
+          <span class="eyebrow">Three core services for school leaders</span>
+          <h1>Custom school software, deeper data analytics, and AI training for administrators.</h1>
+          <p class="hero__lead">GC Education Analytics builds school-specific software, answers harder data questions, and offers practical AI training that helps administrators automate workflows and build better internal tools.</p>
+          <div class="button-row">
+            <a class="button" href="https://calendly.com/gcastillo-gceducationanalytics/30min?hide_event_type_details=1&amp;hide_gdpr_banner=1" data-calendly-popup>Discuss Your Project</a>
+            <a class="button-secondary" href="services/">Explore Core Services</a>
+          </div>
+          <div class="pill-row">
+            <a href="services/custom-software/">Custom Software</a>
+            <a href="services/custom-analysis/">Data Analytics</a>
+            <a href="ai-training/">AI Training</a>
+          </div>
+        </div>
+        <aside class="panel panel--image">
+          <img src="assets/images/hero-school-systems.svg" alt="Illustrated school software dashboard with workflow cards, analytics panels, and intervention tracking">
+          <p class="panel__caption">Custom school software and analytics should feel organized, practical, and built around the way school teams actually work.</p>
+          <div class="mini-callout">
+            Many projects are designed to keep school data inside your own Google Workspace environment instead of moving it into yet another vendor platform.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="metric-grid">
+          <article class="metric">
+            <strong>Custom software</strong>
+            <p>From MTSS hubs to testing center systems, build around the workflow your school actually runs.</p>
+          </article>
+          <article class="metric">
+            <strong>Deeper data analytics</strong>
+            <p>Analyze state testing, MTSS, at-risk, cohort, demographic, and predictive data with school decisions in mind.</p>
+          </article>
+          <article class="metric">
+            <strong>AI training for admin</strong>
+            <p>Help principals, APs, and district leaders learn how to use AI to automate workflows and create practical internal tools.</p>
+          </article>
+          <article class="metric">
+            <strong>Privacy-conscious builds</strong>
+            <p>Keep a strong focus on school-controlled environments and FERPA-aware implementation.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-chapter home-chapter--software" id="home-software">
+      <div class="shell home-chapter__intro">
+        <div class="home-chapter__bar">
+          <span class="home-chapter__index">01</span>
+          <div class="home-chapter__copy">
+            <div class="home-chapter__label">Custom Software</div>
+            <p>Internal systems, workflow automations, dashboards, and school-specific tools.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="shell product-showcase">
+          <article class="product-showcase__copy">
+            <div class="card__eyebrow">Representative Build</div>
+            <h2>Built systems can be simple, clear, and ready for daily school use.</h2>
+            <p>These screens show the level of polish and practicality GC Education Analytics brings to custom school software, whether the tool is an MTSS hub, a testing center system, a workflow tracker, or another school-specific system your campus needs.</p>
+            <ul class="checklist">
+              <li>At-risk and MTSS hubs</li>
+              <li>Eligibility, graduation, and discipline trackers</li>
+              <li>Testing center, sub, payroll, and signature workflows</li>
+              <li>Google Workspace-based internal apps staff can actually use</li>
+            </ul>
+            <div class="button-row">
+              <a class="button-secondary" href="services/custom-software/">See Custom Software</a>
+            </div>
+          </article>
+          <div>
+            <div class="browser-frame">
+              <div class="browser-frame__bar"><span></span><span></span><span></span></div>
+              <img src="assets/images/02.png" alt="Student Tracker Pro Google Apps Script interface in a navy theme" loading="lazy" decoding="async">
+            </div>
+            <div class="mockup-stack">
+              <div class="mini-browser">
+                <img src="assets/images/03.png" alt="Student Tracker Pro theme selection interface" loading="lazy" decoding="async">
+              </div>
+              <div class="mini-browser">
+                <img src="assets/images/01.png" alt="Student Tracker Pro classroom participation tracker interface" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section section--alt">
+        <div class="shell">
+          <div class="section__header">
+            <div class="section__kicker">Common Builds</div>
+            <h2 class="section__title">Representative examples of the kinds of internal systems GC Education Analytics can build.</h2>
+            <p class="section__lead">These are not template products. They are examples of the kinds of school-specific software and workflow systems that can be scoped and built around your needs.</p>
+          </div>
+          <div class="card-grid">
+            <article class="card card--span-4">
+              <div class="card__eyebrow">Student Support</div>
+              <h3>At-Risk / MTSS Hubs</h3>
+              <p>Track grades, behavior, attendance, and intervention history over time in one clearer internal system.</p>
+              <div class="button-row">
+                <a class="button-secondary" href="services/custom-software/">View Service</a>
+              </div>
+            </article>
+            <article class="card card--span-4">
+              <div class="card__eyebrow">Athletics / Attendance</div>
+              <h3>Eligibility Trackers</h3>
+              <p>Automatically send daily updates to coaches and attendance staff so eligibility and participation stay visible.</p>
+              <div class="button-row">
+                <a class="button-secondary" href="services/custom-software/">View Service</a>
+              </div>
+            </article>
+            <article class="card card--span-4">
+              <div class="card__eyebrow">Discipline</div>
+              <h3>Discipline &amp; ISI Dashboards</h3>
+              <p>Move away from paper-based systems and track behaviors, referrals, and ISI patterns digitally.</p>
+              <div class="button-row">
+                <a class="button-secondary" href="services/custom-software/">View Service</a>
+              </div>
+            </article>
+            <article class="card card--span-6">
+              <div class="card__eyebrow">Instructional Leadership</div>
+              <h3>Walkthrough Automations</h3>
+              <p>Generate and email teacher feedback instantly from your walkthrough forms instead of cleaning up notes manually.</p>
+              <div class="button-row">
+                <a class="button-secondary" href="services/custom-software/">View Service</a>
+              </div>
+            </article>
+            <article class="card card--span-6">
+              <div class="card__eyebrow">Progress Monitoring</div>
+              <h3>Graduation, Testing, Payroll, and Signature Workflows</h3>
+              <p>Build systems for graduation tracking, testing center scheduling and packets, sub and payroll workflows, or digital signature collection and logging.</p>
+              <div class="button-row">
+                <a class="button-secondary" href="services/custom-software/">View Service</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="shell">
+          <div class="section__header">
+            <div class="section__kicker">Before and After</div>
+            <h2 class="section__title">The work is about reducing friction, not adding software for its own sake.</h2>
+          </div>
+          <div class="comparison-grid">
+            <article class="comparison-card">
+              <div class="card__eyebrow">Before</div>
+              <h3>Helpful people stuck maintaining fragile systems.</h3>
+              <ul class="checklist">
+                <li>Multiple spreadsheets with unclear ownership</li>
+                <li>Manual reminders, copy/paste reporting, and inbox follow-up</li>
+                <li>Data that exists, but is hard to act on quickly</li>
+                <li>Staff capacity spent on process instead of students</li>
+              </ul>
+            </article>
+            <article class="comparison-card comparison-card--after">
+              <div class="card__eyebrow">After</div>
+              <h3>Cleaner workflows with clearer action points.</h3>
+              <ul class="checklist">
+                <li>One practical system that matches the school process</li>
+                <li>Automations for notifications, logging, and routine follow-up</li>
+                <li>Dashboards that surface the right next decision</li>
+                <li>Documentation and training so the tool does not become mystery software</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="shell">
+          <div class="section__header">
+            <div class="section__kicker">Visual Proof</div>
+            <h2 class="section__title">Use visuals to make the work feel real faster.</h2>
+            <p class="section__lead">Real screenshots, workflow visuals, and interface examples help schools picture what custom software and analytics can look like in practice.</p>
+          </div>
+          <div class="gallery-grid gallery-grid--3">
+            <article class="gallery-card">
+              <img src="assets/images/teacher-coverage-workflow.svg" alt="Clean teacher coverage workflow automation graphic" loading="lazy" decoding="async">
+              <div class="gallery-card__body">
+                <h3>Coverage workflow automation</h3>
+                <p>A polished example of how internal school processes can move out of email and into a trackable system.</p>
+              </div>
+            </article>
+            <article class="gallery-card">
+              <img src="assets/images/04.png" alt="Student Tracker Pro interface preview" loading="lazy" decoding="async">
+              <div class="gallery-card__body">
+                <h3>School-facing app interfaces</h3>
+                <p>Internal tools should be simple enough for daily use and polished enough that staff trust them quickly.</p>
+              </div>
+            </article>
+            <article class="gallery-card">
+              <img src="assets/images/software-development.png" alt="Custom software development workspace" loading="lazy" decoding="async">
+              <div class="gallery-card__body">
+                <h3>Custom builds where vendors do not fit</h3>
+                <p>For niche school workflows, a school-specific app can be more useful than another generic platform.</p>
+              </div>
+            </article>
+          </div>
+          <div class="button-row page-spacer">
+            <a class="button-secondary" href="examples/">Browse Example Pages</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-chapter home-chapter--analytics" id="home-analytics">
+      <div class="shell home-chapter__intro">
+        <div class="home-chapter__bar">
+          <span class="home-chapter__index">02</span>
+          <div class="home-chapter__copy">
+            <div class="home-chapter__label">Data Analytics</div>
+            <p>State testing, MTSS, at-risk, subgroup, and predictive analysis for school decisions.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section section--alt">
+        <div class="shell">
+          <div class="chapter-feature">
+            <div class="section__header">
+              <div class="section__kicker">Data Analytics</div>
+              <h2 class="section__title">School data analysis should help you identify students, patterns, and next steps faster.</h2>
+              <p class="section__lead">The work can be built around the real questions schools ask every year: which students are moving toward Tier 2 or Tier 3, where subgroup gaps are widening, what state testing trends are telling you, and which interventions appear to be helping.</p>
+            </div>
+            <aside class="panel panel--image chapter-feature__visual">
+              <img class="chapter-feature__image--contain" src="assets/images/data_analytics.png" alt="Illustrated analytics screen showing MTSS indicators, trend charts, and intervention-focused reporting">
+              <p class="panel__caption">Analytics should surface the students, patterns, and intervention questions that matter most to schools, not just produce another dashboard.</p>
+            </aside>
+          </div>
+          <div class="deliverable-grid">
+            <article class="deliverable">
+              <span>1</span>
+              <h3>State testing and longitudinal analysis</h3>
+              <p>Track how students, grade levels, campuses, or programs change over time using state assessment and year-over-year performance data.</p>
+            </article>
+            <article class="deliverable">
+              <span>2</span>
+              <h3>Cohort and demographic analysis</h3>
+              <p>Compare cohorts and student groups to see where performance patterns persist, improve, or break in different ways.</p>
+            </article>
+            <article class="deliverable">
+              <span>3</span>
+              <h3>Predictive and regression analysis</h3>
+              <p>Look at which factors appear most tied to attendance, achievement, behavior, course failure, or graduation risk.</p>
+            </article>
+            <article class="deliverable">
+              <span>4</span>
+              <h3>MTSS and at-risk analysis</h3>
+              <p>Use grades, attendance, behavior, intervention, and assessment data together to flag students who may need Tier 2 or Tier 3 support.</p>
+            </article>
+            <article class="deliverable">
+              <span>5</span>
+              <h3>Leadership-ready interpretation</h3>
+              <p>Turn the analysis into decisions about intervention groups, staffing, student support, accountability, and next instructional steps.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-chapter home-chapter--training" id="home-training">
+      <div class="shell home-chapter__intro">
+        <div class="home-chapter__bar">
+          <span class="home-chapter__index">03</span>
+          <div class="home-chapter__copy">
+            <div class="home-chapter__label">AI Training for Admin</div>
+            <p>Hands-on training for administrators who want practical AI workflows, not abstract theory.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="shell">
+          <div class="chapter-feature chapter-feature--training">
+            <aside class="panel panel--image chapter-feature__visual">
+              <img src="assets/images/ai-admin-training-visual.svg" alt="Illustrated school leadership team collaborating around an AI-powered workflow and dashboard screen">
+              <p class="panel__caption">The goal is practical training: administrators learning together, building useful tools, and turning school workflows into something more manageable.</p>
+            </aside>
+            <div class="section__header">
+              <div class="section__kicker">AI Training</div>
+              <h2 class="section__title">Give administrators a practical way to learn AI through real school workflows.</h2>
+              <p class="section__lead">The training is built for principals, assistant principals, district leaders, and admin teams who want to automate work, design better tools, and use AI more confidently inside Google Workspace.</p>
+            </div>
+          </div>
+          <div class="grid grid--2">
+            <article class="card">
+              <div class="card__eyebrow">Who It Helps</div>
+              <h3>Built for school and district leaders.</h3>
+              <ul class="checklist">
+                <li>Principals and assistant principals</li>
+                <li>District leaders and campus admin teams</li>
+                <li>Counselors, intervention leads, and operations staff</li>
+                <li>Teams that want practical AI use, not generic PD</li>
+              </ul>
+            </article>
+            <article class="card">
+              <div class="card__eyebrow">What They Learn</div>
+              <h3>Focus on workflows staff can use right away.</h3>
+              <ul class="checklist">
+                <li>How to describe a school workflow clearly enough for AI to help</li>
+                <li>How to use prompts and Apps Script to build useful internal tools</li>
+                <li>How to automate repetitive admin work inside Google Workspace</li>
+                <li>How to refine a rough idea into something staff will actually use</li>
+              </ul>
+            </article>
+          </div>
+          <div class="button-row page-spacer">
+            <a class="button-secondary" href="ai-training/">See AI Training</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="section__header">
+          <div class="section__kicker">Proof</div>
+          <h2 class="section__title">Grounded in real school work, not hypothetical school work.</h2>
+          <p class="section__lead">The tools and training on this site come from actual educator-side experience, including work inside Mustang Public Schools and practical outcomes for school leaders using these systems.</p>
+        </div>
+        <div class="proof-grid">
+          <article class="card">
+            <div class="card__eyebrow">School Context</div>
+            <h3>Built inside Mustang Public Schools</h3>
+            <p>GC Education Analytics is informed by work inside Mustang Public Schools, including Mustang High School, where multiple internal tools and systems have been created around real school needs.</p>
+          </article>
+          <article class="card">
+            <div class="card__eyebrow">Representative Tools</div>
+            <h3>The advertised systems come from real builds.</h3>
+            <ul class="checklist">
+              <li>At-risk and MTSS hubs</li>
+              <li>Eligibility, discipline, graduation, and testing tools</li>
+              <li>Walkthrough, payroll, and digital signature workflows</li>
+            </ul>
+          </article>
+          <article class="quote-card proof-quote">
+            <blockquote>The AI training helped an assistant principal in Texas build a custom data dashboard that now saves them countless hours every week.</blockquote>
+            <p>That kind of outcome is the point: administrators learning how to create something genuinely useful for their own campus or district context.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="section__header">
+          <div class="section__kicker">Why GC</div>
+          <h2 class="section__title">A better fit for schools than generic consultants or generic software.</h2>
+        </div>
+        <div class="trust-grid">
+          <article class="card">
+            <h3>Educator-first perspective</h3>
+            <p>Solutions are designed around how schools actually function, not around startup jargon or enterprise bloat.</p>
+          </article>
+          <article class="card">
+            <h3>Privacy-conscious architecture</h3>
+            <p>Many tools are built to operate inside your Google Workspace environment so sensitive data stays under your control.</p>
+          </article>
+          <article class="card">
+            <h3>Technical depth without extra complexity</h3>
+            <p>From predictive analytics to custom workflow tools, the output is powerful without becoming hard for staff to use.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell split">
+        <article class="panel panel--image portrait-card">
+          <img src="assets/images/headshot.png" alt="Gerardo Castillo, founder of GC Education Analytics">
+          <p class="panel__caption">Gerardo Castillo, founder of GC Education Analytics LLC.</p>
+        </article>
+        <article class="card">
+          <div class="card__eyebrow">Founder-Led</div>
+          <h2>Built by someone who understands schools from the inside.</h2>
+          <p class="lead page-spacer">GC Education Analytics is led by Gerardo Castillo, an educator who combines school experience with data analysis, Google Workspace automation, Apps Script, and custom product-building skill.</p>
+          <p class="page-spacer">The approach is simple: create tools that respect educators' time, make data more usable, and help schools operate with more clarity and less friction. That means fewer black-box systems and more practical workflows your team can understand.</p>
+          <div class="button-row">
+            <a class="button-secondary" href="about/">Read the Full Story</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="quote-card">
+          <blockquote>Most projects start with one of three needs: build a better system, answer a harder data question, or train leaders to use AI well.</blockquote>
+          <p>That clarity helps schools choose the right starting point faster and keeps the site focused on the work GC Education Analytics does best.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="cta-band">
+          <div>
+            <h2>Start with a free consultation.</h2>
+            <p>We can talk through the system you need built, the question you need answered, or the kind of AI training your administrators would benefit from most.</p>
+          </div>
+          <div class="button-row">
+            <a class="button" href="https://calendly.com/gcastillo-gceducationanalytics/30min?hide_event_type_details=1&amp;hide_gdpr_banner=1" data-calendly-popup>Book a Free Consultation</a>
+            <a class="button-secondary" href="services/">Browse Services</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer" class="footer">
+    <div class="footer__inner">
+      <div class="footer__panel">
+        <div class="footer__top">
+          <div>
+            <div class="footer__eyebrow">GC Education Analytics LLC</div>
+            <h3>Custom software, data analytics, and AI training.</h3>
+            <p>Practical systems for schools that want less friction, clearer data, and tools built around the way staff actually work.</p>
+          </div>
+          <div class="footer__contact">
+            <a href="mailto:gcastillo@gceducationanalytics.com">gcastillo@gceducationanalytics.com</a>
+            <a href="https://calendly.com/gcastillo-gceducationanalytics/30min?hide_event_type_details=1&amp;hide_gdpr_banner=1" data-calendly-popup>Book a consultation</a>
+          </div>
+        </div>
+        <div class="footer__meta">
+          <div class="footer__nav">
+            <a href="about/">About</a>
+            <a href="services/">Services</a>
+            <a href="ai-training/">AI Training</a>
+            <a href="examples/">Examples</a>
+            <a href="privacy/">Privacy</a>
+            <a href="terms/">Terms</a>
+          </div>
+          <div>
+            <span>GC Education Analytics LLC</span>
+            <span> &middot; </span>
+            <span><a href="mailto:gcastillo@gceducationanalytics.com">gcastillo@gceducationanalytics.com</a></span>
+            <span> &middot; </span>
+            <span>&copy; <span data-year></span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="site-dock" class="site-dock">
+    <div class="site-dock__inner">
+      <div class="site-dock__copy">
+        <div class="site-dock__eyebrow">Calendly</div>
+        <div class="site-dock__title">Free consultation</div>
+        <div class="site-dock__meta">30-minute intro call</div>
+      </div>
+      <div class="site-dock__actions">
+        <a class="button site-dock__button" href="https://calendly.com/gcastillo-gceducationanalytics/30min?hide_event_type_details=1&amp;hide_gdpr_banner=1" data-calendly-popup>Book now</a>
+      </div>
+    </div>
+  </div>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "GC Education Analytics LLC",
+    "url": "https://gceducationanalytics.com/",
+    "logo": "https://gceducationanalytics.com/assets/images/gceducationlogo.png",
+    "email": "gcastillo@gceducationanalytics.com",
+    "description": "School data analytics, custom K-12 workflow automation, custom school software, and AI training for school leaders.",
+    "sameAs": [
+      "https://www.linkedin.com/in/gerardo-castillo-10a175b4/"
+    ],
+    "knowsAbout": [
+      "School data analytics",
+      "K-12 workflow automation",
+      "Custom school software",
+      "Google Workspace automation",
+      "AI training for school leaders"
+    ]
+  }
+  </script>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>
