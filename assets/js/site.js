@@ -413,6 +413,28 @@ document.addEventListener("DOMContentLoaded", () => {
     if (nextInput) nextInput.value = thankYouUrl;
   });
 
+  document.querySelectorAll("form[data-dynamic-next]").forEach((form) => {
+    form.addEventListener("submit", () => {
+      const submitButton = form.querySelector("[data-submit-button]");
+      const formStatus = form.querySelector("[data-form-status]");
+      if (!submitButton) return;
+
+      const loadingText = submitButton.getAttribute("data-loading-text") || "Sending...";
+      if (!submitButton.dataset.defaultText) {
+        submitButton.dataset.defaultText = submitButton.textContent.trim();
+      }
+
+      submitButton.classList.add("is-loading");
+      submitButton.disabled = true;
+      submitButton.setAttribute("aria-disabled", "true");
+      submitButton.textContent = loadingText;
+
+      if (formStatus) {
+        formStatus.textContent = "Submitting your message...";
+      }
+    });
+  });
+
   const revealTargets = document.querySelectorAll(
     ".hero__content, .panel, .section__header, .chapter-band, .product-showcase__copy, .browser-frame, .mini-browser, .card, .metric, .outcome-card, .comparison-card, .deliverable, .gallery-card, .quote-card, .process__step, .cta-band, .legal-card"
   );

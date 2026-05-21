@@ -624,6 +624,7 @@ html[data-theme="dark"] .site-nav__submenu-link.is-active {
   font-size: 0.94rem;
   transition: 0.2s ease;
   border: 1px solid transparent;
+  cursor: pointer;
 }
 
 .button {
@@ -1776,6 +1777,13 @@ html[data-theme="dark"] .service-pill__title {
   color: var(--navy);
 }
 
+.field__meta {
+  margin-left: 0.35rem;
+  color: var(--soft);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
 .field input,
 .field textarea,
 .field select {
@@ -1799,6 +1807,44 @@ html[data-theme="dark"] .field select {
 .field textarea {
   min-height: 180px;
   resize: vertical;
+}
+
+.field__hint {
+  color: var(--muted);
+  font-size: 0.84rem;
+  margin-top: -0.05rem;
+}
+
+.form-actions {
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.form-status {
+  color: var(--muted);
+  font-size: 0.88rem;
+  min-height: 1.2rem;
+}
+
+.button.is-loading {
+  pointer-events: none;
+  opacity: 0.94;
+}
+
+.button.is-loading::before {
+  content: "";
+  width: 0.95rem;
+  height: 0.95rem;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  animation: button-spin 0.7s linear infinite;
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .legal-card {

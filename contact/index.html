@@ -134,7 +134,7 @@
                 <input id="email" name="email" type="email" required>
               </div>
               <div class="field">
-                <label for="school">School or District</label>
+                <label for="school">School or District <span class="field__meta">Optional</span></label>
                 <input id="school" name="school" type="text">
               </div>
               <div class="field">
@@ -144,10 +144,12 @@
             </div>
             <div class="field">
               <label for="message">Message</label>
+              <div class="field__hint">A few details about the workflow, reporting need, software idea, or training support you are exploring is helpful.</div>
               <textarea id="message" name="message" required></textarea>
             </div>
-            <div class="button-row">
-              <button class="button" type="submit">Send Message</button>
+            <div class="button-row form-actions">
+              <button class="button" type="submit" data-submit-button data-loading-text="Sending...">Send Message</button>
+              <div class="form-status" data-form-status aria-live="polite"></div>
             </div>
           </form>
         </article>
