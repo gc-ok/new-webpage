@@ -126,7 +126,7 @@ function renderFooter(root) {
 
 function renderBackgroundLayer(root) {
   return `
-    <img class="bg-motion__image" src="${root}assets/svg/background.svg" alt="" role="presentation" aria-hidden="true" width="1084" height="322" decoding="sync" fetchpriority="high">
+    <img class="bg-motion__image" src="${root}assets/svg/background.svg" alt="" role="presentation" aria-hidden="true" fetchpriority="high">
     <div class="bg-motion__wash"></div>
   `;
 }
@@ -232,6 +232,16 @@ function loadCalendlyAssets() {
   return calendlyAssetsPromise;
 }
 
+let calendlyWarmupStarted = false;
+
+function warmCalendlyAssets() {
+  if (calendlyWarmupStarted) return;
+  calendlyWarmupStarted = true;
+  loadCalendlyAssets().catch(() => {
+    calendlyWarmupStarted = false;
+  });
+}
+
 async function openCalendlyPopup(url) {
   const Calendly = await loadCalendlyAssets();
   if (!Calendly || typeof Calendly.initPopupWidget !== "function") {
@@ -325,8 +335,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   syncPrimaryNavigation(currentPath);
 
-  loadCalendlyAssets().catch(() => {});
-
   document.addEventListener("click", (event) => {
     const calendlyLink = event.target.closest("[data-calendly-popup]");
     if (!calendlyLink) return;
@@ -337,6 +345,32 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = url;
     });
   });
+
+  document.addEventListener(
+    "pointerover",
+    (event) => {
+      if (event.target.closest("[data-calendly-popup]")) {
+        warmCalendlyAssets();
+      }
+    },
+    { passive: true }
+  );
+
+  document.addEventListener("focusin", (event) => {
+    if (event.target.closest("[data-calendly-popup]")) {
+      warmCalendlyAssets();
+    }
+  });
+
+  document.addEventListener(
+    "touchstart",
+    (event) => {
+      if (event.target.closest("[data-calendly-popup]")) {
+        warmCalendlyAssets();
+      }
+    },
+    { passive: true }
+  );
 
   const header = document.querySelector(".site-header");
   const toggle = document.querySelector(".nav-toggle");
@@ -436,13 +470,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const revealTargets = document.querySelectorAll(
-    ".hero__content, .panel, .section__header, .chapter-band, .product-showcase__copy, .browser-frame, .mini-browser, .card, .metric, .outcome-card, .comparison-card, .deliverable, .gallery-card, .quote-card, .process__step, .cta-band, .legal-card"
+    ".hero__grid, .metric-grid, .home-chapter__intro, .product-showcase, .section__header, .card-grid, .comparison-grid, .gallery-grid, .chapter-feature, .proof-grid, .split, .about-section-panel, .contact-grid, .pricing-grid, .support-split, .process-grid, .cta-band, .legal-card, .footer__panel"
   );
 
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
     revealTargets.forEach((node, index) => {
       node.classList.add("reveal");
-      node.style.setProperty("--reveal-delay", `${(index % 4) * 35}ms`);
+      node.style.setProperty("--reveal-delay", "0ms");
     });
 
     const observer = new IntersectionObserver(
@@ -455,8 +489,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       },
       {
-        threshold: 0.08,
-        rootMargin: "0px 0px -12% 0px"
+        threshold: 0.01,
+        rootMargin: "0px 0px 4% 0px"
       }
     );
 
