@@ -1,6 +1,7 @@
 const navItems = [
   { href: "", label: "Home", match: "/" },
-  { href: "about/", label: "About", match: "/about/" },
+  { href: "ai-training/", label: "Workshops", match: "/ai-training/" },
+  { href: "examples/", label: "Case Studies", match: "/examples/" },
   {
     href: "services/",
     label: "Services",
@@ -12,7 +13,7 @@ const navItems = [
       { href: "services/at-risk-analysis/", label: "At-Risk Analysis", match: "/services/at-risk-analysis/" }
     ]
   },
-  { href: "ai-training/", label: "AI Training", match: "/ai-training/" },
+  { href: "about/", label: "About", match: "/about/" },
   { href: "contact/", label: "Contact", match: "/contact/" }
 ];
 
@@ -68,7 +69,7 @@ function renderHeader(root, currentPath) {
         <img class="brand__logo" src="${root}assets/images/gceducationlogo.png" alt="GC Education Analytics logo">
         <div class="brand__text">
           <span class="brand__name">GC Education Analytics LLC</span>
-          <span class="brand__sub">Custom software, data analytics, and AI training</span>
+          <span class="brand__sub">AI workshops, custom tools, and school data</span>
         </div>
       </a>
       <div class="site-header__right">
@@ -94,8 +95,8 @@ function renderFooter(root) {
         <div class="footer__top">
           <div>
             <div class="footer__eyebrow">GC Education Analytics LLC</div>
-            <h3>Custom software, data analytics, and AI training.</h3>
-            <p>Practical systems for schools that want less friction, clearer data, and tools built around the way staff actually work.</p>
+            <h3>Practical AI workshops and school-specific tools.</h3>
+            <p>Help your administrators build useful systems—or commission the finished tool for your school.</p>
           </div>
           <div class="footer__contact">
             <a href="mailto:gcastillo@gceducationanalytics.com">gcastillo@gceducationanalytics.com</a>
@@ -104,10 +105,10 @@ function renderFooter(root) {
         </div>
         <div class="footer__meta">
           <div class="footer__nav">
-            <a href="${root}about/">About</a>
+            <a href="${root}ai-training/">Workshops</a>
+            <a href="${root}examples/">Case Studies</a>
             <a href="${root}services/">Services</a>
-            <a href="${root}ai-training/">AI Training</a>
-            <a href="${root}examples/">Examples</a>
+            <a href="${root}about/">About</a>
             <a href="${root}privacy/">Privacy</a>
             <a href="${root}terms/">Terms</a>
           </div>
@@ -126,9 +127,41 @@ function renderFooter(root) {
 
 function renderBackgroundLayer(root) {
   return `
-    <img class="bg-motion__image" src="${root}assets/svg/background.svg" alt="" role="presentation" aria-hidden="true" fetchpriority="high">
+    <img class="bg-motion__image" src="${root}assets/svg/background.svg" alt="" role="presentation" aria-hidden="true" decoding="async" fetchpriority="low">
     <div class="bg-motion__wash"></div>
   `;
+}
+
+function applyContactInterest() {
+  const interestField = document.getElementById("interest");
+  if (!interestField) return;
+
+  const requestedInterest = new URLSearchParams(window.location.search).get("interest");
+  const interestLabels = {
+    workshop: "Workshop or presentation",
+    "custom-build": "Custom school tool",
+    "build-plus-coaching": "Build plus coaching",
+    "data-analysis": "Data analysis"
+  };
+
+  if (requestedInterest && interestLabels[requestedInterest]) {
+    interestField.value = interestLabels[requestedInterest];
+  }
+}
+
+function optimizeImageLoading() {
+  document.querySelectorAll("img").forEach((image) => {
+    if (!image.hasAttribute("decoding")) {
+      image.setAttribute("decoding", "async");
+    }
+
+    if (
+      !image.hasAttribute("loading") &&
+      !image.closest(".hero, .site-header, .bg-motion")
+    ) {
+      image.setAttribute("loading", "lazy");
+    }
+  });
 }
 
 function renderDock() {
@@ -299,6 +332,7 @@ function syncPrimaryNavigation(currentPath) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  applyContactInterest();
   const body = document.body;
   const root = body.dataset.root || "";
   const currentPath = normalizePath(window.location.pathname);
@@ -332,6 +366,8 @@ document.addEventListener("DOMContentLoaded", () => {
     dockMount.innerHTML = renderDock();
     setupDockBehavior(dockMount);
   }
+
+  optimizeImageLoading();
 
   syncPrimaryNavigation(currentPath);
 

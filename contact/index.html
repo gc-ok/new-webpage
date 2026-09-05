@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact GC Education Analytics</title>
-  <meta name="description" content="Book a consultation or contact GC Education Analytics to discuss school automation, analytics, custom software, or AI training.">
+  <title>Request a Workshop or School Tool | GC Education Analytics</title>
+  <meta name="description" content="Request an administrator AI workshop or discuss a custom school workflow, dashboard, automation, internal application, or data-analysis project.">
   <link rel="canonical" href="https://gceducationanalytics.com/contact/">
   <meta property="og:title" content="Contact GC Education Analytics">
   <meta property="og:description" content="Book a consultation about K-12 workflow automation, school data analytics, custom software, or AI training.">
@@ -69,8 +69,8 @@
     <section class="hero hero--tight">
       <div class="shell hero__grid">
         <div class="hero__content">
-          <h1>Let's talk through your school's workflow, data, or tool-building needs.</h1>
-          <p class="hero__lead">If you are exploring automation, analytics, custom software, or AI training for your staff, the best next step is a short consultation.</p>
+          <h1>Tell us what your team wants to learn—or what your school needs built.</h1>
+          <p class="hero__lead">A short planning conversation can clarify the audience, workflow, desired outcome, and whether the right next step is a workshop, custom development, or a combination of both.</p>
           <div class="button-row">
             <a class="button" href="https://calendly.com/gcastillo-gceducationanalytics/30min?hide_event_type_details=1&amp;hide_gdpr_banner=1" data-calendly-popup>Book a Free Consultation</a>
           </div>
@@ -80,14 +80,9 @@
           </div>
         </div>
         <aside class="panel panel--image">
-          <img src="../assets/images/07.png" alt="Consultation planning visual with a school operations dashboard, process steps, roadmap, and project notes">
-          <h3>Common reasons people reach out</h3>
-          <ul class="checklist">
-            <li>You need a more efficient internal workflow</li>
-            <li>You want better student or assessment reporting</li>
-            <li>You want a school-specific app or dashboard</li>
-            <li>You want AI training for leaders or staff</li>
-          </ul>
+          <img src="../assets/images/07.webp" alt="Consultation planning visual with a school operations dashboard, process steps, roadmap, and project notes">
+          <h3>Do not send confidential information.</h3>
+          <p>Describe the people, steps, handoffs, and problem. Please do not include student records, employee records, credentials, internal links, or other sensitive information.</p>
         </aside>
       </div>
     </section>
@@ -95,23 +90,23 @@
     <section class="section section--alt section--cool">
       <div class="shell contact-grid">
         <article class="card">
-          <div class="card__eyebrow">Book a Consultation</div>
-          <h3>The fastest path is a short introductory call.</h3>
-          <p class="page-spacer">We can talk through your context, current bottlenecks, and whether there is a strong fit.</p>
+          <div class="card__eyebrow">Professional Learning</div>
+          <h3>Request a workshop or presentation.</h3>
+          <p class="page-spacer">Share the audience, preferred date, group size, available time, and the kind of workflow or resource participants want to build.</p>
           <div class="button-row">
-            <a class="button" href="https://calendly.com/gcastillo-gceducationanalytics/30min?hide_event_type_details=1&amp;hide_gdpr_banner=1" data-calendly-popup>Open Calendly</a>
+            <a class="button" href="#inquiry-form">Request Training</a>
           </div>
         </article>
         <article class="card">
-          <div class="card__eyebrow">Send a Message</div>
-          <h3>Prefer to start with questions by email?</h3>
-          <p class="page-spacer">Use the form below and include a quick note about what your school is trying to solve.</p>
-          <div class="notice page-spacer">Please do not include confidential student information in the form. Form submissions are handled through FormSubmit.</div>
+          <div class="card__eyebrow">Custom Development</div>
+          <h3>Discuss a school-specific tool.</h3>
+          <p class="page-spacer">Describe the current process, who uses it, where it breaks down, and what a better experience would make possible.</p>
+          <div class="button-row"><a class="button-secondary" href="#inquiry-form">Discuss a Build</a></div>
         </article>
       </div>
     </section>
 
-    <section class="section section--alt">
+    <section class="section section--alt" id="inquiry-form">
       <div class="shell">
         <div class="section__header">
           <h2 class="section__title">Tell us what you're working on.</h2>
@@ -135,14 +130,15 @@
                 <label for="school">School or District <span class="field__meta">Optional</span></label>
                 <input id="school" name="school" type="text">
               </div>
-              <div class="field">
-                <label for="subject">Subject</label>
-                <input id="subject" name="subject" type="text" required>
-              </div>
+              <div class="field"><label for="role">Your Role <span class="field__meta">Optional</span></label><input id="role" name="role" type="text" autocomplete="organization-title"></div>
+              <div class="field"><label for="interest">What are you interested in?</label><select id="interest" name="interest" required><option value="">Select one</option><option value="Workshop or presentation">Workshop or presentation</option><option value="Custom school tool">Custom school tool</option><option value="Build plus coaching">Build plus coaching</option><option value="Data analysis">Data analysis</option><option value="Not sure yet">Not sure yet</option></select></div>
+              <div class="field"><label for="format">Preferred Format <span class="field__meta">Optional</span></label><select id="format" name="format"><option value="">Select one</option><option value="In person">In person</option><option value="Virtual">Virtual</option><option value="Either">Either</option><option value="Not applicable">Not applicable</option></select></div>
+              <div class="field"><label for="timeframe">Preferred Date or Timeframe <span class="field__meta">Optional</span></label><input id="timeframe" name="preferred_timeframe" type="text" placeholder="Example: October PD day or spring 2027"></div>
+              <div class="field"><label for="group-size">Approximate Group Size <span class="field__meta">Optional</span></label><input id="group-size" name="group_size" type="text" placeholder="Example: 20 administrators"></div>
             </div>
             <div class="field">
-              <label for="message">Message</label>
-              <div class="field__hint">A few details about the workflow, reporting need, software idea, or training support you are exploring is helpful.</div>
+              <label for="message">What should we understand about your audience, workflow, or goal?</label>
+              <div class="field__hint">Start with the process and desired outcome. Do not include confidential student or employee information.</div>
               <textarea id="message" name="message" required></textarea>
             </div>
             <div class="button-row form-actions">
@@ -163,7 +159,7 @@
         <div class="cta-band">
           <div>
             <h2>Schedule a 30-minute intro call.</h2>
-            <p>Bring the workflow, data problem, tool idea, or training need you are thinking about. We can quickly identify whether there is a practical next step.</p>
+            <p>Bring the workflow, data problem, tool idea, or training need you are considering. We can quickly identify whether there is a practical next step.</p>
           </div>
           <div class="button-row">
             <a class="button" href="https://calendly.com/gcastillo-gceducationanalytics/30min?hide_event_type_details=1&amp;hide_gdpr_banner=1" data-calendly-popup>Open Scheduling Modal</a>
