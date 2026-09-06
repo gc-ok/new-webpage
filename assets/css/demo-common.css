@@ -1,0 +1,213 @@
+* {
+  box-sizing:border-box;
+}
+button,input,select,textarea {
+  font:inherit;
+}
+button,a,input,select,textarea {
+  touch-action:manipulation;
+}
+button {
+  cursor:pointer;
+}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible {
+  outline:3px solid var(--accent,#2760cc);
+  outline-offset:4px;
+}
+.skip-link {
+  position:fixed;
+  top:-80px;
+  left:20px;
+  z-index:9999;
+  padding:12px;
+  background:white;
+  color:#172b26;
+}
+.skip-link:focus {
+  top:10px;
+}
+.demo-tag {
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  border:1px solid currentColor;
+  border-radius:4px;
+  padding:4px 7px;
+  white-space:nowrap;
+}
+.demo-toast {
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:14px 22px;
+  background:#172b26;
+  color:white;
+  box-shadow:0 8px 30px #0002;
+  border-radius:8px;
+  z-index:4000;
+  max-width:calc(100% - 32px);
+  font-size:14px;
+}
+.demo-toast:empty {
+  display:none;
+}
+.demo-tour {
+  border:1px solid #d8dfdc;
+  border-radius:16px;
+  padding:0;
+  width:440px;
+  max-width:calc(100vw - 32px);
+  max-height:calc(100dvh - 32px);
+  color:#20312d;
+  background:#fff;
+  box-shadow:0 30px 100px #101e3340;
+}
+.demo-tour::backdrop {
+  background:#101d2c73;
+  backdrop-filter:blur(3px);
+}
+.tour-top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:22px 26px 0;
+}
+.tour-top span {
+  font-size:11px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--accent,#2760cc);
+  font-weight:700;
+}
+.tour-close {
+  background:transparent!important;
+  color:#64716b!important;
+  border:0;
+  padding:6px 9px!important;
+  font-size:23px!important;
+  margin:0!important;
+}
+.tour-body {
+  padding:16px 26px 26px;
+}
+.tour-body h2 {
+  font-size:27px;
+  letter-spacing:-.04em;
+  line-height:1.15;
+  margin:8px 0 14px;
+  color:#20312d;
+}
+.tour-body p {
+  font-size:14px;
+  line-height:1.75;
+  color:#63716b;
+  margin:0;
+}
+.tour-context {
+  margin-top:20px;
+  padding:12px 14px;
+  background:#f3f5f4;
+  font-size:12px;
+  line-height:1.6;
+  border-radius:6px;
+}
+.tour-bottom {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:18px 26px;
+  border-top:1px solid #e8ece9;
+}
+.tour-bottom button {
+  padding:10px 15px;
+  border:1px solid #d8dfdc;
+  background:#fff;
+  color:#20312d;
+  border-radius:6px;
+  font-size:13px;
+  margin:0;
+}
+.tour-bottom .tour-next {
+  background:var(--accent,#2760cc);
+  color:#fff;
+  border-color:transparent;
+}
+.tour-progress {
+  font-size:12px;
+  color:#64716b;
+}
+.tour-highlight {
+  outline:3px solid var(--accent,#2760cc)!important;
+  outline-offset:5px;
+}
+.demo-tour.tour-positioned::backdrop {
+  backdrop-filter:none;
+  background:#101d2c33;
+}
+.demo-tour.tour-positioned {
+  position:fixed;
+  margin:0;
+}
+.empty-state {
+  padding:36px 20px;
+  text-align:center;
+  color:#66746d;
+  line-height:1.7;
+}
+.demo-automation {
+  scroll-margin-top:120px;
+}
+.automation-label {
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-weight:700;
+}
+.automation-step {
+  display:grid;
+  grid-template-columns:28px 1fr;
+  gap:10px;
+  padding:17px 0;
+  border-bottom:1px solid #ffffff20;
+}
+.automation-step:last-child {
+  border:0;
+}
+.automation-step>span {
+  font-size:11px;
+  opacity:.6;
+  padding-top:3px;
+}
+.automation-step strong {
+  font-size:13px;
+  font-weight:600;
+}
+.automation-step p {
+  font-size:12px;
+  line-height:1.6;
+  margin:5px 0 0;
+  opacity:.7;
+}
+noscript {
+  display:block;
+  padding:24px;
+  text-align:center;
+  background:#fff4dd;
+  color:#6c4517;
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+}
+[hidden] {
+  display:none!important;
+}
+.demo-toast {
+  pointer-events:none;
+}

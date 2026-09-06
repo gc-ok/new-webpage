@@ -705,7 +705,7 @@ html[data-theme="dark"] .portrait-card img {
 }
 
 .section {
-  padding: 1.15rem 0;
+  padding: clamp(1.35rem, 3vw, 2rem) 0;
 }
 
 .page-wrap > .section,
@@ -834,6 +834,21 @@ html[data-theme="dark"] .section > .shell:not(.page-spacer):not(.home-chapter__i
   border: 0;
   background: transparent;
   box-shadow: none;
+}
+
+.section--plain {
+  padding-block: clamp(2.2rem, 5vw, 4rem);
+}
+
+.section--plain > .shell:not(.page-spacer):not(.home-chapter__intro) {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.section--plain .section__header {
+  margin-bottom: clamp(1.35rem, 3vw, 2.15rem);
 }
 
 .section > .shell:has(> .cta-band),
