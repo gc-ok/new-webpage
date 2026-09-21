@@ -1795,6 +1795,12 @@ html[data-theme="dark"] .cta-band {
   border-color: rgba(120, 221, 233, 0.4);
 }
 
+.section--alt.section--light > .shell:not(.page-spacer):not(.home-chapter__intro) .pricing-card--featured {
+  background: linear-gradient(180deg, rgba(16, 34, 58, 0.98), rgba(25, 54, 86, 0.97));
+  border-color: rgba(120, 221, 233, 0.42);
+  box-shadow: 0 18px 42px rgba(16, 34, 58, 0.18);
+}
+
 .pricing-card--featured h3,
 .pricing-card--featured p,
 .pricing-card--featured li,
@@ -2057,6 +2063,18 @@ html[data-theme="dark"] .service-pill:hover {
 
 html[data-theme="dark"] .service-pill__title {
   color: #fff;
+}
+
+html[data-theme="dark"] .section--light > .shell:not(.page-spacer):not(.home-chapter__intro) .service-pill {
+  border-top-color: var(--border);
+}
+
+html[data-theme="dark"] .section--light .service-pill__title {
+  color: var(--navy);
+}
+
+.section--light .testimonial-card figcaption {
+  color: var(--muted);
 }
 
 .about-page .hero {
