@@ -1,0 +1,59 @@
+WEBVTT
+
+00:00:00.500 --> 00:00:03.017
+AI training for school and district leaders.
+
+00:00:03.367 --> 00:00:07.911
+Go beyond using AI to write emails, or to hand you an Excel formula.
+
+00:00:08.261 --> 00:00:14.128
+Learn to build a live dashboard your whole team can use. Here's a real one, shown at two times speed.
+
+00:00:15.528 --> 00:00:22.355
+Step one: describe what you want in plain words. Your columns, the key numbers, the charts, and a table you can sort.
+
+00:00:23.528 --> 00:00:28.499
+The AI plans the app and writes the code. You don't have to read it. You just copy it.
+
+00:00:32.528 --> 00:00:39.333
+Step two: open your sheet's Apps Script editor and paste the code in. One file for the logic, one for the page.
+
+00:00:44.528 --> 00:00:48.667
+Step three: deploy it as a web app, and choose who on your team can open it.
+
+00:00:55.528 --> 00:01:03.165
+And that's it. A live dashboard, running on your own Google Sheet, with key numbers, charts, and a table you can sort and search.
+
+00:01:08.528 --> 00:01:16.571
+In real life, the first version is rarely perfect. So you test it, tell the AI what to fix, paste the new code, and redeploy.
+
+00:01:16.921 --> 00:01:19.716
+It usually takes a few rounds, not one prompt.
+
+00:01:21.416 --> 00:01:26.067
+Once you know that loop, the dashboard is just the start. Here's what you can ask for next.
+
+00:01:27.367 --> 00:01:31.762
+Email every teacher who has a student failing their class for four weeks or more.
+
+00:01:34.367 --> 00:01:38.100
+Send each coach their eligibility list for the week, with one click.
+
+00:01:41.367 --> 00:01:45.570
+Flag students with five or more missing assignments, and alert their counselor.
+
+00:01:48.367 --> 00:01:53.594
+Draft a weekly progress note for every family, ready for your review before anything is sent.
+
+00:01:55.694 --> 00:02:00.195
+Turn this week's numbers into a printable report for your MTSS meeting.
+
+00:02:02.694 --> 00:02:06.470
+Put intervention check-ins straight onto the team's Google Calendar.
+
+00:02:09.694 --> 00:02:14.899
+Each one is just another request. You describe it, test it, and decide who can see what.
+
+00:02:16.599 --> 00:02:21.740
+That's what we practice in GC Education Analytics workshops. Bring one to your team.
+

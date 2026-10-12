@@ -3,18 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Practical AI Workshops for School Administrators | GC Education Analytics</title>
-  <meta name="description" content="Hands-on AI workshops help administrators build internal tools, automate workflows, and create polished resources with Google Apps Script, VS Code, and LaTeX.">
+  <title>AI Training Workshops for School Administrators | GC Education Analytics</title>
+  <meta name="description" content="Hands-on AI training workshops for Oklahoma school administrators and district leaders. Build working school tools with AI, Google Apps Script, and VS Code—no coding background needed.">
   <link rel="canonical" href="https://gceducationanalytics.com/ai-training/">
-  <meta property="og:title" content="Practical AI Workshops for School Administrators | GC Education Analytics">
-  <meta property="og:description" content="Move beyond AI as a chatbot. Give administrators guided practice building tools for real school workflows.">
-  <meta property="og:image" content="https://gceducationanalytics.com/assets/images/10.webp">
+  <meta property="og:title" content="AI Training Workshops for School Administrators | GC Education Analytics">
+  <meta property="og:description" content="Move beyond AI as a chatbot. Hands-on workshops where administrators build and test working tools for real school workflows.">
+  <meta property="og:image" content="https://gceducationanalytics.com/assets/images/og-ai-workshops.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="School administrators building tools together in a GC Education Analytics AI workshop">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://gceducationanalytics.com/ai-training/">
+  <meta property="og:site_name" content="GC Education Analytics">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Practical AI Workshops for School Administrators | GC Education Analytics">
-  <meta name="twitter:description" content="Move beyond AI as a chatbot. Give administrators guided practice building tools for real school workflows.">
-  <meta name="twitter:image" content="https://gceducationanalytics.com/assets/images/10.webp">
+  <meta name="twitter:title" content="AI Training Workshops for School Administrators | GC Education Analytics">
+  <meta name="twitter:description" content="Move beyond AI as a chatbot. Hands-on workshops where administrators build and test working tools for real school workflows.">
+  <meta name="twitter:image" content="https://gceducationanalytics.com/assets/images/og-ai-workshops.jpg">
   <meta name="theme-color" content="#10223a">
   <link rel="icon" href="../assets/icons/favicon.ico">
   <link rel="manifest" href="../assets/icons/site.webmanifest">
@@ -22,12 +26,12 @@
     (function () {
       try {
         var storedTheme = localStorage.getItem("gcea-theme");
-        var theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "dark";
+        var theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
         document.documentElement.dataset.theme = theme;
         document.documentElement.style.colorScheme = theme;
       } catch (error) {
-        document.documentElement.dataset.theme = "dark";
-        document.documentElement.style.colorScheme = "dark";
+        document.documentElement.dataset.theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.style.colorScheme = document.documentElement.dataset.theme;
       }
     })();
   </script>
@@ -77,16 +81,29 @@
     <section class="hero hero--tight">
       <div class="shell hero__grid">
         <div class="hero__content">
+          <p class="card__eyebrow hero__kicker">AI Training Workshops for School Administrators</p>
           <h1>Move beyond AI as a chatbot. Build something your school can use.</h1>
-          <p class="hero__lead">Hands-on workshops help principals, district leaders, and administrative teams use AI-assisted coding, Google Apps Script, and familiar tools to automate workflows and prototype practical internal applications—without requiring a programming background.</p>
+          <p class="hero__lead">Hands-on AI workshops for principals, district leaders, and administrative teams in Oklahoma and beyond. Participants use AI-assisted coding, Google Apps Script, and familiar tools to automate workflows and build working internal tools—without a programming background.</p>
           <div class="button-row">
             <a class="button" href="../contact/?interest=workshop">Request a Workshop</a>
-            <a class="button-secondary" href="../examples/">See Example Builds</a>
+            <a class="button-secondary" href="https://calendly.com/gcastillo-gceducationanalytics/30min?hide_event_type_details=1&amp;hide_gdpr_banner=1" data-calendly-popup>Book a 30-Minute Planning Call</a>
+          </div>
+          <div class="proof-strip" aria-label="Conferences where Gerardo Castillo has presented">
+            <span class="proof-strip__label">Presented at</span>
+            <span class="pill">OKMTSS</span>
+            <span class="pill">OSSBA</span>
+            <span class="pill">Nuts &amp; Bolts</span>
           </div>
         </div>
         <aside class="panel panel--image">
-          <img src="../assets/images/06.webp" alt="AI training workshop for school administrators featuring prompt building, workflow logic, and dashboard examples">
-          <h3>Participants build alongside the presenter.</h3>
+          <div class="loop-video">
+            <video data-loop-video autoplay muted loop playsinline preload="metadata" poster="../assets/videos/ai-build-loop-poster.jpg" aria-label="Silent loop of a real build: a plain-language prompt, AI-written Apps Script code, deployment, and the finished live dashboard">
+              <source src="../assets/videos/ai-build-loop.mp4" type="video/mp4">
+            </video>
+            <button class="loop-video__toggle" type="button" data-loop-toggle aria-label="Pause background video">Pause</button>
+          </div>
+          <p class="panel__caption">A real build, prompt to live dashboard. Shown at 2× speed with fictional data. <a class="text-link" href="#watch">Watch the full walkthrough</a></p>
+          <h2 class="panel__heading">Participants build alongside the presenter.</h2>
           <ul class="checklist">
             <li>Focused on school workflows, not abstract coding theory</li>
             <li>Designed for administrators and leadership teams</li>
@@ -98,21 +115,88 @@
       </div>
     </section>
 
-    <section class="section">
-      <div class="shell grid grid--2">
-        <article class="card">
-          <div class="card__eyebrow">What It Is</div>
-          <h3>AI training centered on building real school tools.</h3>
-          <p class="page-spacer">Participants learn how to describe the workflow, logic, and outcome they need so AI can help them build more useful school tools.</p>
-        </article>
-        <article class="card">
-          <div class="card__eyebrow">Why Apps Script</div>
-          <h3>Google Workspace is already the operational backbone for many schools.</h3>
-          <p class="page-spacer">That makes Apps Script a practical place to build automations and lightweight internal apps without introducing a giant new platform.</p>
-        </article>
+    <section class="section" id="watch" aria-labelledby="watch-title">
+      <div class="shell">
+        <div class="section__header">
+          <div class="card__eyebrow">Watch a Real Build</div>
+          <h2 class="section__title" id="watch-title">From a plain-language prompt to a live dashboard.</h2>
+          <p class="section__lead">This is the process participants practice: a real screen recording, narrated, using fictional student data. No programming background required.</p>
+        </div>
+        <div class="watch-grid">
+          <figure class="video-card">
+            <video controls preload="none" playsinline poster="../assets/videos/ai-dashboard-build-poster.jpg">
+              <source src="../assets/videos/ai-dashboard-build.mp4" type="video/mp4">
+              <track kind="captions" src="../assets/videos/ai-dashboard-build.vtt" srclang="en" label="English" default>
+            </video>
+            <figcaption class="panel__caption">2 min 24 sec · Narrated with captions. The build is a real recording at 2× speed; the capability scenes are examples.</figcaption>
+          </figure>
+          <article class="card">
+            <div class="card__eyebrow">The Build Loop</div>
+            <ol class="step-list">
+              <li><strong>Describe it.</strong> Explain the columns, the key numbers, and what the tool should show.</li>
+              <li><strong>Copy the code.</strong> AI writes the Apps Script. You don’t need to read it line by line.</li>
+              <li><strong>Paste it into Apps Script.</strong> One file for the logic, one for the page.</li>
+              <li><strong>Deploy.</strong> Publish it as a web app and choose who on your team can open it.</li>
+            </ol>
+            <p class="page-spacer"><strong>It’s a loop, not one prompt.</strong> Test it, tell the AI what to fix, paste the new code, and redeploy. Most tools take a few rounds.</p>
+            <div class="button-row"><a class="button" href="../contact/?interest=workshop">Request a Workshop</a></div>
+          </article>
+        </div>
       </div>
-      <div class="shell page-spacer">
-          <div class="notice">Responsible-use approach: hands-on exercises use synthetic or appropriately de-identified information and include human review, access, testing, accessibility, and local-approval considerations.</div>
+    </section>
+
+    <section class="section" aria-labelledby="outcomes-title">
+      <div class="shell">
+        <div class="section__header">
+          <div class="card__eyebrow">Outcomes</div>
+          <h2 class="section__title" id="outcomes-title">Leave with a working tool, not just a list of AI tips.</h2>
+          <p class="section__lead">Hands-on sessions end with a tested prototype built around a real school workflow. Once the first tool works, each new feature is just another plain-language request.</p>
+        </div>
+        <div class="ask-grid">
+          <article class="card ask-card">
+            <div class="card__eyebrow">You Ask</div>
+            <h3>“Email every teacher who has a student failing their class for 4+ weeks.”</h3>
+            <p>Each teacher gets one message listing their students and how long each has been failing.</p>
+          </article>
+          <article class="card ask-card">
+            <div class="card__eyebrow">You Ask</div>
+            <h3>“Email each coach their eligibility list for the week, with one button.”</h3>
+            <p>One click sends every coach the eligible and ineligible students on their roster.</p>
+          </article>
+          <article class="card ask-card">
+            <div class="card__eyebrow">You Ask</div>
+            <h3>“Flag students with 5+ missing assignments and alert their counselor.”</h3>
+            <p>Flagged students are highlighted and the right counselor is notified automatically.</p>
+          </article>
+          <article class="card ask-card">
+            <div class="card__eyebrow">You Ask</div>
+            <h3>“Draft a weekly progress note for every family. Don’t send until I review.”</h3>
+            <p>Drafts are created in bulk and nothing goes out until a person approves it.</p>
+          </article>
+          <article class="card ask-card">
+            <div class="card__eyebrow">You Ask</div>
+            <h3>“Turn this week’s numbers into a printable report for our MTSS meeting.”</h3>
+            <p>A formatted PDF is saved to Drive, ready to print or share with the team.</p>
+          </article>
+          <article class="card ask-card">
+            <div class="card__eyebrow">You Ask</div>
+            <h3>“Put intervention check-ins on the team’s Google Calendar.”</h3>
+            <p>Check-ins appear on the shared calendar with invites sent to the right staff.</p>
+          </article>
+        </div>
+        <div class="grid grid--2 page-spacer">
+          <article class="card">
+            <div class="card__eyebrow">What It Is</div>
+            <h3>AI training centered on building real school tools.</h3>
+            <p>Participants learn how to describe the workflow, logic, and outcome they need so AI can help them build more useful school tools.</p>
+          </article>
+          <article class="card">
+            <div class="card__eyebrow">Why Apps Script</div>
+            <h3>Google Workspace is already the operational backbone for many schools.</h3>
+            <p>That makes Apps Script a practical place to build automations and lightweight internal apps without introducing a giant new platform.</p>
+          </article>
+        </div>
+        <div class="notice page-spacer">Responsible-use approach: hands-on exercises use synthetic or appropriately de-identified information and include human review, access, testing, accessibility, and local-approval considerations.</div>
       </div>
     </section>
 
@@ -147,32 +231,93 @@
       </div>
     </section>
 
-    <section class="section" id="mtss-workshop">
+    <section class="section" id="sample-agenda" aria-labelledby="agenda-title">
+      <div class="shell">
+        <div class="section__header">
+          <div class="card__eyebrow">Sample Agenda · Administrator Automation Lab</div>
+          <h2 class="section__title" id="agenda-title">What three hours of building looks like.</h2>
+          <p class="section__lead">Timing and examples are adjusted on the planning call to fit your audience and the workflow your team wants to improve.</p>
+        </div>
+        <ol class="deliverable-grid agenda">
+          <li class="deliverable"><span>1</span><h3>Frame the work</h3><p class="agenda__time">20 min</p><p>Where AI fits beyond chat, plus privacy and responsible-use ground rules.</p></li>
+          <li class="deliverable"><span>2</span><h3>Map a workflow</h3><p class="agenda__time">30 min</p><p>Choose a real process and define the users, inputs, steps, and outcome.</p></li>
+          <li class="deliverable"><span>3</span><h3>Direct the AI</h3><p class="agenda__time">45 min</p><p>Turn the map into clear prompts and build alongside the presenter with checkpoints.</p></li>
+          <li class="deliverable"><span>4</span><h3>Test and troubleshoot</h3><p class="agenda__time">45 min</p><p>Try edge cases, fix almost-right code, and check who can see what.</p></li>
+          <li class="deliverable"><span>5</span><h3>Plan the rollout</h3><p class="agenda__time">25 min</p><p>Permissions, human review, documentation, and next steps for your campus.</p></li>
+        </ol>
+        <p class="caption page-spacer">Includes a short break.</p>
+      </div>
+    </section>
+
+    <section class="section" id="mtss-workshop" aria-labelledby="mtss-title">
       <div class="shell split">
-        <article class="panel panel--image">
-          <img src="../assets/images/at-risk-dashboard.png" alt="Sanitized example of an at-risk and MTSS dashboard" loading="lazy">
-          <p class="panel__caption">A representative dashboard showing how school data can become an intervention-ready view.</p>
-        </article>
+        <figure class="panel panel--image">
+          <img src="../assets/images/mtss-dashboard-demo.webp" alt="Interactive student support dashboard demo showing failing-grade rates, students back to passing, sustained academic risk, and a weekly student snapshot, built with fictional data" loading="lazy" width="1440" height="900">
+          <figcaption class="panel__caption">An interactive demo built with fictional data: the kind of intervention-ready view this workshop works toward. <a class="text-link" href="../examples/school-dashboard-sample.html">Try the demo</a></figcaption>
+        </figure>
         <article class="card">
           <div class="card__eyebrow">Specialized Workshop</div>
-          <h2>Automating MTSS dashboards and intervention workflows.</h2>
+          <h2 id="mtss-title">Automating MTSS dashboards and intervention workflows.</h2>
           <p class="page-spacer">Turn a maze of disconnected spreadsheets into a clearer workflow, dashboard, and notification structure.</p>
           <ul class="checklist"><li>Map movement between tiers and team actions</li><li>Plan early-warning indicators and staff-facing views</li><li>Prototype automation with AI and Apps Script</li><li>Practice with synthetic or de-identified information</li></ul>
+          <div class="button-row"><a class="button-secondary" href="../contact/?interest=workshop">Ask About the MTSS Workshop</a></div>
         </article>
       </div>
     </section>
 
-    <section class="section section--alt section--light" id="curriculum-studio">
-      <div class="shell grid grid--2">
-        <article class="card">
+    <section class="section section--alt section--light" id="curriculum-studio" aria-labelledby="curriculum-title">
+      <div class="shell">
+        <div class="section__header">
           <div class="card__eyebrow">Specialized Workshop</div>
-          <h2>AI-Assisted Curriculum Production Studio</h2>
-          <p class="page-spacer">Use AI, VS Code, and LaTeX to turn instructional content into standardized assessments, tiered interventions, graphic organizers, and professional PDFs.</p>
+          <h2 class="section__title" id="curriculum-title">AI-Assisted Curriculum Production Studio</h2>
+          <p class="section__lead">Use AI, VS Code, and LaTeX to turn instructional content into standardized assessments, tiered interventions, graphic organizers, and professional PDFs.</p>
+        </div>
+        <figure class="video-card video-card--narrow">
+          <video controls preload="none" playsinline poster="../assets/videos/latex-curriculum-demo-poster.jpg">
+            <source src="../assets/videos/latex-curriculum-demo.mp4" type="video/mp4">
+            <track kind="captions" src="../assets/videos/latex-curriculum-demo.vtt" srclang="en" label="English" default>
+          </video>
+          <figcaption class="panel__caption">2 min · Same AI, same prompt, different result: copy-and-paste versus LaTeX and Overleaf for a print-ready exit ticket.</figcaption>
+        </figure>
+        <div class="grid grid--2 page-spacer">
+          <article class="card">
+            <div class="card__eyebrow">What Participants Practice</div>
+            <h3>A repeatable production workflow, not one-off documents.</h3>
+            <ul class="checklist">
+              <li>Turn existing lessons and content into reusable templates</li>
+              <li>Generate leveled and tiered versions with consistent structure</li>
+              <li>Produce print-ready PDFs with a consistent look across a team</li>
+              <li>Review AI output for accuracy, alignment, and accessibility</li>
+            </ul>
+          </article>
+          <article class="card">
+            <div class="card__eyebrow">Best For</div>
+            <h3>Curriculum and intervention teams producing resources at scale.</h3>
+            <p>Designed for curriculum directors, instructional coaches, interventionists, and content teams that need repeatable structure and consistent formatting.</p>
+            <p class="page-spacer">The free prompt library below was produced with this same AI, VS Code, and LaTeX workflow.</p>
+            <div class="button-row"><a class="button-secondary" href="../contact/?interest=workshop">Ask About Curriculum Studio</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="prompt-library" aria-labelledby="prompt-library-title">
+      <div class="shell split">
+        <article class="card">
+          <div class="card__eyebrow">Free Download</div>
+          <h2 id="prompt-library-title">Apps Script Prompt Library for School Teams</h2>
+          <p class="page-spacer">Prompts, checklists, and build patterns for creating school tools with AI and Google Apps Script, packaged as a PDF your team can start with today.</p>
+          <div class="button-row"><a class="button" href="../assets/files/prompt-library/gc-apps-script-prompt-library.pdf" download>Download the Prompt Library (PDF)</a></div>
         </article>
         <article class="card">
-          <div class="card__eyebrow">Best For</div>
-          <h3>Curriculum and intervention teams producing resources at scale.</h3>
-          <p class="page-spacer">Designed for curriculum directors, instructional coaches, interventionists, and content teams that need repeatable structure and consistent formatting.</p>
+          <div class="card__eyebrow">Inside</div>
+          <ul class="checklist">
+            <li>A quick-start loop for going from a Google Sheet to a school tool</li>
+            <li>Safety-first guidance for protecting student data before you build</li>
+            <li>Copy-and-adapt prompt recipes and a feature library</li>
+            <li>Email automation, role-based access, and a deployment checklist</li>
+            <li>Troubleshooting for when AI gives you almost-right code</li>
+          </ul>
         </article>
       </div>
     </section>
@@ -189,20 +334,55 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" aria-labelledby="presenter-title">
       <div class="shell split">
-        <article class="panel panel--image portrait-card"><img src="../assets/images/headshot.png" alt="Gerardo Castillo, founder of GC Education Analytics" loading="lazy"><p class="panel__caption">Gerardo Castillo · Educator, presenter, and school-system builder.</p></article>
+        <figure class="panel panel--image portrait-card"><img src="../assets/images/headshot.png" alt="Gerardo Castillo, founder of GC Education Analytics" loading="lazy"><figcaption class="panel__caption">Gerardo Castillo · Educator, presenter, and school-system builder.</figcaption></figure>
         <article class="card">
           <div class="card__eyebrow">Presenter</div>
-          <h2>Gerardo Castillo teaches from systems he has actually built in schools.</h2>
-          <p class="page-spacer">His examples include MTSS and at-risk dashboards, teacher coverage systems, walkthrough tools, graduation trackers, and other school-specific workflows. Presentation experience includes OKMTSS, OSSBA, and Nuts &amp; Bolts.</p>
+          <h2 id="presenter-title">Gerardo Castillo teaches from systems he has actually built in schools.</h2>
+          <p class="page-spacer">His examples include MTSS and at-risk dashboards, teacher coverage systems, walkthrough tools, graduation trackers, and other school-specific workflows built inside Oklahoma schools. Presentation experience includes OKMTSS, OSSBA, and Nuts &amp; Bolts.</p>
           <div class="button-row"><a class="button-secondary" href="../about/">Read Gerardo's Story</a></div>
         </article>
       </div>
     </section>
 
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="shell">
+        <div class="section__header">
+          <div class="card__eyebrow">FAQ</div>
+          <h2 class="section__title" id="faq-title">Questions districts ask before booking.</h2>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>Do participants need coding experience?</summary>
+            <p>No. The workshops are designed for administrators without a programming background. Participants learn to describe the workflow and outcome they need, then direct AI to write and revise the code with guided checkpoints along the way.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Our district uses Microsoft 365. Is this still a fit?</summary>
+            <p>The hands-on builds use Google Workspace and Apps Script, which many schools already rely on. The planning skills—mapping a workflow, writing clear prompts, testing, and reviewing access—carry over to other platforms. Share your setup on the planning call and the session can be scoped to fit.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What happens to student data?</summary>
+            <p>Hands-on exercises use synthetic or appropriately de-identified information. Sessions also cover access, human review, testing, accessibility, and local approval so tools built afterward follow your district's policies.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What do participants take home?</summary>
+            <p>Depending on the format: starter prompts, planning templates, a responsible-use checklist, post-session resources, and for hands-on sessions, the prototype they built and tested.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What do participants need to bring?</summary>
+            <p>Every hands-on participant should bring a laptop. Conference sessions are built around a live demonstration.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How is pricing set?</summary>
+            <p>Pricing is provided after a short planning call so the scope reflects the audience, format, travel, and support required.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
     <section class="section">
-      <div class="shell"><div class="cta-band"><div><h2>Plan a workshop for your district or conference.</h2><p>Tell us who will be in the room, how much time is available, and which workflow your team wants to improve.</p></div><div class="button-row"><a class="button" href="../contact/?interest=workshop">Check Workshop Availability</a><a class="button-secondary" href="../examples/">View Case Studies</a></div></div></div>
+      <div class="shell"><div class="cta-band"><div><h2>Plan an AI workshop for your district or conference.</h2><p>Tell us who will be in the room, how much time is available, and which workflow your team wants to improve.</p></div><div class="button-row"><a class="button" href="../contact/?interest=workshop">Check Workshop Availability</a><a class="button-secondary" href="https://calendly.com/gcastillo-gceducationanalytics/30min?hide_event_type_details=1&amp;hide_gdpr_banner=1" data-calendly-popup>Book a 30-Minute Planning Call</a></div></div></div>
     </section>
   </main>
   <div id="site-footer" class="footer">
@@ -252,5 +432,182 @@
     </div>
   </div>
   <script src="../assets/js/site.js"></script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": "https://gceducationanalytics.com/ai-training/#service",
+      "name": "AI Training Workshops for School Administrators",
+      "serviceType": "Professional development workshop",
+      "description": "Hands-on AI training workshops where principals, district leaders, and administrative teams use AI-assisted coding and Google Apps Script to automate workflows and build working internal school tools.",
+      "url": "https://gceducationanalytics.com/ai-training/",
+      "provider": {
+        "@id": "https://gceducationanalytics.com/#organization"
+      },
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": "administrator"
+      },
+      "areaServed": [
+        {
+          "@type": "State",
+          "name": "Oklahoma"
+        },
+        {
+          "@type": "Country",
+          "name": "United States"
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Workshop menu",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Beyond the Chatbot",
+              "description": "Conference session (45–60 minutes): a practical introduction to what administrators can build when AI becomes a tool for workflow design, automation, and internal applications."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Administrator Automation Lab",
+              "description": "Half-day hands-on workshop (3 hours): participants map a real workflow, direct AI effectively, build alongside the presenter, and test a working prototype."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "School Tool Build Day",
+              "description": "Full-day workshop (5–6 hours): teams move from problem definition to a more complete prototype, with time for permissions, edge cases, documentation, and rollout planning."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Automating MTSS Dashboards and Intervention Workflows",
+              "description": "Specialized workshop on turning disconnected spreadsheets into a clearer MTSS workflow, dashboard, and notification structure."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "AI-Assisted Curriculum Production Studio",
+              "description": "Specialized workshop using AI, VS Code, and LaTeX to produce standardized assessments, tiered interventions, graphic organizers, and professional PDFs."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "VideoObject",
+      "@id": "https://gceducationanalytics.com/ai-training/#build-video",
+      "name": "From a plain-language prompt to a live school dashboard",
+      "description": "A narrated, real screen recording of an administrator-style build: describing a dashboard in plain language, copying AI-written Google Apps Script code, deploying it as a web app, and iterating. Uses fictional student data.",
+      "thumbnailUrl": "https://gceducationanalytics.com/assets/videos/ai-dashboard-build-poster.jpg",
+      "contentUrl": "https://gceducationanalytics.com/assets/videos/ai-dashboard-build.mp4",
+      "uploadDate": "2026-10-12",
+      "duration": "PT2M24S",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": "https://gceducationanalytics.com/#organization"
+      }
+    },
+    {
+      "@type": "VideoObject",
+      "@id": "https://gceducationanalytics.com/ai-training/#latex-video",
+      "name": "Stop copy-pasting AI output: print-ready PDFs with AI and LaTeX",
+      "description": "Same AI, same prompt, different result: why pasting AI output into a document breaks math formatting, and how asking for LaTeX and compiling in Overleaf produces a print-ready exit ticket.",
+      "thumbnailUrl": "https://gceducationanalytics.com/assets/videos/latex-curriculum-demo-poster.jpg",
+      "contentUrl": "https://gceducationanalytics.com/assets/videos/latex-curriculum-demo.mp4",
+      "uploadDate": "2026-10-12",
+      "duration": "PT1M57S",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": "https://gceducationanalytics.com/#organization"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://gceducationanalytics.com/ai-training/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do participants need coding experience?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The workshops are designed for administrators without a programming background. Participants learn to describe the workflow and outcome they need, then direct AI to write and revise the code with guided checkpoints along the way."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Our district uses Microsoft 365. Is this still a fit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The hands-on builds use Google Workspace and Apps Script, which many schools already rely on. The planning skills—mapping a workflow, writing clear prompts, testing, and reviewing access—carry over to other platforms. Share your setup on the planning call and the session can be scoped to fit."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens to student data?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Hands-on exercises use synthetic or appropriately de-identified information. Sessions also cover access, human review, testing, accessibility, and local approval so tools built afterward follow your district's policies."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What do participants take home?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Depending on the format: starter prompts, planning templates, a responsible-use checklist, post-session resources, and for hands-on sessions, the prototype they built and tested."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What do participants need to bring?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Every hands-on participant should bring a laptop. Conference sessions are built around a live demonstration."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is pricing set?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pricing is provided after a short planning call so the scope reflects the audience, format, travel, and support required."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://gceducationanalytics.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "AI Training Workshops",
+          "item": "https://gceducationanalytics.com/ai-training/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </body>
 </html>

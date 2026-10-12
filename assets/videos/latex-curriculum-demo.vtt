@@ -1,0 +1,119 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.600
+Here's a quick way to turn AI output into professional,
+
+00:00:03.600 --> 00:00:05.600
+print-ready PDF files.
+
+00:00:05.600 --> 00:00:09.000
+Used well, AI saves real time on handouts,
+
+00:00:09.000 --> 00:00:11.400
+quizzes, and exit tickets.
+
+00:00:11.400 --> 00:00:13.900
+But here's how most of us use it.
+
+00:00:13.900 --> 00:00:15.600
+We ask AI a question,
+
+00:00:15.600 --> 00:00:18.100
+copy the text, and paste it into a document.
+
+00:00:18.100 --> 00:00:20.200
+Let's see how that goes.
+
+00:00:20.200 --> 00:00:22.800
+Part 1, the usual way.
+
+00:00:22.800 --> 00:00:27.900
+We ask Gemini for a four-question exit ticket on the quadratic formula.
+
+00:00:28.100 --> 00:00:31.900
+We want professional formatting that fits on one page.
+
+00:00:31.900 --> 00:00:34.300
+Inside the chat window it looks great.
+
+00:00:34.300 --> 00:00:38.400
+Clean equations, clear sections, and even an answer key.
+
+00:00:38.400 --> 00:00:41.200
+So we copy the response.
+
+00:00:41.200 --> 00:00:43.100
+And paste it into Google Docs.
+
+00:00:43.100 --> 00:00:45.400
+Let's take a closer look.
+
+00:00:45.400 --> 00:00:48.200
+Every equation comes through as raw code.
+
+00:00:48.200 --> 00:00:52.400
+Dollar signs, backslashes, and formatting commands are everywhere.
+
+00:00:52.400 --> 00:00:55.200
+That's not something you'd hand to students.
+
+00:00:55.200 --> 00:00:58.000
+Part 2, the better way.
+
+00:00:58.000 --> 00:01:00.200
+This time we'll ask for LaTeX.
+
+00:01:00.200 --> 00:01:04.300
+LaTeX is the typesetting language behind textbooks and math journals.
+
+00:01:04.300 --> 00:01:08.100
+You don't need to learn it because the AI writes it for you.
+
+00:01:08.100 --> 00:01:11.400
+We use the same prompt as before with one extra line.
+
+00:01:11.400 --> 00:01:14.000
+Output this in LaTeX code.
+
+00:01:14.000 --> 00:01:16.000
+Now instead of formatted text,
+
+00:01:16.000 --> 00:01:20.600
+Gemini writes the entire exit ticket as LaTeX code.
+
+00:01:20.600 --> 00:01:23.500
+Click the copy button on the code block.
+
+00:01:23.500 --> 00:01:27.200
+Then open Overleaf, a free online LaTeX editor.
+
+00:01:27.200 --> 00:01:31.200
+Paste the code into a blank project and hit recompile.
+
+00:01:31.200 --> 00:01:34.100
+In seconds it compiles into a finished document.
+
+00:01:34.100 --> 00:01:36.700
+Just download the PDF.
+
+00:01:36.700 --> 00:01:38.200
+And here's the result.
+
+00:01:38.200 --> 00:01:39.900
+Properly typeset equations,
+
+00:01:39.900 --> 00:01:44.000
+clean answer blanks and a layout that's ready to print.
+
+00:01:44.000 --> 00:01:49.000
+Same AI and the same prompt with a completely different result.
+
+00:01:49.000 --> 00:01:52.300
+So next time prompt your AI and ask for LaTeX.
+
+00:01:52.300 --> 00:01:55.400
+Paste it into Overleaf and download your PDF.
+
+00:01:55.400 --> 00:01:56.900
+Thanks for watching.
+

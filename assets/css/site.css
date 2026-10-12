@@ -15,6 +15,7 @@
   --navy-soft: #1b3353;
   --sky: #d9ebf4;
   --gold: #d8a33b;
+  --focus-ring: #23636a;
   --shadow: 0 26px 80px rgba(16, 34, 58, 0.08);
   --shadow-tight: 0 14px 34px rgba(16, 34, 58, 0.08);
   --radius-xl: 28px;
@@ -51,6 +52,7 @@ html[data-theme="dark"] {
   --navy-soft: #d9e5f2;
   --sky: #173449;
   --gold: #e6bd65;
+  --focus-ring: #e6bd65;
   --shadow: 0 26px 80px rgba(0, 0, 0, 0.28);
   --shadow-tight: 0 14px 34px rgba(0, 0, 0, 0.24);
   --section-wash: linear-gradient(180deg, rgba(12, 23, 39, 0.82), rgba(10, 22, 38, 0.62));
@@ -135,7 +137,7 @@ button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 3px solid var(--gold);
+  outline: 3px solid var(--focus-ring);
   outline-offset: 3px;
 }
 
@@ -686,6 +688,7 @@ html[data-theme="dark"] .pill {
 
 .panel--image img {
   width: 100%;
+  height: auto;
   aspect-ratio: 16 / 10;
   object-fit: cover;
   border-radius: 20px;
@@ -813,8 +816,8 @@ html[data-theme="dark"] .section--alt::before {
     inset 0 -1px 0 rgba(0, 0, 0, 0.18);
 }
 
-/* Intentional light breaks that keep their contrast in either site theme. */
-.section--alt.section--light {
+/* Light breaks in the light theme; in the dark theme they become a subtle tint of the same base. */
+html:not([data-theme="dark"]) .section--alt.section--light {
   color-scheme: light;
   --surface: rgba(255, 255, 255, 0.9);
   --surface-strong: #ffffff;
@@ -832,26 +835,16 @@ html[data-theme="dark"] .section--alt::before {
   --band-fill: linear-gradient(180deg, #eaf3f7 0%, #f4f8fa 100%);
 }
 
-.section--alt.section--light-warm {
+html:not([data-theme="dark"]) .section--alt.section--light-warm {
   --band-fill: linear-gradient(180deg, #f6f1e6 0%, #fbf8f1 100%);
 }
 
-html[data-theme="dark"] .section--alt.section--light::before {
-  border-top-color: rgba(16, 34, 58, 0.12);
-  border-bottom-color: rgba(16, 34, 58, 0.12);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.72),
-    inset 0 -1px 0 rgba(16, 34, 58, 0.04);
+html[data-theme="dark"] .section--alt.section--light {
+  --band-fill: linear-gradient(180deg, rgba(14, 36, 52, 0.98) 0%, rgba(11, 27, 43, 0.98) 100%);
 }
 
-html[data-theme="dark"] .section--light .button-secondary {
-  background: rgba(255, 255, 255, 0.88);
-  border-color: var(--border);
-  color: var(--navy);
-}
-
-html[data-theme="dark"] .section--light .button-secondary:hover {
-  background: rgba(45, 127, 136, 0.1);
+html[data-theme="dark"] .section--alt.section--light-warm {
+  --band-fill: linear-gradient(180deg, rgba(24, 33, 44, 0.98) 0%, rgba(12, 25, 40, 0.98) 100%);
 }
 
 .section > .shell:not(.page-spacer):not(.home-chapter__intro) {
@@ -945,6 +938,22 @@ html[data-theme="dark"] .section > .shell:not(.page-spacer):not(.home-chapter__i
 .section > .shell:not(.page-spacer):not(.home-chapter__intro) .gallery-card,
 .section > .shell:not(.page-spacer):not(.home-chapter__intro) .pricing-card {
   overflow: hidden;
+}
+
+/* The section shell is already a framed panel, so nested image panels drop their own frame. */
+.section > .shell:not(.page-spacer):not(.home-chapter__intro) > .panel--image {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+/* A shell that only holds a CTA band lets the band be the single frame. */
+.section > .shell:not(.page-spacer):not(.home-chapter__intro):has(> .cta-band:only-child) {
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
 }
 
 .section > .shell:not(.page-spacer):not(.home-chapter__intro) .comparison-card--after,
@@ -1761,6 +1770,191 @@ html[data-theme="dark"] .cta-band {
   min-height: 100%;
 }
 
+/* AI workshop page */
+figure.panel {
+  margin: 0;
+}
+
+.hero__kicker {
+  color: var(--teal-dark);
+  margin-bottom: 0.75rem;
+}
+
+.panel__heading {
+  font-size: 1.2rem;
+}
+
+.proof-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 1.35rem;
+}
+
+.proof-strip__label {
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-right: 0.2rem;
+}
+
+.text-link {
+  color: var(--teal-dark);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.agenda {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.deliverable .agenda__time {
+  margin-top: 0.2rem;
+  color: var(--teal-dark);
+  font-weight: 700;
+}
+
+.faq-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.faq-item summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  flex: none;
+  color: var(--teal-dark);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.faq-item[open] summary::after {
+  content: "\2212";
+}
+
+.faq-item p {
+  padding: 0 1.2rem 1.1rem;
+  color: var(--muted);
+}
+
+/* Video */
+.loop-video {
+  position: relative;
+}
+
+.loop-video video,
+.video-card video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: #16181b;
+}
+
+.loop-video__toggle {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  background: rgba(10, 11, 13, 0.72);
+  color: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.video-card {
+  margin: 0;
+}
+
+.video-card figcaption {
+  margin-top: 0.75rem;
+}
+
+.video-card--narrow {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.watch-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2rem);
+  align-items: start;
+}
+
+.step-list {
+  margin: 0.5rem 0 0;
+  padding-left: 1.3rem;
+  display: grid;
+  gap: 0.7rem;
+  color: var(--muted);
+}
+
+.step-list strong {
+  color: var(--navy);
+}
+
+.ask-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.ask-card h3 {
+  font-family: var(--font-body);
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+@media (max-width: 1120px) {
+  .watch-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ask-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .ask-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .proof-quote blockquote {
   font-size: clamp(1.05rem, 1.8vw, 1.38rem);
 }
@@ -2063,14 +2257,6 @@ html[data-theme="dark"] .service-pill:hover {
 
 html[data-theme="dark"] .service-pill__title {
   color: #fff;
-}
-
-html[data-theme="dark"] .section--light > .shell:not(.page-spacer):not(.home-chapter__intro) .service-pill {
-  border-top-color: var(--border);
-}
-
-html[data-theme="dark"] .section--light .service-pill__title {
-  color: var(--navy);
 }
 
 .section--light .testimonial-card figcaption {
@@ -2526,7 +2712,10 @@ html[data-theme="dark"] .field select {
     padding 0.3s cubic-bezier(0.22, 1, 0.36, 1),
     gap 0.3s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.3s ease,
-    background 0.3s ease;
+    background 0.3s ease,
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0.25s;
 }
 
 .site-dock__copy {
@@ -2591,6 +2780,13 @@ html[data-theme="dark"] .field select {
 
 .site-dock.is-compact {
   width: min(248px, calc(100vw - 1rem));
+}
+
+.site-dock.is-hidden .site-dock__inner {
+  opacity: 0;
+  transform: translateY(0.75rem);
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .site-dock.is-compact .site-dock__inner {
@@ -3031,5 +3227,9 @@ html[data-theme="dark"] .iframe-shell {
     width: 100%;
     max-width: 100%;
     text-align: center;
+  }
+
+  .proof-strip .pill {
+    width: auto;
   }
 }

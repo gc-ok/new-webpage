@@ -23,12 +23,12 @@
     (function () {
       try {
         var storedTheme = localStorage.getItem("gcea-theme");
-        var theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "dark";
+        var theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
         document.documentElement.dataset.theme = theme;
         document.documentElement.style.colorScheme = theme;
       } catch (error) {
-        document.documentElement.dataset.theme = "dark";
-        document.documentElement.style.colorScheme = "dark";
+        document.documentElement.dataset.theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.style.colorScheme = document.documentElement.dataset.theme;
       }
     })();
   </script>
@@ -92,8 +92,13 @@
           </div>
         </div>
         <aside class="panel panel--image">
-          <img src="assets/images/hero-school-systems.svg" alt="Illustrated school software dashboard with workflow cards, analytics panels, and intervention tracking">
-          <p class="panel__caption">School software and analytics should feel organized, practical, and built around the way teams actually work.</p>
+          <div class="loop-video">
+            <video data-loop-video autoplay muted loop playsinline preload="metadata" poster="assets/videos/ai-build-loop-poster.jpg" aria-label="Silent loop of a real build: a plain-language prompt, AI-written Apps Script code, deployment, and the finished live dashboard">
+              <source src="assets/videos/ai-build-loop.mp4" type="video/mp4">
+            </video>
+            <button class="loop-video__toggle" type="button" data-loop-toggle aria-label="Pause background video">Pause</button>
+          </div>
+          <p class="panel__caption">A real build, prompt to live dashboard, at 2× speed with fictional data. <a class="text-link" href="ai-training/#watch">Watch the full walkthrough</a></p>
           <div class="mini-callout">
             Many projects are designed to keep school data inside your own Google Workspace environment instead of moving it into yet another vendor platform.
           </div>

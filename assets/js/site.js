@@ -225,6 +225,50 @@ function setupDockBehavior(dockMount) {
   scheduleCompactDock();
 }
 
+// Hide the floating booking dock while the page's own booking band or the footer is on screen.
+function setupDockVisibility(dockMount) {
+  if (!dockMount || !("IntersectionObserver" in window)) return;
+  const targets = document.querySelectorAll(".cta-band, #site-footer");
+  if (!targets.length) return;
+
+  const visible = new Set();
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) visible.add(entry.target);
+      else visible.delete(entry.target);
+    });
+    dockMount.classList.toggle("is-hidden", visible.size > 0);
+  });
+  targets.forEach((target) => observer.observe(target));
+}
+
+// Silent background loops: honor reduced motion and give visitors a pause control.
+function setupLoopVideos() {
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll("[data-loop-video]").forEach((video) => {
+    const toggle = video.parentElement.querySelector("[data-loop-toggle]");
+    const sync = () => {
+      if (!toggle) return;
+      toggle.textContent = video.paused ? "Play" : "Pause";
+      toggle.setAttribute("aria-label", video.paused ? "Play background video" : "Pause background video");
+    };
+
+    if (reduceMotion) {
+      video.removeAttribute("autoplay");
+      video.pause();
+    }
+    video.addEventListener("play", sync);
+    video.addEventListener("pause", sync);
+    if (toggle) {
+      toggle.addEventListener("click", () => {
+        if (video.paused) video.play().catch(() => {});
+        else video.pause();
+      });
+    }
+    sync();
+  });
+}
+
 function loadCalendlyAssets() {
   if (calendlyAssetsPromise) return calendlyAssetsPromise;
 
@@ -291,16 +335,28 @@ function getPreferredTheme() {
     storedTheme = null;
   }
   if (storedTheme === "dark" || storedTheme === "light") return storedTheme;
-  return "dark";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-function applyTheme(theme) {
-  document.documentElement.dataset.theme = theme;
-  document.body.dataset.theme = theme;
+function hasStoredTheme() {
   try {
-    localStorage.setItem("gcea-theme", theme);
+    const storedTheme = localStorage.getItem("gcea-theme");
+    return storedTheme === "dark" || storedTheme === "light";
   } catch (error) {
-    // Local file previews can block storage; the visual theme should still switch.
+    return false;
+  }
+}
+
+function applyTheme(theme, persist = false) {
+  document.documentElement.dataset.theme = theme;
+  document.documentElement.style.colorScheme = theme;
+  document.body.dataset.theme = theme;
+  if (persist) {
+    try {
+      localStorage.setItem("gcea-theme", theme);
+    } catch (error) {
+      // Local file previews can block storage; the visual theme should still switch.
+    }
   }
 
   document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
@@ -367,6 +423,8 @@ document.addEventListener("DOMContentLoaded", () => {
     setupDockBehavior(dockMount);
   }
 
+  setupDockVisibility(dockMount);
+  setupLoopVideos();
   optimizeImageLoading();
 
   syncPrimaryNavigation(currentPath);
@@ -416,9 +474,14 @@ document.addEventListener("DOMContentLoaded", () => {
   if (themeToggle) {
     themeToggle.addEventListener("click", () => {
       const currentTheme = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
-      applyTheme(currentTheme === "dark" ? "light" : "dark");
+      applyTheme(currentTheme === "dark" ? "light" : "dark", true);
     });
   }
+
+  // Follow the operating system theme until the visitor picks one with the toggle.
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+    if (!hasStoredTheme()) applyTheme(event.matches ? "dark" : "light");
+  });
 
   if (header && toggle) {
     toggle.addEventListener("click", () => {
