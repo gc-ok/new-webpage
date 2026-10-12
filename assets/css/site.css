@@ -159,7 +159,7 @@ h4 {
 }
 
 .page-wrap {
-  padding-bottom: 9rem;
+  padding-bottom: 3rem;
 }
 
 .page-wrap,
@@ -171,6 +171,8 @@ h4 {
 }
 
 .bg-motion {
+  -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
   position: absolute;
   inset: 0 0 auto;
   height: 1000px;
@@ -927,8 +929,7 @@ html[data-theme="dark"] .section > .shell:not(.page-spacer):not(.home-chapter__i
 
 .section > .shell:not(.page-spacer):not(.home-chapter__intro) .pricing-card,
 .section > .shell:not(.page-spacer):not(.home-chapter__intro) .legal-card,
-.section > .shell:not(.page-spacer):not(.home-chapter__intro) .gallery-card,
-.section > .shell:not(.page-spacer):not(.home-chapter__intro) .cta-band {
+.section > .shell:not(.page-spacer):not(.home-chapter__intro) .gallery-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
@@ -1862,7 +1863,60 @@ figure.panel {
   color: var(--muted);
 }
 
+/* Testimonials sit on a light band once their card frame is flattened. */
+.section > .shell:not(.page-spacer):not(.home-chapter__intro) .testimonial-card figcaption {
+  color: var(--muted);
+}
+
+/* Image panels inside a framed section: let captions breathe instead of clipping glyphs. */
+.section > .shell:not(.page-spacer):not(.home-chapter__intro) > .panel--image {
+  overflow: visible;
+}
+
 /* Video */
+.video-frame {
+  position: relative;
+}
+
+.video-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  appearance: none;
+  border: 0;
+  border-radius: 20px;
+  background: linear-gradient(180deg, transparent 55%, rgba(10, 11, 13, 0.35));
+  cursor: pointer;
+}
+
+.video-play span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.35rem;
+  border-radius: 999px;
+  background: rgba(10, 11, 13, 0.82);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.video-play span::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 14px solid #fff;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+}
+
+.video-play:hover span,
+.video-play:focus-visible span {
+  background: var(--teal-dark);
+}
+
 .loop-video {
   position: relative;
 }

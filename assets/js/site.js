@@ -225,10 +225,10 @@ function setupDockBehavior(dockMount) {
   scheduleCompactDock();
 }
 
-// Hide the floating booking dock while the page's own booking band or the footer is on screen.
+// Hide the floating booking dock while the hero, the page's own booking band, or the footer is on screen.
 function setupDockVisibility(dockMount) {
   if (!dockMount || !("IntersectionObserver" in window)) return;
-  const targets = document.querySelectorAll(".cta-band, #site-footer");
+  const targets = document.querySelectorAll(".hero, .cta-band, #site-footer");
   if (!targets.length) return;
 
   const visible = new Set();
@@ -266,6 +266,20 @@ function setupLoopVideos() {
       });
     }
     sync();
+  });
+}
+
+// Narrated videos: show a clean poster with one play button, then hand over to native controls.
+function setupVideoPlayButtons() {
+  document.querySelectorAll("[data-video-play]").forEach((button) => {
+    const video = button.parentElement.querySelector("video");
+    if (!video) return;
+    button.addEventListener("click", () => {
+      video.controls = true;
+      button.hidden = true;
+      video.play().catch(() => {});
+      video.focus();
+    });
   });
 }
 
@@ -425,6 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setupDockVisibility(dockMount);
   setupLoopVideos();
+  setupVideoPlayButtons();
   optimizeImageLoading();
 
   syncPrimaryNavigation(currentPath);
