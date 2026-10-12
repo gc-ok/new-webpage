@@ -818,8 +818,8 @@ html[data-theme="dark"] .section--alt::before {
     inset 0 -1px 0 rgba(0, 0, 0, 0.18);
 }
 
-/* Light breaks in the light theme; in the dark theme they become a subtle tint of the same base. */
-html:not([data-theme="dark"]) .section--alt.section--light {
+/* Light bands: intentional highlights that stay light in either theme. */
+.section--alt.section--light {
   color-scheme: light;
   --surface: rgba(255, 255, 255, 0.9);
   --surface-strong: #ffffff;
@@ -837,16 +837,22 @@ html:not([data-theme="dark"]) .section--alt.section--light {
   --band-fill: linear-gradient(180deg, #eaf3f7 0%, #f4f8fa 100%);
 }
 
-html:not([data-theme="dark"]) .section--alt.section--light-warm {
+.section--alt.section--light-warm {
   --band-fill: linear-gradient(180deg, #f6f1e6 0%, #fbf8f1 100%);
 }
 
-html[data-theme="dark"] .section--alt.section--light {
-  --band-fill: linear-gradient(180deg, rgba(14, 36, 52, 0.98) 0%, rgba(11, 27, 43, 0.98) 100%);
+html[data-theme="dark"] .section--light .button-secondary {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: var(--border);
+  color: var(--navy);
 }
 
-html[data-theme="dark"] .section--alt.section--light-warm {
-  --band-fill: linear-gradient(180deg, rgba(24, 33, 44, 0.98) 0%, rgba(12, 25, 40, 0.98) 100%);
+html[data-theme="dark"] .section--light .button-secondary:hover {
+  background: rgba(45, 127, 136, 0.1);
+}
+
+html[data-theme="dark"] .section--light .service-pill__title {
+  color: var(--navy);
 }
 
 .section > .shell:not(.page-spacer):not(.home-chapter__intro) {
@@ -2910,7 +2916,7 @@ html[data-theme="dark"] .field select {
 
 .iframe-shell {
   width: 100%;
-  min-height: 74vh;
+  min-height: min(74vh, 760px);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.92);
@@ -2925,7 +2931,7 @@ html[data-theme="dark"] .iframe-shell {
 
 .iframe-shell iframe {
   width: 100%;
-  min-height: 74vh;
+  min-height: min(74vh, 760px);
   border: 0;
 }
 
@@ -3286,4 +3292,69 @@ html[data-theme="dark"] .iframe-shell {
   .proof-strip .pill {
     width: auto;
   }
+}
+
+/* Calm layout: open sections separated by space and background, not outlines. */
+.section {
+  padding: clamp(2.25rem, 5vw, 4rem) 0;
+}
+
+.section > .shell:not(.page-spacer):not(.home-chapter__intro),
+html[data-theme="dark"] .section > .shell:not(.page-spacer):not(.home-chapter__intro) {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.section--alt::before,
+html[data-theme="dark"] .section--alt::before {
+  border-top: 0;
+  border-bottom: 0;
+  box-shadow: none;
+}
+
+.section--alt {
+  margin: 0;
+  padding: clamp(2.75rem, 6vw, 4.5rem) 0;
+}
+
+/* Homepage chapters: a simple numbered heading row, no frame around the chapter or its label. */
+.home-chapter::before,
+html[data-theme="dark"] .home-chapter::before,
+.home-chapter--software::before,
+.home-chapter--analytics::before,
+.home-chapter--training::before,
+html[data-theme="dark"] .home-chapter--software::before,
+html[data-theme="dark"] .home-chapter--analytics::before,
+html[data-theme="dark"] .home-chapter--training::before {
+  border: 0;
+  box-shadow: none;
+  background: none;
+}
+
+.home-chapter__intro {
+  position: static;
+  padding-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.home-chapter__bar,
+html[data-theme="dark"] .home-chapter__bar,
+.home-chapter--software .home-chapter__bar,
+.home-chapter--analytics .home-chapter__bar,
+.home-chapter--training .home-chapter__bar {
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+/* Image panels outside the hero: the image is the frame. */
+html .section .panel--image,
+html[data-theme="dark"] .section .panel--image {
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
 }

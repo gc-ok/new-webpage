@@ -1,6 +1,6 @@
 const navItems = [
   { href: "", label: "Home", match: "/" },
-  { href: "ai-training/", label: "Workshops", match: "/ai-training/" },
+  { href: "ai-training/", label: "AI PD", match: "/ai-training/" },
   { href: "examples/", label: "Case Studies", match: "/examples/" },
   {
     href: "services/",
@@ -69,7 +69,7 @@ function renderHeader(root, currentPath) {
         <img class="brand__logo" src="${root}assets/images/gceducationlogo.png" alt="GC Education Analytics logo">
         <div class="brand__text">
           <span class="brand__name">GC Education Analytics LLC</span>
-          <span class="brand__sub">AI workshops, custom tools, and school data</span>
+          <span class="brand__sub">AI PD, custom tools, and school data</span>
         </div>
       </a>
       <div class="site-header__right">
@@ -95,7 +95,7 @@ function renderFooter(root) {
         <div class="footer__top">
           <div>
             <div class="footer__eyebrow">GC Education Analytics LLC</div>
-            <h3>Practical AI workshops and school-specific tools.</h3>
+            <h3>Practical AI PD and school-specific tools.</h3>
             <p>Help your administrators build useful systems—or commission the finished tool for your school.</p>
           </div>
           <div class="footer__contact">
@@ -105,7 +105,7 @@ function renderFooter(root) {
         </div>
         <div class="footer__meta">
           <div class="footer__nav">
-            <a href="${root}ai-training/">Workshops</a>
+            <a href="${root}ai-training/">AI PD</a>
             <a href="${root}examples/">Case Studies</a>
             <a href="${root}services/">Services</a>
             <a href="${root}about/">About</a>
@@ -138,7 +138,7 @@ function applyContactInterest() {
 
   const requestedInterest = new URLSearchParams(window.location.search).get("interest");
   const interestLabels = {
-    workshop: "Workshop or presentation",
+    workshop: "AI PD or conference session",
     "custom-build": "Custom school tool",
     "build-plus-coaching": "Build plus coaching",
     "data-analysis": "Data analysis"
@@ -179,50 +179,10 @@ function renderDock() {
   `;
 }
 
+// The booking dock stays a compact pill so it never covers page content.
 function setupDockBehavior(dockMount) {
   if (!dockMount) return;
-
-  const supportsHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  if (!supportsHover) {
-    dockMount.classList.remove("is-compact");
-    return;
-  }
-
-  const compactDelay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 3800;
-  let compactTimer = null;
-
-  const clearCompactTimer = () => {
-    if (compactTimer !== null) {
-      window.clearTimeout(compactTimer);
-      compactTimer = null;
-    }
-  };
-
-  const expandDock = () => {
-    clearCompactTimer();
-    dockMount.classList.remove("is-compact");
-  };
-
-  const compactDock = () => {
-    dockMount.classList.add("is-compact");
-    compactTimer = null;
-  };
-
-  const scheduleCompactDock = () => {
-    clearCompactTimer();
-    compactTimer = window.setTimeout(compactDock, compactDelay);
-  };
-
-  dockMount.addEventListener("mouseenter", expandDock);
-  dockMount.addEventListener("mouseleave", scheduleCompactDock);
-  dockMount.addEventListener("focusin", expandDock);
-  dockMount.addEventListener("focusout", (event) => {
-    if (!dockMount.contains(event.relatedTarget)) {
-      scheduleCompactDock();
-    }
-  });
-
-  scheduleCompactDock();
+  dockMount.classList.add("is-compact");
 }
 
 // Hide the floating booking dock while the hero, the page's own booking band, or the footer is on screen.
