@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Starter Kit | GC Education Analytics</title>
+  <meta name="description" content="Download the School Web App Starter Kit from GC Education Analytics.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://gceducationanalytics.com/prompt-library/">
+  <meta name="theme-color" content="#10223a">
+  <link rel="icon" href="../assets/icons/favicon.ico">
+  <link rel="manifest" href="../assets/icons/site.webmanifest">
+  <script>
+    (function () {
+      try {
+        var storedTheme = localStorage.getItem("gcea-theme");
+        var theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      } catch (error) {
+        document.documentElement.dataset.theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.style.colorScheme = document.documentElement.dataset.theme;
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3L49QVWC6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-M3L49QVWC6');
+  </script>
+</head>
+<body data-root="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div id="site-header" class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="../">
+        <img class="brand__logo" src="../assets/images/gceducationlogo.png" alt="GC Education Analytics logo">
+        <div class="brand__text">
+          <span class="brand__name">GC Education Analytics LLC</span>
+          <span class="brand__sub">AI PD, custom tools, and school data</span>
+        </div>
+      </a>
+      <div class="site-header__right">
+        <nav id="primary-navigation" class="site-nav" aria-label="Primary navigation">
+          <a href="../">Home</a>
+          <a href="../ai-training/">AI PD</a>
+          <a href="../examples/">Case Studies</a>
+          <a href="../services/">Services</a>
+          <a href="../about/">About</a>
+          <a href="../contact/">Contact</a>
+        </nav>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme">
+          <span class="theme-toggle__icon" aria-hidden="true"></span>
+          <span class="theme-toggle__text">Dark</span>
+        </button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation">
+          <span>Menu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <main id="main-content" class="page-wrap">
+    <section class="hero hero--tight">
+      <div class="shell">
+        <div class="hero__content">
+          <p class="card__eyebrow hero__kicker">Free Download</p>
+          <h1>Your starter kit is ready.</h1>
+          <p class="hero__lead">The School Web App Starter Kit: three guides for building school tools with AI and Google Apps Script. Start with the Beginner Guide, then pick a project and the features you need.</p>
+          <p class="page-spacer">Thanks for subscribing. You'll get occasional tips for school leaders by email, and you can unsubscribe anytime.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="downloads-title">
+      <div class="shell">
+        <div class="section__header">
+          <h2 class="section__title" id="downloads-title">Your three downloads</h2>
+        </div>
+        <div class="grid grid--3">
+          <article class="card">
+            <div class="card__eyebrow">Start here · 7 pages</div>
+            <h3>Step-by-Step Beginner Guide</h3>
+            <p>From a Google Sheet to a deployed web app: what to tell AI, student data and sharing settings, updating, and troubleshooting.</p>
+            <div class="button-row">
+              <a class="button" href="../assets/files/starter-kit/school-web-app-beginner-guide.pdf" download>Download PDF</a>
+              <a class="button-secondary" href="../assets/files/starter-kit/school-web-app-beginner-guide.pdf" target="_blank" rel="noopener">Open</a>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__eyebrow">Pick a project · 34 pages</div>
+            <h3>32 School Web App Ideas</h3>
+            <p>One project per page, from behavior intake to attendance dashboards, each with a starter prompt, suggested pages, and school use cases.</p>
+            <div class="button-row">
+              <a class="button" href="../assets/files/starter-kit/school-web-app-project-ideas.pdf" download>Download PDF</a>
+              <a class="button-secondary" href="../assets/files/starter-kit/school-web-app-project-ideas.pdf" target="_blank" rel="noopener">Open</a>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__eyebrow">Add features · 38 pages</div>
+            <h3>Web App Feature Library</h3>
+            <p>What to ask AI for by name: navigation, dashboards, forms, charts, email drafts, role-based access, and more.</p>
+            <div class="button-row">
+              <a class="button" href="../assets/files/starter-kit/school-web-app-feature-library.pdf" download>Download PDF</a>
+              <a class="button-secondary" href="../assets/files/starter-kit/school-web-app-feature-library.pdf" target="_blank" rel="noopener">Open</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="cta-band">
+          <div>
+            <h2>Want your team building tools like this?</h2>
+            <p>Hands-on AI PD walks administrators through mapping a workflow, building alongside the presenter, and testing a working prototype.</p>
+          </div>
+          <div class="button-row">
+            <a class="button" href="https://calendly.com/gcastillo-gceducationanalytics/30min?hide_event_type_details=1&amp;hide_gdpr_banner=1" data-calendly-popup>Book a Free Consultation</a>
+            <a class="button-secondary" href="../ai-training/">See AI PD Formats</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer" class="footer"></div>
+  <div id="site-dock" class="site-dock"></div>
+  <script src="../assets/js/site.js"></script>
+</body>
+</html>

@@ -20,6 +20,12 @@ const navItems = [
 const calendlyUrl = "https://calendly.com/gcastillo-gceducationanalytics/30min?hide_event_type_details=1&hide_gdpr_banner=1";
 let calendlyAssetsPromise = null;
 
+// Kit (kit.com) form endpoints. Subscribers from both forms land on the same Kit list.
+const kitForms = {
+  newsletter: "https://app.kit.com/forms/10040934/subscriptions",
+  promptLibrary: "https://app.kit.com/forms/10040957/subscriptions"
+};
+
 function normalizePath(pathname) {
   if (!pathname) return "/";
   let normalized = pathname.replace(/index\.html$/, "");
@@ -102,6 +108,21 @@ function renderFooter(root) {
             <a href="mailto:gcastillo@gceducationanalytics.com">gcastillo@gceducationanalytics.com</a>
             <a href="${calendlyUrl}" data-calendly-popup>Book a consultation</a>
           </div>
+        </div>
+        <div class="footer__signup">
+          <div>
+            <h3>Practical AI and data tips for school leaders.</h3>
+            <p>Occasional emails with prompts, tools, and workflows you can use. Unsubscribe anytime.</p>
+          </div>
+          <form class="signup-form" action="${kitForms.newsletter}" method="post" data-signup-form="newsletter" data-success-message="Thanks, you're subscribed!">
+            <div class="signup-form__row">
+              <label class="signup-form__label" for="footer-signup-email">Email address</label>
+              <input id="footer-signup-email" type="email" name="email_address" placeholder="you@school.org" autocomplete="email" required>
+              <button class="button" type="submit" data-submit-button data-loading-text="Subscribing...">Subscribe</button>
+            </div>
+            <div class="signup-form__trap" aria-hidden="true"><label>Leave this field empty<input type="text" name="company_website" tabindex="-1" autocomplete="off"></label></div>
+            <p class="signup-form__status" data-form-status role="status" aria-live="polite"></p>
+          </form>
         </div>
         <div class="footer__meta">
           <div class="footer__nav">
@@ -361,6 +382,81 @@ function syncPrimaryNavigation(currentPath) {
   });
 }
 
+// Email signup forms post to Kit in the background so visitors stay on the site.
+// If the request can't be made (network or script trouble), the form falls back to a normal Kit submission.
+function setupSignupForms() {
+  document.querySelectorAll("form[data-signup-form]").forEach((form) => {
+    const submitButton = form.querySelector("[data-submit-button]");
+    const formStatus = form.querySelector("[data-form-status]");
+    const trapInput = form.querySelector('.signup-form__trap input');
+    const defaultText = submitButton ? submitButton.textContent.trim() : "";
+
+    const setStatus = (message, isError = false) => {
+      if (!formStatus) return;
+      formStatus.textContent = message;
+      formStatus.classList.toggle("is-error", isError);
+    };
+
+    const setLoading = (loading) => {
+      if (!submitButton) return;
+      submitButton.classList.toggle("is-loading", loading);
+      submitButton.disabled = loading;
+      submitButton.textContent = loading ? submitButton.dataset.loadingText || "Sending..." : defaultText;
+    };
+
+    const finish = () => {
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "sign_up", { method: form.dataset.signupForm || "newsletter" });
+      }
+      const redirect = form.dataset.successRedirect;
+      if (redirect) {
+        window.location.href = new URL(redirect, window.location.href).href;
+        return;
+      }
+      form.reset();
+      setLoading(false);
+      setStatus(form.dataset.successMessage || "Thanks, you're subscribed!");
+    };
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      // Bots tend to fill every field; quietly drop those submissions.
+      if (trapInput && trapInput.value) {
+        finish();
+        return;
+      }
+
+      const data = new FormData(form);
+      data.delete("company_website");
+      setLoading(true);
+      setStatus("");
+
+      let result;
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: data,
+          headers: { Accept: "application/json" }
+        });
+        result = await response.json();
+      } catch (error) {
+        if (trapInput) trapInput.disabled = true;
+        HTMLFormElement.prototype.submit.call(form);
+        return;
+      }
+
+      if (result && result.status === "failed") {
+        setLoading(false);
+        setStatus("That email address didn't go through. Please check it and try again.", true);
+        return;
+      }
+
+      finish();
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   applyContactInterest();
   const body = document.body;
@@ -542,6 +638,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  setupSignupForms();
 
   const revealTargets = document.querySelectorAll(
     ".hero__grid, .metric-grid, .home-chapter__intro, .product-showcase, .section__header, .card-grid, .comparison-grid, .gallery-grid, .chapter-feature, .proof-grid, .split, .about-section-panel, .contact-grid, .pricing-grid, .support-split, .process-grid, .cta-band, .legal-card, .footer__panel"
